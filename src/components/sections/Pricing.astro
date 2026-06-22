@@ -28,7 +28,7 @@ import GoldButton from '../ui/GoldButton.astro';
             ]}
           >
             {plan.featured && (
-              <span class="absolute -top-3 left-8 rounded-full bg-blood px-3 py-1 font-mono text-[0.65rem] uppercase tracking-widest text-ink">
+              <span class="absolute -top-3 left-8 rounded-full bg-blood px-3 py-1 font-mono text-[0.65rem] uppercase tracking-widest text-bone">
                 Le plus choisi
               </span>
             )}
@@ -36,7 +36,7 @@ import GoldButton from '../ui/GoldButton.astro';
             <div class="mt-5 flex items-baseline gap-1">
               <span class="num text-gradient-blood text-5xl leading-none">{plan.price}</span>
               {plan.unit && <span class="font-sans text-2xl text-haze/70">{plan.unit}</span>}
-              {plan.cadence && <span class="ml-2 label-mono !text-haze/45">/ {plan.cadence}</span>}
+              {plan.cadence && <span class="ml-2 label-mono !text-haze/60">/ {plan.cadence}</span>}
             </div>
             {plan.note && (
               <span class="mt-2 inline-block font-mono text-[0.62rem] uppercase tracking-[0.14em] text-bronze/90">
@@ -46,7 +46,7 @@ import GoldButton from '../ui/GoldButton.astro';
             <ul class="mt-8 flex-1 space-y-3">
               {plan.features.map((f) => (
                 <li class="flex items-start gap-3 text-sm text-haze/75">
-                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                     <path d="M5 13l4 4L19 7" />
                   </svg>
                   {f}
@@ -77,11 +77,11 @@ import GoldButton from '../ui/GoldButton.astro';
               <li class="flex items-baseline justify-between gap-4 border-b border-blood/10 pb-3">
                 <span class="text-haze/85">
                   {x.name}
-                  <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/45">{x.note}</span>
+                  <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/60">{x.note}</span>
                 </span>
                 <span class="shrink-0 whitespace-nowrap">
                   <span class="num text-2xl text-gradient-blood">{x.value}</span>
-                  <span class="ml-1 label-mono !text-haze/45">{x.cadence}</span>
+                  <span class="ml-1 label-mono !text-haze/60">{x.cadence}</span>
                 </span>
               </li>
             ))
@@ -103,7 +103,7 @@ import GoldButton from '../ui/GoldButton.astro';
           {
             pricing.included.map((f) => (
               <li class="flex items-start gap-3 text-sm text-haze/80">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                   <path d="M5 13l4 4L19 7" />
                 </svg>
                 {f}

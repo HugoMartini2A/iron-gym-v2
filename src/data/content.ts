@@ -726,8 +726,3 @@ export const legalEntity = {
   host: 'Vercel Inc., 340 S Lemon Ave, Walnut, CA 91789, USA - vercel.com',
 } as const;
 
-// Compteur de preloader / mots d'ambiance du chargement.
-export const preloader = {
-  brand: 'IRON GYM',
-  sub: 'LIMOGES · EST. 1992',
-} as const;

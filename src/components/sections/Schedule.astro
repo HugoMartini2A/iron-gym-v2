@@ -17,15 +17,15 @@ const dayNames = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
       <p
         data-reveal
         data-week-range
-        class="label-mono shrink-0 rounded-full border border-blood/20 px-4 py-2 !text-blood/90"
+        class="label-mono shrink-0 rounded-full border border-blood/20 px-4 py-2 !text-blood-hi/90"
       >
         Semaine en cours
       </p>
     </div>
 
     <!-- Indice de swipe (mobile uniquement) -->
-    <p class="mt-8 flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-haze/40 lg:hidden">
-      <svg class="h-3.5 w-3.5 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg>
+    <p class="mt-8 flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-haze/60 lg:hidden">
+      <svg class="h-3.5 w-3.5 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg>
       Glisse pour voir chaque jour
     </p>
 
@@ -43,16 +43,16 @@ const dayNames = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
           >
             <div class="flex items-baseline justify-between gap-2 border-b border-blood/10 pb-3">
               <span class="display text-lg text-haze">{dayNames[i]}</span>
-              <span data-weekday-date class="font-mono text-xs tabular-nums text-haze/45">—</span>
+              <span data-weekday-date class="font-mono text-xs tabular-nums text-haze/60">—</span>
             </div>
             <ul class="mt-3 flex flex-1 flex-col gap-2.5">
               {day.slots.map((slot) => (
                 <li class="group/slot rounded-sm bg-ink/40 px-3 py-2.5 transition-colors hover:bg-ink/70">
                   <div class="flex items-center justify-between gap-2">
-                    <span class="font-mono text-xs tabular-nums text-blood">{slot.time}</span>
+                    <span class="font-mono text-xs tabular-nums text-blood-hi">{slot.time}</span>
                   </div>
                   <p class="mt-0.5 text-sm font-medium text-haze/90">{slot.name}</p>
-                  <p class="font-mono text-[0.68rem] uppercase tracking-wide text-haze/40">{slot.coach}</p>
+                  <p class="font-mono text-[0.68rem] uppercase tracking-wide text-haze/60">{slot.coach}</p>
                 </li>
               ))}
             </ul>
@@ -61,7 +61,7 @@ const dayNames = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
       }
     </div>
 
-    <p class="mt-6 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-haze/35">
+    <p class="mt-6 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-haze/60">
       <span class="inline-block h-1.5 w-1.5 rounded-full bg-blood/60" aria-hidden="true"></span>
       {schedule.note}
     </p>

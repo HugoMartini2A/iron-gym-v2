@@ -8,6 +8,8 @@ export default defineConfig({
   trailingSlash: 'never',
   compressHTML: true,
   devToolbar: { enabled: false },
+  // Inline tout le CSS dans le <head> → zéro requête CSS bloquante (meilleur FCP).
+  build: { inlineStylesheets: 'always' },
   image: {
     // Astro re-encode les sources en WebP + dimensions intrinsèques (zéro CLS).
     responsiveStyles: true,

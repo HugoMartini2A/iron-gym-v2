@@ -2,7 +2,6 @@
 import '../styles/global.css';
 
 import { site, contact } from '../data/content';
-import Preloader from '../components/Preloader.astro';
 import Grain from '../components/Grain.astro';
 
 interface Props {
@@ -86,7 +85,6 @@ const jsonLd = {
   </head>
 
   <body class="vignette">
-    <Preloader />
     <Grain />
     <slot />
 

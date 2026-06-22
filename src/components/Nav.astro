@@ -15,7 +15,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
     <!-- Marque + statut live (gauche) -->
     <div class="flex items-center gap-3 justify-self-start">
       <a href="#top" class="display text-xl tracking-wide text-haze transition-colors hover:text-blood-hi">
-        {site.shortName}<span class="text-blood">.</span>
+        {site.shortName}<span class="text-blood-hi">.</span>
       </a>
       <span
         data-open-status
@@ -37,7 +37,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
           <li>
             <a
               href={link.href}
-              class="font-mono text-xs uppercase tracking-[0.16em] text-haze/70 transition-colors hover:text-blood"
+              class="font-mono text-xs uppercase tracking-[0.16em] text-haze/70 transition-colors hover:text-blood-hi"
             >
               {link.label}
             </a>
@@ -52,7 +52,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
         href={hero.cta.href}
         data-objet={hero.cta.objet}
         data-magnetic="0.25"
-        class="inline-flex min-h-[44px] items-center rounded-full bg-blood px-4 py-2.5 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-ink transition-colors hover:bg-blood-hi sm:px-5 sm:text-xs sm:tracking-[0.16em]"
+        class="inline-flex min-h-[44px] items-center rounded-full bg-blood px-4 py-2.5 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-bone transition-colors hover:bg-blood-hi sm:px-5 sm:text-xs sm:tracking-[0.16em]"
       >
         Essai gratuit
       </a>
@@ -62,7 +62,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
         aria-label="Ouvrir le menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        class="nav-burger inline-flex h-11 w-11 items-center justify-center rounded-full border border-blood/30 text-blood transition-colors hover:border-blood hover:bg-blood/10 lg:hidden"
+        class="nav-burger inline-flex h-11 w-11 items-center justify-center rounded-full border border-blood/30 text-blood-hi transition-colors hover:border-blood hover:bg-blood/10 lg:hidden"
       >
         <span class="nav-burger__box" aria-hidden="true">
           <span class="nav-burger__line"></span>
@@ -97,7 +97,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
       {
         nav.map((link) => (
           <li>
-            <a href={link.href} data-nav-link class="mobile-menu__link display text-haze transition-colors hover:text-blood">
+            <a href={link.href} data-nav-link class="mobile-menu__link display text-haze transition-colors hover:text-blood-hi">
               {link.label}
             </a>
           </li>
@@ -108,7 +108,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
           href={hero.cta.href}
           data-objet={hero.cta.objet}
           data-nav-link
-          class="inline-flex min-h-[48px] items-center rounded-full bg-blood px-6 py-3 font-mono text-sm uppercase tracking-[0.14em] text-ink transition-colors hover:bg-blood-hi"
+          class="inline-flex min-h-[48px] items-center rounded-full bg-blood px-6 py-3 font-mono text-sm uppercase tracking-[0.14em] text-bone transition-colors hover:bg-blood-hi"
         >
           {hero.cta.label}
         </a>

@@ -87,8 +87,8 @@ export function initSite(): void {
   if (FINE_POINTER) setupMagnetic();
   setupNav();
 
-  // Séquence preloader → entrée hero (char-by-char).
-  runPreloader(lenis);
+  // Lenis démarre + entrée hero (char-by-char).
+  startHero(lenis);
 
   // Recalc après chargement complet (fonts, images).
   window.addEventListener('load', () => ScrollTrigger.refresh());
@@ -116,7 +116,6 @@ function reducedInit(): void {
     const to = el.dataset.count ?? '';
     if (to) el.textContent = to;
   });
-  hidePreloaderInstant();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -616,48 +615,11 @@ function setupContactForm(): void {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Preloader → entrée hero (char-by-char)
+// Démarrage : Lenis + entrée hero (char-by-char)
 // ─────────────────────────────────────────────────────────────────────────────
-function runPreloader(lenis: Lenis): void {
-  const pre = document.querySelector<HTMLElement>('[data-preloader]');
-  const counter = pre?.querySelector<HTMLElement>('[data-preloader-count]');
-  if (!pre) {
-    lenis.start();
-    return;
-  }
-  lenis.stop();
-
-  const tl = gsap.timeline({
-    defaults: { ease: 'swift' },
-    onComplete: () => {
-      pre.remove();
-      lenis.start();
-      ScrollTrigger.refresh();
-      heroEntrance();
-    },
-  });
-
-  // Compteur 0 → 100.
-  const c = { v: 0 };
-  tl.to(c, {
-    v: 100,
-    duration: 1.5,
-    ease: 'power1.inOut',
-    onUpdate: () => {
-      if (counter) counter.textContent = Math.round(c.v).toString().padStart(2, '0');
-    },
-  });
-
-  // Révélation de la marque preloader.
-  tl.fromTo(
-    '[data-preloader-brand] .line-inner',
-    { yPercent: 110, y: 0 },
-    { yPercent: 0, duration: 0.9, stagger: 0.08 },
-    0.2,
-  );
-
-  // Rideau qui se lève → l'entrée du hero est déclenchée dans onComplete.
-  tl.to(pre, { yPercent: -100, duration: 1.0, ease: 'snap' }, '+=0.15');
+function startHero(lenis: Lenis): void {
+  lenis.start();
+  heroEntrance();
 }
 
 // Entrée du hero : « IRON GYM » révélé caractère par caractère (SplitText),
@@ -665,27 +627,25 @@ function runPreloader(lenis: Lenis): void {
 function heroEntrance(): void {
   const titleEls = gsap.utils.toArray<HTMLElement>('[data-hero-chars]');
   if (titleEls.length) {
-    const split = new SplitText(titleEls, { type: 'chars' });
+    // aria:'none' → SplitText n'ajoute aucun attribut ARIA (aria-label sur un
+    // <span> serait prohibé). L'accessibilité est portée par le h1 aria-label
+    // + les spans aria-hidden dans le markup.
+    const split = new SplitText(titleEls, { type: 'chars', aria: 'none' });
     gsap.set(titleEls, { visibility: 'visible' });
     gsap.from(split.chars, {
       yPercent: 120,
       opacity: 0,
-      duration: 1.1,
+      duration: 0.7,
       ease: 'swift',
-      stagger: { each: 0.045, from: 'start' },
+      stagger: { each: 0.03, from: 'start' },
     });
   }
   gsap.to('[data-hero-fade]', {
     opacity: 1,
     y: 0,
-    duration: 0.9,
-    stagger: 0.12,
+    duration: 0.7,
+    stagger: 0.1,
     ease: 'enter',
-    delay: 0.35,
+    delay: 0.15,
   });
-}
-
-function hidePreloaderInstant(): void {
-  const pre = document.querySelector<HTMLElement>('[data-preloader]');
-  pre?.remove();
 }

@@ -80,7 +80,9 @@
 
   /* — Rouge sang (accent principal) — */
   --color-blood: #c0392b;
-  --color-blood-hi: #e24a36;
+  /* Variante claire : assez vive pour passer le contraste AA en petit texte
+     sur fond #0A0A0A (~5.5:1). Sert au texte rouge & aux états hover. */
+  --color-blood-hi: #ed5340;
   --color-blood-deep: #7e1f14;
 
   /* — Acier brossé (secondaire « Iron ») — */
@@ -237,7 +239,7 @@
     font-size: clamp(0.68rem, 1.4vw, 0.8rem);
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: var(--color-blood);
+    color: var(--color-blood-hi);
   }
 
   /* Tagline signature « La fonte, depuis 1992. » — DM Sans très lourde. */
