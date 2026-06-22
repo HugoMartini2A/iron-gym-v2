@@ -1,0 +1,25 @@
+---
+import { preloader } from '../data/content';
+---
+<div
+  data-preloader
+  class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
+>
+  <div class="godrays pointer-events-none absolute inset-0 opacity-25"></div>
+
+  <div data-preloader-brand class="relative text-center">
+    <span class="line-mask">
+      <span
+        class="line-inner display text-gradient-blood text-[clamp(3rem,14vw,9rem)] leading-none"
+      >{preloader.brand}</span>
+    </span>
+    <span class="line-mask mt-2">
+      <span class="line-inner label-mono block !text-steel">{preloader.sub}</span>
+    </span>
+  </div>
+
+  <div class="absolute bottom-8 right-8 flex items-end gap-2 font-mono text-haze/50">
+    <span data-preloader-count class="num text-blood-hi text-5xl leading-none">00</span>
+    <span class="mb-1 text-xs tracking-widest">%</span>
+  </div>
+</div>

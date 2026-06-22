@@ -1,0 +1,115 @@
+---
+import { heritage } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+import Placeholder from '../ui/Placeholder.astro';
+
+// Année courante calculée au build (fallback no-JS / SEO). Le compteur client
+// (lib/motion.ts) recalcule à l'exécution via new Date().getFullYear() → exact
+// même sans rebuild. Aucune année n'est codée en dur.
+const FOUNDED = heritage.countFrom;
+const currentYear = new Date().getFullYear();
+const years = currentYear - FOUNDED;
+---
+<section
+  id="heritage"
+  data-heritage
+  data-parallax-scope
+  class="relative overflow-hidden py-[var(--spacing-section)]"
+>
+  <div class="godrays pointer-events-none absolute inset-0 opacity-25" aria-hidden="true"></div>
+
+  <div class="u-container relative">
+    <!-- En-tête -->
+    <div class="max-w-3xl">
+      <SectionLabel text={heritage.label} />
+      <p data-reveal class="wonky mt-6 font-sans text-xl text-blood">{heritage.kicker}</p>
+      <h2
+        data-reveal
+        class="heritage-title display mt-3 text-[clamp(2.25rem,6vw,4.75rem)] text-haze"
+      >
+        {heritage.titleLines.map((line) => <span class="block">{line}</span>)}
+      </h2>
+    </div>
+
+    <!-- Compteur count-up : 1992 → année courante. Déclenché UNE fois à l'entrée
+         dans le viewport (pas scrubbé) → va toujours jusqu'au bout, quelle que
+         soit la vitesse du scroll. Le grand chiffre = année courante (cohérent
+         avec « Depuis 1992 »). Voir setupYearCount() dans lib/motion.ts. -->
+    <div class="mt-16 flex flex-wrap items-end gap-x-5 gap-y-3 border-y border-blood/15 py-8">
+      <span class="label-mono mb-3">{heritage.sinceLabel}</span>
+      <span
+        data-count-year
+        data-count-from={FOUNDED}
+        data-count-trigger="[data-heritage]"
+        class="num text-gradient-blood text-[clamp(4rem,16vw,12rem)] leading-[0.8]"
+      >{currentYear}</span>
+      <span
+        data-year-caption
+        data-suffix={heritage.countCaptionSuffix}
+        class="mb-4 hidden max-w-xs font-sans text-lg leading-snug text-haze/60 sm:block"
+      >— {years} ans, {heritage.countCaptionSuffix}</span>
+    </div>
+
+    <!-- Les deux figures -->
+    <div class="mt-16 grid gap-12 md:grid-cols-2 md:gap-10">
+      {
+        heritage.figures.map((fig, i) => (
+          <article class:list={['flex flex-col gap-6', i === 1 ? 'md:mt-20' : '']}>
+            <div data-reveal class="overflow-hidden rounded-sm">
+              <Placeholder media={fig.portrait} />
+            </div>
+            <div>
+              <h3 data-reveal class="display text-3xl text-gradient-blood sm:text-4xl">{fig.name}</h3>
+              <p data-reveal class="label-mono mt-2 !text-bronze">{fig.role}</p>
+              <p data-reveal class="mt-4 leading-relaxed text-haze/75">{fig.blurb}</p>
+              <dl class="mt-6 flex flex-wrap gap-x-8 gap-y-4">
+                {fig.stats.map((s) => (
+                  <div data-reveal>
+                    <dt class="num text-2xl text-haze">{s.value}</dt>
+                    <dd class="label-mono mt-1 !text-haze/50">{s.label}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Le récit héros -->
+    <div class="mt-24 max-w-4xl">
+      <p data-reveal class="label-mono">{heritage.storyLabel}</p>
+      <div class="mt-8 space-y-12">
+        {
+          heritage.story.map((step) => (
+            <div data-story-step class="grid gap-4 sm:grid-cols-[8rem_1fr] sm:gap-10">
+              <span class="display text-3xl text-gradient-blood sm:text-right">{step.year}</span>
+              <p class="font-sans text-xl leading-relaxed text-haze/85 sm:text-2xl">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <blockquote
+      data-reveal
+      class="wonky mx-auto mt-24 max-w-4xl text-center font-sans text-[clamp(1.75rem,5vw,3.5rem)] font-normal leading-tight text-gradient-blood"
+    >
+      « {heritage.pullQuote} »
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  /* Titre héritage sur plusieurs lignes (« DEUX GÉNÉRATIONS. / UNE MÊME SCÈNE. »).
+     Le leading généreux vient du `.display` global (1.2) — on NE le re-resserre
+     PAS ici (sinon les accents É/È/Ê re-toucheraient la ligne du dessus). On
+     garde juste un tracking serré + un tampon vertical par ligne. */
+  .heritage-title {
+    letter-spacing: -0.005em;
+  }
+  .heritage-title span {
+    padding-block: 0.08em;
+  }
+</style>

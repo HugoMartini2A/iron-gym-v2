@@ -1,0 +1,27 @@
+{
+  "name": "iron-gym-v2",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Iron Gym Limoges — site vitrine. Astro 6 + Tailwind v4 + GSAP + Lenis. DA rouge sang / acier brossé.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^6.4.8",
+    "gsap": "^3.13.0",
+    "lenis": "^1.3.23",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^25.9.3",
+    "sharp": "^0.34.2",
+    "typescript": "^6.0.3"
+  }
+}

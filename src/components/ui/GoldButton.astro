@@ -1,0 +1,46 @@
+---
+/** CTA. variant: 'primary' (rempli rouge sang) | 'ghost' (contour acier). */
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'ghost';
+  magnetic?: boolean;
+  /** Pré-remplit le champ « Objet » du formulaire quand href pointe vers #contact. */
+  objet?: string;
+  class?: string;
+}
+const {
+  href,
+  label,
+  variant = 'primary',
+  magnetic = true,
+  objet,
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'group relative inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 text-sm font-mono font-semibold uppercase tracking-[0.18em] transition-colors duration-300 min-h-[44px]';
+const styles =
+  variant === 'primary'
+    ? 'bg-blood text-bone hover:bg-blood-hi'
+    : 'border border-steel/40 text-haze hover:border-steel hover:text-bone';
+---
+
+<a
+  href={href}
+  class={`${base} ${styles} ${className}`}
+  data-magnetic={magnetic ? '0.3' : undefined}
+  data-objet={objet}
+>
+  <span class="relative z-10">{label}</span>
+  <svg
+    class="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    aria-hidden="true"
+  >
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+</a>

@@ -1,0 +1,90 @@
+---
+import Legal from '../layout/Legal.astro';
+import { legalEntity, contact } from '../data/content';
+---
+<Legal
+  title="Politique de confidentialité"
+  description="Politique de confidentialité (RGPD) d'Iron Gym Limoges Sports : données collectées, finalités, durées et droits."
+  updated="Juin 2026"
+>
+  <p>
+    {legalEntity.name} attache une importance particulière à la protection de vos
+    données personnelles, dans le respect du Règlement Général sur la Protection
+    des Données (RGPD) et de la loi « Informatique et Libertés ».
+  </p>
+
+  <h2>Responsable du traitement</h2>
+  <p>
+    Le responsable du traitement est <strong>{legalEntity.name}</strong>,
+    {legalEntity.form}, {legalEntity.address}.
+    Contact : {legalEntity.phone} — <span class="todo">{legalEntity.email}</span>.
+  </p>
+
+  <h2>Données collectées</h2>
+  <p>
+    Via le formulaire de contact du site, nous collectons uniquement les données
+    que vous nous transmettez volontairement :
+  </p>
+  <ul>
+    <li>votre <strong>nom</strong> ;</li>
+    <li>votre <strong>adresse email</strong> ;</li>
+    <li>votre <strong>numéro de téléphone</strong> ;</li>
+    <li>l'<strong>objet</strong> de votre demande et le contenu de votre <strong>message</strong>.</li>
+  </ul>
+  <p>
+    Aucune donnée n'est collectée à votre insu. Le site n'utilise pas d'outil de
+    profilage publicitaire.
+  </p>
+
+  <h2>Finalités & base légale</h2>
+  <p>
+    Ces données sont utilisées dans l'unique but de <strong>traiter votre demande
+    et vous recontacter</strong>. La base légale est votre <strong>consentement</strong>
+    (case à cocher du formulaire) ainsi que l'intérêt légitime de la salle à
+    répondre à ses prospects et adhérents.
+  </p>
+
+  <h2>Durée de conservation</h2>
+  <p>
+    Les messages de prospection sont conservés <strong>jusqu'à 3 ans</strong> après
+    le dernier contact, puis supprimés. Les données contractuelles d'un adhérent
+    suivent les durées légales applicables.
+  </p>
+
+  <h2>Destinataires</h2>
+  <p>
+    Vos données sont destinées <strong>exclusivement</strong> à l'équipe d'Iron
+    Gym Limoges. Le formulaire est traité via le prestataire d'envoi
+    <strong> Web3Forms</strong> ; aucune donnée n'est revendue ni cédée à des tiers
+    à des fins commerciales.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    Le site ne dépose <strong>aucun cookie de suivi</strong> par défaut et ne
+    charge aucun tracker publicitaire. La <strong>carte Google Maps</strong> de la
+    page Accès n'est chargée que si vous cliquez explicitement sur « Charger la
+    carte Google » ; ce chargement dépose alors des cookies tiers déposés par
+    Google. Tant que vous ne cliquez pas, aucune requête n'est envoyée à Google.
+  </p>
+
+  <h2>Vos droits</h2>
+  <p>
+    Conformément au RGPD, vous disposez d'un droit d'<strong>accès</strong>, de
+    <strong> rectification</strong>, d'<strong>effacement</strong>, de
+    <strong> limitation</strong>, d'<strong>opposition</strong> et de
+    <strong> portabilité</strong> de vos données. Pour les exercer, contactez-nous
+    par téléphone au {contact.phone.display} ou par email à
+    <span class="todo"> {legalEntity.email}</span>.
+  </p>
+  <p>
+    Vous pouvez également introduire une réclamation auprès de la
+    <strong> CNIL</strong> (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).
+  </p>
+
+  <h2>Délégué à la protection des données</h2>
+  <p>
+    <span class="todo">[À COMPLÉTER]</span> — désigner un référent RGPD / DPO si
+    applicable, et indiquer son contact.
+  </p>
+</Legal>

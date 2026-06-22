@@ -1,0 +1,117 @@
+---
+import { pricing } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+import GoldButton from '../ui/GoldButton.astro';
+---
+<section id="tarifs" class="relative py-[var(--spacing-section)]">
+  <div class="godrays pointer-events-none absolute inset-0 opacity-20" aria-hidden="true"></div>
+  <div class="u-container relative">
+    <div class="max-w-3xl">
+      <SectionLabel text={pricing.label} />
+      <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+        {pricing.title}
+      </h2>
+      <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{pricing.intro}</p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        pricing.plans.map((plan) => (
+          <article
+            data-reveal
+            data-plan
+            class:list={[
+              'relative flex flex-col rounded-md border p-8 transition-transform duration-400 hover:-translate-y-1',
+              plan.featured
+                ? 'border-blood bg-gradient-to-b from-surface-2 to-surface shadow-[0_0_60px_-15px_var(--color-blood)]'
+                : 'border-blood/15 bg-surface/50',
+            ]}
+          >
+            {plan.featured && (
+              <span class="absolute -top-3 left-8 rounded-full bg-blood px-3 py-1 font-mono text-[0.65rem] uppercase tracking-widest text-ink">
+                Le plus choisi
+              </span>
+            )}
+            <h3 class="display text-2xl text-haze">{plan.name}</h3>
+            <div class="mt-5 flex items-baseline gap-1">
+              <span class="num text-gradient-blood text-5xl leading-none">{plan.price}</span>
+              {plan.unit && <span class="font-sans text-2xl text-haze/70">{plan.unit}</span>}
+              {plan.cadence && <span class="ml-2 label-mono !text-haze/45">/ {plan.cadence}</span>}
+            </div>
+            {plan.note && (
+              <span class="mt-2 inline-block font-mono text-[0.62rem] uppercase tracking-[0.14em] text-bronze/90">
+                {plan.note}
+              </span>
+            )}
+            <ul class="mt-8 flex-1 space-y-3">
+              {plan.features.map((f) => (
+                <li class="flex items-start gap-3 text-sm text-haze/75">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <div class="mt-8">
+              <GoldButton
+                href="#contact"
+                label={plan.cta}
+                variant={plan.featured ? 'primary' : 'ghost'}
+                objet={plan.objet}
+                class="w-full"
+              />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Formules complémentaires + frais d'adhésion (jamais en mensualité). -->
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+      <div data-reveal class="rounded-md border border-blood/15 bg-surface/40 p-8">
+        <p class="label-mono !text-bronze">Aussi disponible</p>
+        <ul data-extras class="mt-5 space-y-4">
+          {
+            pricing.extras.map((x) => (
+              <li class="flex items-baseline justify-between gap-4 border-b border-blood/10 pb-3">
+                <span class="text-haze/85">
+                  {x.name}
+                  <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/45">{x.note}</span>
+                </span>
+                <span class="shrink-0 whitespace-nowrap">
+                  <span class="num text-2xl text-gradient-blood">{x.value}</span>
+                  <span class="ml-1 label-mono !text-haze/45">{x.cadence}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <!-- Frais d'ADHÉSION : frais d'entrée unique, affiché distinct des mensualités. -->
+        <div data-membership class="mt-5 flex items-baseline justify-between gap-4 rounded-md border border-blood/30 bg-blood/5 px-5 py-4">
+          <span class="text-haze/90">
+            {pricing.membership.name}
+            <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/55">{pricing.membership.note}</span>
+          </span>
+          <span class="shrink-0 whitespace-nowrap num text-2xl text-gradient-blood">{pricing.membership.value}</span>
+        </div>
+      </div>
+
+      <div data-reveal class="rounded-md border border-blood/15 bg-surface/40 p-8">
+        <p class="label-mono !text-bronze">{pricing.includedTitle}</p>
+        <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+          {
+            pricing.included.map((f) => (
+              <li class="flex items-start gap-3 text-sm text-haze/80">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+                {f}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

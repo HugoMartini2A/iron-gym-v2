@@ -1,0 +1,52 @@
+---
+import { temple } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+import Placeholder from '../ui/Placeholder.astro';
+---
+<section
+  id="temple"
+  data-temple
+  class="relative py-[var(--spacing-section)] lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0"
+>
+  <header class="u-container">
+    <SectionLabel text={temple.label} />
+    <div class="mt-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h2 data-reveal class="display max-w-2xl text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+        {temple.title}
+      </h2>
+      <div class="md:max-w-md">
+        <p data-reveal class="text-haze/70">{temple.intro}</p>
+        <!-- Barre de progression discrète (remplie au scroll horizontal). -->
+        <div class="temple-progress mt-6 hidden lg:block" aria-hidden="true">
+          <span data-temple-progress class="temple-progress__fill"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div data-temple-track class="temple-track mt-8 lg:mt-10">
+    {
+      temple.spaces.map((space, i) => (
+        <article class="temple-panel w-[82vw] shrink-0 sm:w-[58vw] lg:w-[32vw]">
+          <div class="group relative overflow-hidden rounded-sm">
+            {/* lg : hauteur d'image plafonnée → label + titre + description tiennent
+                tous dans le viewport pendant le scroll horizontal (plus de légende
+                coupée sous le pli). object-cover recadre, le ratio est conservé. */}
+            <Placeholder
+              media={space.media}
+              class="transition-transform duration-700 group-hover:scale-[1.03] lg:max-h-[40vh]"
+            />
+            <span class="absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-widest text-blood backdrop-blur">
+              {space.tag}
+            </span>
+            <span class="absolute bottom-4 right-4 font-mono text-xs text-haze/40">
+              {String(i + 1).padStart(2, '0')} / {String(temple.spaces.length).padStart(2, '0')}
+            </span>
+          </div>
+          <h3 class="display mt-4 text-2xl text-haze sm:text-3xl">{space.title}</h3>
+          <p class="mt-2 max-w-sm leading-relaxed text-haze/65">{space.desc}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

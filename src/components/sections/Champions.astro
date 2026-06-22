@@ -1,0 +1,145 @@
+---
+import { champions } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+
+const { googleRating } = champions;
+// Note affichée à la française : 4.5 → « 4,5 ».
+const scoreFr = googleRating.score.toLocaleString('fr-FR', {
+  minimumFractionDigits: 1,
+});
+// Largeur du remplissage doré des étoiles (4,5/5 → 90%).
+const starFill = `${(googleRating.score / 5) * 100}%`;
+
+// Avatar = initiale dans un cercle doré. Accent déterministe par initiale,
+// puisé dans la charte blooden era (pas de photo — on ne les a pas).
+const ACCENTS = [
+  'var(--color-blood)',
+  'var(--color-blood-hi)',
+  'var(--color-rust)',
+  'var(--color-bronze)',
+  'var(--color-blood-deep)',
+];
+const accentFor = (name: string) =>
+  ACCENTS[name.charCodeAt(0) % ACCENTS.length];
+---
+<section id="avis" class="relative py-[var(--spacing-section)]" data-parallax-scope>
+  <div class="u-container">
+    <div class="max-w-3xl">
+      <SectionLabel text={champions.label} />
+      <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+        {champions.title}
+      </h2>
+      <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{champions.intro}</p>
+    </div>
+
+    <!-- Carrousel d'avis -->
+    <div class="mt-20" data-reviews>
+      <!-- Badge note globale Google -->
+      <div
+        data-reveal
+        data-google-rating
+        class="flex flex-col gap-6 rounded-md border border-blood/20 bg-surface/40 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
+      >
+        <div class="flex items-center gap-5">
+          <div class="flex flex-col">
+            <span
+              class="num text-gradient-blood text-[clamp(2.75rem,9vw,3.75rem)] leading-none"
+              data-rating-score
+            >
+              {scoreFr}<span class="text-haze/40 text-[0.45em] align-top"> / 5</span>
+            </span>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <span
+              class="star-rating text-xl"
+              role="img"
+              aria-label={`${scoreFr} sur 5`}
+            >
+              <span class="star-rating__bg" aria-hidden="true">★★★★★</span>
+              <span class="star-rating__fill" style={`width:${starFill}`} aria-hidden="true">★★★★★</span>
+            </span>
+            <span class="label-mono !text-haze/55" data-rating-count>
+              {googleRating.count} avis · {googleRating.label}
+            </span>
+            <span class="font-mono text-[0.7rem] text-haze/40">{googleRating.subtext}</span>
+          </div>
+        </div>
+        <a
+          href={googleRating.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-reviews-all
+          class="group inline-flex items-center justify-center gap-2 self-start rounded-full border border-blood/30 px-5 py-3 text-sm text-blood transition-colors hover:border-blood hover:bg-blood/10 focus-visible:border-blood sm:self-auto"
+        >
+          Voir tous les avis sur Google
+          <svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="mt-12 flex items-end justify-between gap-4">
+        <p data-reveal class="label-mono flex items-center gap-2">
+          <span class="text-blood" aria-hidden="true">★★★★★</span> {champions.reviewsLabel}
+        </p>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            data-review-prev
+            aria-label="Avis précédent"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-blood/30 text-blood transition-colors hover:border-blood hover:bg-blood/10 focus-visible:border-blood"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button
+            type="button"
+            data-review-next
+            aria-label="Avis suivant"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-blood/30 text-blood transition-colors hover:border-blood hover:bg-blood/10 focus-visible:border-blood"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="reviews-viewport mt-6 overflow-hidden">
+        <ul data-reviews-track class="reviews-track flex">
+          {
+            champions.reviews.map((r) => (
+              <li class="reviews-slide shrink-0 px-2">
+                <figure class="flex h-full flex-col rounded-md border border-blood/15 bg-surface/50 p-7">
+                  <div class="flex items-center gap-3">
+                    <span
+                      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-lg leading-none text-ink"
+                      style={`background:${accentFor(r.name)}`}
+                      aria-hidden="true"
+                    >
+                      {r.name.charAt(0).toUpperCase()}
+                    </span>
+                    <div class="flex min-w-0 flex-col">
+                      <span class="truncate font-mono text-sm text-haze/90">{r.name}</span>
+                      <span class="flex items-center gap-2">
+                        {r.localGuide && (
+                          <span class="rounded-sm border border-blood/30 px-1.5 py-px text-[0.6rem] uppercase tracking-[0.12em] text-blood/80">
+                            Local Guide
+                          </span>
+                        )}
+                        <span class="font-mono text-[0.68rem] text-haze/40">{r.age}</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mt-4 text-blood" aria-label={`${r.rating} sur 5`}>{'★'.repeat(r.rating)}</div>
+                  <blockquote class="mt-3 flex-1 font-sans text-lg leading-relaxed text-haze/85">
+                    « {r.text} »
+                  </blockquote>
+                  <figcaption class="mt-5 flex items-center gap-2 label-mono !text-bronze">
+                    <span class="h-1.5 w-1.5 rounded-full bg-blood" aria-hidden="true" />
+                    Avis Google
+                  </figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

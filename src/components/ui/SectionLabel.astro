@@ -1,0 +1,13 @@
+---
+/** Label mono militant fonte, eyebrow de section (« LE MANIFESTE »). */
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className = '' } = Astro.props;
+---
+
+<span class={`label-mono inline-flex items-center gap-3 ${className}`} data-reveal>
+  <span class="inline-block h-px w-8 bg-blood/60" aria-hidden="true"></span>
+  {text}
+</span>

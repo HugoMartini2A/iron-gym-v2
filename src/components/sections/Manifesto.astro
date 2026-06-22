@@ -1,0 +1,40 @@
+---
+import { manifesto } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+
+// Lignes mises en or pour le rythme éditorial (la « chute » du manifeste).
+const bloodLines = new Set([3, 4]);
+---
+<section
+  id="manifeste"
+  class="relative py-[var(--spacing-section)]"
+  data-parallax-scope
+>
+  <div class="u-container">
+    <SectionLabel text={manifesto.label} />
+
+    <div data-lines class="mt-10 max-w-5xl">
+      {
+        manifesto.lines.map((line, i) => (
+          <span class="line-mask">
+            <span
+              class:list={[
+                'line-inner block font-sans font-normal leading-[1.1] text-[clamp(2rem,7vw,5.5rem)]',
+                bloodLines.has(i) ? 'text-gradient-blood wonky' : 'text-haze',
+              ]}
+            >
+              {line}
+            </span>
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="mt-14 grid gap-8 border-t border-blood/15 pt-10 md:grid-cols-[1fr_auto] md:items-end">
+      <p data-reveal class="max-w-2xl text-lg leading-relaxed text-haze/75">
+        {manifesto.body}
+      </p>
+      <p data-reveal class="label-mono !text-bronze whitespace-nowrap">{manifesto.signature}</p>
+    </div>
+  </div>
+</section>

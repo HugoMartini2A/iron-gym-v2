@@ -1,0 +1,40 @@
+---
+import { referral } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+---
+<section id="parrainage" class="relative">
+  <div class="u-container relative">
+    <div
+      data-referral
+      data-reveal
+      class="relative overflow-hidden rounded-md border border-blood/30 bg-gradient-to-br from-surface-2 to-surface p-8 sm:p-12"
+    >
+      <div class="godrays pointer-events-none absolute inset-0 opacity-15" aria-hidden="true"></div>
+      <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12">
+        <div>
+          <SectionLabel text={referral.label} />
+          <h2 class="display mt-5 text-[clamp(1.9rem,4.5vw,3rem)] text-haze">{referral.title}</h2>
+          <p class="mt-4 max-w-xl text-lg text-haze/70">{referral.intro}</p>
+          <ul class="mt-6 space-y-3">
+            {
+              referral.steps.map((s) => (
+                <li class="flex items-start gap-3 text-haze/85">
+                  <svg class="mt-1 h-4 w-4 shrink-0 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                  {s}
+                </li>
+              ))
+            }
+          </ul>
+          <p class="mt-5 text-sm text-haze/55">{referral.footnote}</p>
+        </div>
+        <div class="shrink-0 rounded-md border border-blood/30 bg-ink/30 p-6 text-center lg:w-64">
+          <p class="display text-gradient-blood text-4xl leading-tight">1 ami<span class="text-haze/50"> = </span>1 mois</p>
+          <p class="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-bronze/90">offert</p>
+          <p class="mt-4 border-t border-blood/15 pt-4 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-haze/60">{referral.highlight}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

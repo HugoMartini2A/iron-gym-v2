@@ -1,0 +1,269 @@
+---
+import { contact, form } from '../../data/content';
+import SectionLabel from '../ui/SectionLabel.astro';
+
+// Format d'affichage des horaires d'accueil (source unique : contact.receptionHours).
+const fmtHM = (hm: string) => hm.replace(':', 'h');
+const fmtRanges = (ranges: [string, string][]) =>
+  ranges.length ? ranges.map(([a, b]) => `${fmtHM(a)} – ${fmtHM(b)}`).join(' · ') : 'Fermé';
+
+// Liens Google Maps STATIQUES (aucun iframe, aucun cookie tiers → RGPD clean).
+const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  contact.address.mapsQuery,
+)}`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  contact.address.mapsQuery,
+)}`;
+
+// Clé Web3Forms — access key PUBLIQUE, lue depuis l'env au BUILD (jamais en dur).
+// Vide → fallback mailto propre (géré dans motion.ts).
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+---
+<section id="contact" class="relative py-[var(--spacing-section)]">
+  <div class="godrays pointer-events-none absolute inset-0 opacity-15" aria-hidden="true"></div>
+  <div class="u-container relative">
+    <SectionLabel text={contact.label} />
+    <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+      {contact.title}
+    </h2>
+    <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{contact.intro}</p>
+
+    <div class="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <!-- ─────────── Formulaire ─────────── -->
+      <div data-reveal>
+        <h3 class="display text-2xl text-gradient-blood">{form.title}</h3>
+        <p class="mt-2 text-haze/65">{form.intro}</p>
+
+        <form
+          data-contact-form
+          data-web3forms-key={web3formsKey}
+          data-fallback-email={form.fallbackEmail}
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="mt-6 flex flex-col gap-5"
+          novalidate
+        >
+          <input type="hidden" name="access_key" value={web3formsKey} />
+          <input type="hidden" name="subject" value="Nouveau message — site Iron Gym Limoges" />
+          <input type="hidden" name="from_name" value="Site Iron Gym Limoges" />
+          <!-- Honeypot anti-spam (caché aux humains). -->
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div class="field">
+              <label for="cf-nom" class="field__label">Nom</label>
+              <input id="cf-nom" name="nom" type="text" autocomplete="name" required minlength="2" class="field__input" />
+              <p class="field__error" data-error-for="nom"></p>
+            </div>
+            <div class="field">
+              <label for="cf-tel" class="field__label">Téléphone</label>
+              <input id="cf-tel" name="telephone" type="tel" autocomplete="tel" inputmode="tel" required class="field__input" />
+              <p class="field__error" data-error-for="telephone"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cf-email" class="field__label">Email</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required class="field__input" />
+            <p class="field__error" data-error-for="email"></p>
+          </div>
+
+          <div class="field">
+            <label for="cf-objet" class="field__label">Objet</label>
+            <div class="field__select">
+              <select id="cf-objet" name="objet" required class="field__input">
+                {form.objets.map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+              <svg class="field__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <p class="field__error" data-error-for="objet"></p>
+          </div>
+
+          <div class="field">
+            <label for="cf-message" class="field__label">Message</label>
+            <textarea id="cf-message" name="message" rows="4" required minlength="10" class="field__input resize-y"></textarea>
+            <p class="field__error" data-error-for="message"></p>
+          </div>
+
+          <label class="flex cursor-pointer items-start gap-3 text-sm text-haze/65">
+            <input type="checkbox" name="consent" required class="mt-1 h-4 w-4 shrink-0 accent-blood" />
+            <span>
+              {form.consentLabel}{' '}
+              <a href="/confidentialite" class="text-blood underline-offset-2 hover:underline">Politique de confidentialité</a>.
+            </span>
+          </label>
+          <p class="field__error" data-error-for="consent"></p>
+
+          <button
+            type="submit"
+            data-magnetic="0.2"
+            class="inline-flex min-h-[44px] items-center justify-center gap-3 self-start rounded-full bg-blood px-7 py-4 font-mono font-semibold text-sm uppercase tracking-[0.18em] text-bone transition-colors hover:bg-blood-hi disabled:opacity-60"
+          >
+            <span data-submit-label>Envoyer</span>
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <!-- État de succès (révélé après envoi) -->
+        <div data-form-success hidden class="mt-6 rounded-md border border-blood/30 bg-surface/60 p-8 text-center">
+          <svg class="mx-auto h-12 w-12 text-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          <p class="display mt-4 text-2xl text-gradient-blood">{form.success.title}</p>
+          <p class="mt-2 text-haze/70">{form.success.body}</p>
+        </div>
+      </div>
+
+      <!-- ─────────── Accès + carte statique ─────────── -->
+      <div class="flex flex-col gap-8">
+        <div data-reveal class="grid gap-7 sm:grid-cols-2">
+          <div>
+            <p class="label-mono !text-bronze">Adresse</p>
+            <p class="mt-3 font-sans text-xl text-haze">{contact.address.street}</p>
+            <p class="font-sans text-xl text-haze/70">{contact.address.city}</p>
+          </div>
+          <div>
+            <p class="label-mono !text-bronze">Téléphone</p>
+            <a href={`tel:${contact.phone.tel}`} class="mt-3 inline-block display text-3xl text-gradient-blood hover:opacity-80">
+              {contact.phone.display}
+            </a>
+          </div>
+          <div class="sm:col-span-2">
+            <!-- Accès SALLE (badge) : horaire d'ouverture réel, 7j/7 6h–23h. -->
+            <div class="flex flex-wrap items-center justify-between gap-3 rounded-md border border-blood/30 bg-blood/5 px-4 py-3">
+              <span class="label-mono !text-bronze">Accès salle (badge)</span>
+              <span class="font-mono font-semibold text-sm text-blood">{contact.accessHoursLabel}</span>
+            </div>
+            <p class="label-mono mt-6 !text-bronze">
+              Horaires d'accueil <span class="normal-case tracking-normal text-haze/40">— staff & coaching</span>
+            </p>
+            <dl class="mt-3 space-y-2">
+              {contact.receptionHours.map((h) => (
+                <div class="flex items-baseline justify-between gap-6 border-b border-steel/10 pb-2">
+                  <dt class="text-haze/80">{h.day}</dt>
+                  <dd
+                    class:list={[
+                      'font-mono text-sm',
+                      h.ranges.length ? 'text-blood' : 'text-haze/40',
+                    ]}
+                  >
+                    {fmtRanges(h.ranges)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p class="mt-3 flex items-center gap-2 text-sm text-haze/70">
+              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-blood" aria-hidden="true"></span>
+              {contact.accessNote}
+            </p>
+            <p class="mt-1.5 flex items-center gap-2 text-sm text-haze/70">
+              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-blood" aria-hidden="true"></span>
+              Coaching : {contact.coaching.toLowerCase()}
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-5 sm:col-span-2">
+            {contact.socials.map((s) => (
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group inline-flex items-center gap-2 font-mono text-sm text-haze/70 transition-colors hover:text-blood"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-blood transition-transform group-hover:scale-150" />
+                {s.label} <span class="text-haze/40">{s.handle}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Carte STATIQUE cliquable : faux-plan CSS (aucun iframe / cookie tiers).
+             Clic → ouvre Google Maps dans un nouvel onglet. RGPD clean by design. -->
+        <a
+          data-reveal
+          href={mapSearchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ouvrir Iron Gym Limoges dans Google Maps"
+          class="static-map group relative block min-h-[18rem] flex-1 overflow-hidden rounded-md border border-steel/25"
+        >
+          <span class="static-map__grid absolute inset-0" aria-hidden="true"></span>
+          <span class="static-map__pin absolute left-1/2 top-1/2" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          </span>
+          <span class="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-ink via-ink/70 to-transparent p-5">
+            <span class="label-mono block">Iron Gym Limoges</span>
+            <span class="mt-1 block font-sans text-lg text-haze">{contact.address.street}</span>
+            <span class="block font-mono text-xs uppercase tracking-widest text-haze/60">{contact.address.city}</span>
+          </span>
+          <span class="absolute bottom-4 left-5 inline-flex items-center gap-2 rounded-full border border-steel/40 bg-ink/70 px-4 py-2 font-mono text-xs uppercase tracking-widest text-haze transition-colors group-hover:border-blood group-hover:text-blood">
+            Ouvrir dans Google Maps
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </a>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-blood px-5 py-2.5 font-mono font-semibold text-xs uppercase tracking-widest text-bone transition-colors hover:bg-blood-hi"
+          >
+            Itinéraire
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a
+            href={`tel:${contact.phone.tel}`}
+            class="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-steel/40 px-5 py-2.5 font-mono font-semibold text-xs uppercase tracking-widest text-haze transition-colors hover:border-blood hover:text-blood"
+          >
+            Appeler
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Faux-plan : trame de rues acier + halo, aucune ressource externe. */
+  .static-map {
+    background:
+      radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--color-blood) 12%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+  }
+  .static-map__grid {
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--color-steel) 12%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--color-steel) 12%, transparent) 1px, transparent 1px),
+      linear-gradient(60deg, transparent 49%, color-mix(in srgb, var(--color-steel) 18%, transparent) 49% 51%, transparent 51%);
+    background-size: 2.5rem 2.5rem, 2.5rem 2.5rem, 100% 100%;
+  }
+  .static-map__pin {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -2.4rem 0 0 -1.375rem;
+    color: var(--color-blood);
+    filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--color-blood) 50%, transparent));
+    animation: pin-bob 2.8s var(--ease-soft) infinite;
+  }
+  .static-map__pin::after {
+    content: '';
+    position: absolute;
+    bottom: -0.35rem;
+    left: 50%;
+    width: 0.85rem;
+    height: 0.3rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: color-mix(in srgb, #000 60%, transparent);
+    filter: blur(1px);
+  }
+  @keyframes pin-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .static-map__pin { animation: none; }
+  }
+</style>

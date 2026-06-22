@@ -1,0 +1,27 @@
+---
+/**
+ * Marquee plein écran couplé à la vélocité du scroll (cf. motion.ts setupMarquee).
+ * Contenu dupliqué 2× → boucle -50% sans couture. Décoratif (aria-hidden) :
+ * les mêmes services sont listés sémantiquement dans Programmes / Le Temple.
+ */
+const items = ['Musculation', 'Cross Training', 'Sauna', 'Coaching'];
+// Rendu deux fois pour la boucle continue.
+const loop = [...items, ...items];
+---
+<section
+  class="marquee"
+  data-marquee
+  data-marquee-speed="26"
+  aria-hidden="true"
+>
+  <div class="marquee__inner" data-marquee-inner>
+    {
+      loop.map((word, i) => (
+        <span class:list={['marquee__item', i % 2 === 1 && 'marquee__item--ghost']}>
+          {word}
+          <span class="marquee__sep">✦</span>
+        </span>
+      ))
+    }
+  </div>
+</section>

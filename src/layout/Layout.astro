@@ -1,0 +1,98 @@
+---
+import '../styles/global.css';
+
+import { site, contact } from '../data/content';
+import Preloader from '../components/Preloader.astro';
+import Grain from '../components/Grain.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = site.title, description = site.description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = site.ogImage.src ? new URL(site.ogImage.src, site.url).href : undefined;
+
+// JSON-LD — LocalBusiness (HealthClub) sur la home (SEO local).
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HealthClub',
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: contact.phone.tel,
+  foundingDate: '1992',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.address.street,
+    addressLocality: 'Limoges',
+    postalCode: '87000',
+    addressCountry: 'FR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: contact.address.lat,
+    longitude: contact.address.lng,
+  },
+  sameAs: contact.socials.map((s) => s.href),
+  founder: { '@type': 'Person', name: 'Bernard Hartman' },
+};
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content={site.themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Polices critiques préchargées (self-hosted woff2, RGPD). -->
+    <link rel="preload" href="/fonts/teko-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dmsans-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Anti-flash : cache les éléments à révéler UNIQUEMENT si le mouvement
+         est autorisé (sinon le contenu reste visible). Exécuté avant le rendu. -->
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js-motion');
+      }
+    </script>
+  </head>
+
+  <body class="vignette">
+    <Preloader />
+    <Grain />
+    <slot />
+
+    <script>
+      import { initSite } from '../lib/motion';
+      initSite();
+    </script>
+  </body>
+</html>

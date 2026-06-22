@@ -1,0 +1,65 @@
+---
+import Legal from '../layout/Legal.astro';
+import { legalEntity, contact, site } from '../data/content';
+---
+<Legal
+  title="Mentions légales"
+  description="Mentions légales d'Iron Gym Limoges Sports — éditeur, hébergeur et contact."
+  updated="Juin 2026"
+>
+  <h2>Éditeur du site</h2>
+  <p>
+    Le présent site est édité par <strong>{legalEntity.name}</strong>,
+    {legalEntity.form}.
+  </p>
+  <ul>
+    <li>Siège social : <strong>{legalEntity.address}</strong></li>
+    <li>SIREN : <strong>{legalEntity.siren}</strong></li>
+    <li>SIRET : <strong>{legalEntity.siret}</strong></li>
+    <li>Code APE / NAF : <strong>{legalEntity.ape}</strong></li>
+    <li>Téléphone : <strong>{legalEntity.phone}</strong></li>
+    <li>Email : <a href={`mailto:${legalEntity.email}`}>{legalEntity.email}</a></li>
+  </ul>
+  <p>
+    <em>Note : la marque « Iron Gym » est exploitée depuis 1992 (historique de
+    marque) ; cette date est distincte de la date de création de l'entité
+    juridique actuelle.</em>
+  </p>
+
+  <h2>Directeur de la publication</h2>
+  <p>
+    <strong>{legalEntity.director}</strong>
+    <span class="todo"> — à confirmer.</span>
+  </p>
+
+  <h2>Hébergement</h2>
+  <p>
+    Le site est hébergé par : <span class="todo">{legalEntity.host}</span>.
+  </p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    L'ensemble des éléments du site (textes, photographies, logo, charte
+    graphique, identité visuelle) est protégé par le droit de la propriété
+    intellectuelle. Les photographies de Bernard et Samuel Hartman, ainsi que les
+    visuels de la salle, restent la propriété de leurs auteurs respectifs et ne
+    peuvent être réutilisés sans autorisation.
+  </p>
+
+  <h2>Données personnelles & cookies</h2>
+  <p>
+    Le traitement des données collectées via le formulaire de contact et l'usage
+    des cookies sont détaillés dans la{' '}
+    <a href="/confidentialite">Politique de confidentialité</a>.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Pour toute question relative au site : {contact.address.street},{' '}
+    {contact.address.city} — {contact.phone.display}.
+  </p>
+
+  <p>
+    <em>{site.name} — maquette de présentation, non contractuelle.</em>
+  </p>
+</Legal>

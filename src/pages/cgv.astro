@@ -1,0 +1,85 @@
+---
+import Legal from '../layout/Legal.astro';
+import { legalEntity, contact } from '../data/content';
+---
+<Legal
+  title="Conditions d'abonnement"
+  description="Conditions générales d'abonnement et de vente d'Iron Gym Limoges Sports : offres, essai, accès, engagement et résiliation."
+  updated="Juin 2026"
+>
+  <p>
+    Les présentes conditions régissent les abonnements et services proposés par
+    <strong> {legalEntity.name}</strong>, {legalEntity.form}, {legalEntity.address}.
+    Elles sont complétées par le <strong>règlement intérieur</strong> affiché dans
+    la salle et remis à l'inscription.
+  </p>
+
+  <h2>1. Objet</h2>
+  <p>
+    Iron Gym Limoges met à disposition de ses adhérents un espace de musculation,
+    de cardio-training, des cours collectifs, une cage de street workout
+    extérieure et une cabine sauna, dans les conditions décrites ci-dessous.
+  </p>
+
+  <h2>2. Offres & tarifs</h2>
+  <p>
+    Iron Gym propose des abonnements <strong>mensuels sans engagement</strong> et
+    <strong>annuels</strong> (avec engagement 12 mois), ainsi que des tarifs
+    <strong>étudiant</strong> et <strong>duo</strong> sur justificatif, et des
+    <strong>cartes de séances</strong> (10 ou 20 séances). Une séance d'essai est
+    proposée. Les abonnements s'accompagnent de <strong>frais d'adhésion uniques</strong>,
+    perçus une seule fois à l'inscription et distincts des mensualités.
+  </p>
+  <p>
+    La grille tarifaire en vigueur est affichée sur ce site et en salle. Toute
+    évolution de tarif est communiquée aux adhérents dans les conditions prévues
+    au contrat et au règlement intérieur.
+  </p>
+
+  <h2>3. Séance d'essai</h2>
+  <p>
+    Une <strong>séance d'essai</strong> est proposée (offerte ou à 5 €, selon
+    l'offre en cours), sans engagement, afin de découvrir la salle et de réaliser
+    un premier bilan avec un coach.
+  </p>
+
+  <h2>4. Accès</h2>
+  <p>
+    L'accès se fait par <strong>badge nominatif et personnel</strong>, 7 jours sur
+    7 sur les créneaux d'ouverture. Le badge ne peut être prêté ; tout usage
+    frauduleux peut entraîner la résiliation de l'abonnement.
+  </p>
+
+  <h2>5. Durée & engagement</h2>
+  <p>
+    Selon la formule choisie, l'abonnement est conclu <strong>sans engagement</strong>
+    (mensuel) ou pour une <strong>durée déterminée</strong> (annuel). Les
+    conditions précises de chaque formule sont remises à la souscription.
+  </p>
+
+  <h2>6. Résiliation</h2>
+  <p>
+    Les abonnements sans engagement peuvent être résiliés à tout moment, moyennant
+    un <strong>préavis</strong> dont la durée est précisée au contrat
+    <span class="todo"> [À COMPLÉTER : durée de préavis]</span>. La résiliation
+    s'effectue par écrit (courrier ou email). Les abonnements à durée déterminée
+    se poursuivent jusqu'à leur terme, sauf cas légaux de résiliation anticipée
+    (déménagement, raison médicale justifiée, etc.).
+  </p>
+
+  <h2>7. Règlement intérieur & responsabilité</h2>
+  <p>
+    Chaque adhérent s'engage à respecter le règlement intérieur, les consignes de
+    sécurité et le matériel. La pratique sportive se fait sous la responsabilité
+    de l'adhérent ; un certificat médical de non contre-indication peut être
+    demandé. La salle décline toute responsabilité en cas de vol d'effets
+    personnels.
+  </p>
+
+  <h2>8. Droit applicable</h2>
+  <p>
+    Les présentes conditions sont soumises au <strong>droit français</strong>. En
+    cas de litige, une solution amiable sera recherchée avant toute action
+    judiciaire. Contact : {contact.phone.display}.
+  </p>
+</Legal>

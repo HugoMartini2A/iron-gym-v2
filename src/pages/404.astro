@@ -1,0 +1,19 @@
+---
+import Layout from '../layout/Layout.astro';
+import { site } from '../data/content';
+---
+<Layout title={`Page introuvable — ${site.name}`} description="Cette page n'existe pas. Retournez à l'accueil d'Iron Gym Limoges.">
+  <main class="relative flex min-h-[100svh] flex-col items-center justify-center px-6 text-center">
+    <div class="godrays pointer-events-none absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <p class="display text-gradient-blood text-[clamp(6rem,28vw,18rem)] leading-none">404</p>
+    <p class="mt-4 font-sans text-2xl text-haze/80">Cette série n'existe pas.</p>
+    <p class="mt-2 text-haze/60">La page que vous cherchez a quitté le plateau.</p>
+    <a
+      href="/"
+      data-magnetic="0.3"
+      class="mt-10 inline-flex min-h-[44px] items-center gap-3 rounded-full bg-blood px-7 py-4 font-mono text-sm uppercase tracking-[0.18em] text-ink transition-colors hover:bg-blood-hi"
+    >
+      Retour à l'accueil
+    </a>
+  </main>
+</Layout>

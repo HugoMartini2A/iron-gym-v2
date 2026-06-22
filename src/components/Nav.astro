@@ -1,0 +1,212 @@
+---
+import { nav, site, hero, contact } from '../data/content';
+// Sérialisé pour le statut live. Source = ACCÈS SALLE (contact.accessHours, 6h–23h
+// 7j/7), PAS l'accueil staff — le header reflète quand la salle est accessible.
+const hoursJson = JSON.stringify(contact.accessHours);
+---
+<header
+  data-nav
+  class="fixed inset-x-0 top-0 z-50"
+>
+  <nav
+    class="u-container grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4 lg:grid-cols-[1fr_auto_1fr]"
+    aria-label="Navigation principale"
+  >
+    <!-- Marque + statut live (gauche) -->
+    <div class="flex items-center gap-3 justify-self-start">
+      <a href="#top" class="display text-xl tracking-wide text-haze transition-colors hover:text-blood-hi">
+        {site.shortName}<span class="text-blood">.</span>
+      </a>
+      <span
+        data-open-status
+        data-hours={hoursJson}
+        hidden
+        aria-live="polite"
+        class="open-status"
+      >
+        <span class="open-status__dot" aria-hidden="true"></span>
+        <span class="open-status__word" data-open-word></span>
+        <span class="open-status__detail" data-open-detail></span>
+      </span>
+    </div>
+
+    <!-- Liens (centre, desktop) -->
+    <ul class="hidden items-center justify-center gap-7 lg:flex">
+      {
+        nav.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="font-mono text-xs uppercase tracking-[0.16em] text-haze/70 transition-colors hover:text-blood"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- CTA (droite) + burger mobile -->
+    <div class="flex items-center gap-2 justify-self-end">
+      <a
+        href={hero.cta.href}
+        data-objet={hero.cta.objet}
+        data-magnetic="0.25"
+        class="inline-flex min-h-[44px] items-center rounded-full bg-blood px-4 py-2.5 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-ink transition-colors hover:bg-blood-hi sm:px-5 sm:text-xs sm:tracking-[0.16em]"
+      >
+        Essai gratuit
+      </a>
+      <button
+        type="button"
+        data-nav-toggle
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="nav-burger inline-flex h-11 w-11 items-center justify-center rounded-full border border-blood/30 text-blood transition-colors hover:border-blood hover:bg-blood/10 lg:hidden"
+      >
+        <span class="nav-burger__box" aria-hidden="true">
+          <span class="nav-burger__line"></span>
+          <span class="nav-burger__line"></span>
+          <span class="nav-burger__line"></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Barre de progression de scroll + haltère dorée (remplie au scroll) -->
+  <div data-scroll-progress class="scroll-progress" aria-hidden="true">
+    <span data-scroll-progress-fill class="scroll-progress__fill"></span>
+    <span data-scroll-progress-thumb class="scroll-progress__thumb">
+      <!-- Haltère VERTICALE, façon barre olympique bien chargée (manche vertical,
+           disques empilés en haut et en bas). Même encombrement (16px). -->
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <rect x="11" y="2.5" width="2" height="19" rx="0.4" />
+        <rect x="9.2" y="3" width="5.6" height="1.7" rx="0.5" />
+        <rect x="7.6" y="5.2" width="8.8" height="1.9" rx="0.5" />
+        <rect x="6.2" y="7.6" width="11.6" height="2.1" rx="0.6" />
+        <rect x="6.2" y="14.3" width="11.6" height="2.1" rx="0.6" />
+        <rect x="7.6" y="16.9" width="8.8" height="1.9" rx="0.5" />
+        <rect x="9.2" y="19.3" width="5.6" height="1.7" rx="0.5" />
+      </svg>
+    </span>
+  </div>
+
+  <!-- Menu plein écran (mobile) -->
+  <div id="mobile-menu" data-nav-menu hidden class="mobile-menu lg:hidden" aria-label="Menu">
+    <ul class="mobile-menu__list u-container">
+      {
+        nav.map((link) => (
+          <li>
+            <a href={link.href} data-nav-link class="mobile-menu__link display text-haze transition-colors hover:text-blood">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="mt-4">
+        <a
+          href={hero.cta.href}
+          data-objet={hero.cta.objet}
+          data-nav-link
+          class="inline-flex min-h-[48px] items-center rounded-full bg-blood px-6 py-3 font-mono text-sm uppercase tracking-[0.14em] text-ink transition-colors hover:bg-blood-hi"
+        >
+          {hero.cta.label}
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  // Statut « Ouvert / Fermé » en direct, calculé à l'HEURE DE PARIS (pas le
+  // fuseau du visiteur), à partir de l'ACCÈS SALLE 6h–23h 7j/7 (sérialisé dans
+  // data-hours). Logique générique : gère plages multiples et jours fermés.
+  (() => {
+    const el = document.querySelector<HTMLElement>('[data-open-status]');
+    if (!el) return;
+    type Range = [string, string];
+    let hours: { day: string; ranges: Range[] }[] = [];
+    try {
+      hours = JSON.parse(el.dataset.hours || '[]');
+    } catch {
+      return;
+    }
+    if (!hours.length) return;
+
+    const wordEl = el.querySelector<HTMLElement>('[data-open-word]');
+    const detailEl = el.querySelector<HTMLElement>('[data-open-detail]');
+    // index 0 = lundi … 6 = dimanche (ordre du tableau accessHours).
+    const EN_TO_IDX: Record<string, number> = {
+      Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6,
+    };
+    const toMin = (hm: string) => {
+      const [h, m] = hm.split(':').map(Number);
+      return h * 60 + m;
+    };
+    const fmt = (hm: string) => hm.replace(':', 'h');
+
+    const update = () => {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Europe/Paris',
+        weekday: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).formatToParts(new Date());
+      const wd = parts.find((p) => p.type === 'weekday')?.value ?? 'Mon';
+      const hour = Number(parts.find((p) => p.type === 'hour')?.value ?? '0') % 24;
+      const minute = Number(parts.find((p) => p.type === 'minute')?.value ?? '0');
+      const dayIdx = EN_TO_IDX[wd] ?? 0;
+      const nowMin = hour * 60 + minute;
+
+      const today = hours[dayIdx]?.ranges ?? [];
+      let open = false;
+      let closeAt = '';
+      for (const [a, b] of today) {
+        if (nowMin >= toMin(a) && nowMin < toMin(b)) {
+          open = true;
+          closeAt = b;
+          break;
+        }
+      }
+
+      let detail = '';
+      if (open) {
+        detail = ` · ferme à ${fmt(closeAt)}`;
+      } else {
+        // Prochaine ouverture : créneau plus tard aujourd'hui, sinon jours suivants.
+        let nextOpen = '';
+        let when = '';
+        for (const [a] of today) {
+          if (toMin(a) > nowMin) {
+            nextOpen = a;
+            when = "aujourd'hui";
+            break;
+          }
+        }
+        if (!nextOpen) {
+          for (let i = 1; i <= 7; i++) {
+            const d = hours[(dayIdx + i) % 7];
+            if (d && d.ranges.length) {
+              nextOpen = d.ranges[0][0];
+              when = i === 1 ? 'demain' : d.day.toLowerCase();
+              break;
+            }
+          }
+        }
+        detail = nextOpen ? ` · ouvre ${when} à ${fmt(nextOpen)}` : '';
+      }
+
+      el.classList.toggle('is-open', open);
+      el.classList.toggle('is-closed', !open);
+      if (wordEl) wordEl.textContent = open ? 'Ouvert' : 'Fermé';
+      if (detailEl) detailEl.textContent = detail;
+      el.setAttribute('aria-label', `${open ? 'Ouvert' : 'Fermé'}${detail}`);
+      el.hidden = false;
+    };
+
+    update();
+    // Rafraîchi chaque minute (l'état change au passage des créneaux).
+    window.setInterval(update, 60_000);
+  })();
+</script>
