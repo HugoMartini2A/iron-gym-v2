@@ -581,10 +581,10 @@ html.js-motion [data-hero-chars] {
     animation: open-pulse 2.6s var(--ease-soft) infinite;
   }
   .open-status.is-closed {
-    color: color-mix(in srgb, var(--color-haze) 45%, transparent);
+    color: color-mix(in srgb, var(--color-haze) 62%, transparent);
   }
   .open-status__detail {
-    color: color-mix(in srgb, var(--color-haze) 45%, transparent);
+    color: color-mix(in srgb, var(--color-haze) 62%, transparent);
   }
   @media (max-width: 639px) {
     .open-status__detail {
