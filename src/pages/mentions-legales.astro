@@ -4,15 +4,15 @@ import { legalEntity, contact, site } from '../data/content';
 ---
 <Legal
   title="Mentions légales"
-  description="Mentions légales d'Iron Gym Limoges Sports — éditeur, hébergeur et contact."
+  description="Mentions légales d'Iron Gym Limoges — éditeur, hébergeur et contact."
   updated="Juin 2026"
 >
   <h2>Éditeur du site</h2>
   <p>
-    Le présent site est édité par <strong>{legalEntity.name}</strong>,
-    {legalEntity.form}.
+    Le présent site est édité par <strong>{legalEntity.name}</strong>.
   </p>
   <ul>
+    <li>Forme juridique : <strong>{legalEntity.form}</strong></li>
     <li>Siège social : <strong>{legalEntity.address}</strong></li>
     <li>SIREN : <strong>{legalEntity.siren}</strong></li>
     <li>SIRET : <strong>{legalEntity.siret}</strong></li>
@@ -29,7 +29,6 @@ import { legalEntity, contact, site } from '../data/content';
   <h2>Directeur de la publication</h2>
   <p>
     <strong>{legalEntity.director}</strong>
-    <span class="todo"> — à confirmer.</span>
   </p>
 
   <h2>Hébergement</h2>

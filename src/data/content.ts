@@ -706,21 +706,24 @@ export const footer = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Entité juridique (pages légales) — IRON GYM LIMOGES SPORTS
-// La marque « fondée en 1992 » est l'historique de marque ; distinct de la date
-// de création de l'entité juridique actuelle (association loi 1901).
+// Entité juridique (pages légales). AUCUNE entité n'est assertée tant que le
+// contrat n'est pas signé : éditeur / forme juridique / SIREN / SIRET / APE /
+// directeur de publication = placeholders « [À COMPLÉTER À LA SIGNATURE] ».
+// (L'ancienne société exploitante est dissoute/radiée depuis 2025 — ne JAMAIS
+// asserter d'entité juridique ni nommer un directeur de publication ici.)
+// Adresse / téléphone / email = coordonnées publiques réelles de l'établissement ;
+// host = hébergeur factuel.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const legalEntity = {
-  name: 'IRON GYM LIMOGES SPORTS',
-  form: 'Association déclarée (loi 1901)',
+  name: '[À COMPLÉTER À LA SIGNATURE]',
+  form: '[À COMPLÉTER À LA SIGNATURE]',
   address: '31 rue François Chénieux, 87000 Limoges',
-  siren: '932 034 580',
-  siret: '932 034 580 00013',
-  ape: '9313Z',
+  siren: '[À COMPLÉTER À LA SIGNATURE]',
+  siret: '[À COMPLÉTER À LA SIGNATURE]',
+  ape: '[À COMPLÉTER À LA SIGNATURE]',
   phone: '05 55 79 74 23',
-  // Champs à confirmer par la salle.
-  director: 'Bernard Hartman, président', // [À CONFIRMER]
+  director: '[À COMPLÉTER À LA SIGNATURE]',
   email: 'irongymlimogessports@hotmail.com',
   host: 'Vercel Inc., 340 S Lemon Ave, Walnut, CA 91789, USA - vercel.com',
 } as const;

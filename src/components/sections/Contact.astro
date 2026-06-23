@@ -23,9 +23,10 @@ const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(
   contact.address.mapsQuery,
 )}&z=16&hl=fr&output=embed`;
 
-// Clé Web3Forms — access key PUBLIQUE, lue depuis l'env au BUILD (jamais en dur).
-// Vide → fallback mailto propre (géré dans motion.ts).
-const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+// Clé Web3Forms — access key PUBLIQUE (conçue pour vivre côté HTML). Inlinée en
+// dur pour que le formulaire envoie réellement ; l'env `PUBLIC_WEB3FORMS_KEY`
+// reste prioritaire si elle est définie. Clé non vide → POST réel (cf. motion.ts).
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90-bed3-1022bf4c2d69';
 ---
 <section id="contact" class="relative py-[var(--spacing-section)]">
   <div class="godrays pointer-events-none absolute inset-0 opacity-15" aria-hidden="true"></div>

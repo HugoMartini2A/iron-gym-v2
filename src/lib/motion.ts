@@ -614,6 +614,12 @@ function setupContactForm(): void {
 
     const data = new FormData(formEl);
 
+    // Envoie l'intitulé LISIBLE de l'objet (« Réserver une séance d'essai ») au
+    // lieu de sa valeur machine (« essai ») — dans le POST Web3Forms ET le mailto.
+    const objetSel = formEl.querySelector<HTMLSelectElement>('[name="objet"]');
+    const objetLabel = objetSel?.options[objetSel.selectedIndex]?.text;
+    if (objetLabel) data.set('objet', objetLabel);
+
     // Sans clé Web3Forms : fallback mailto propre.
     if (!key) {
       const body = [
