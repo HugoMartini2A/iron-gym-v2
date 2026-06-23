@@ -82,7 +82,7 @@ export const hero = {
   titleTop: 'IRON',
   titleBottom: 'GYM',
   baseline: 'La fonte, depuis 1992.',
-  sub: "Une gym rétro, old school, et une affaire de famille — ouverte à tous, du débutant au compétiteur.",
+  sub: "Une salle rétro, old school, tenue en famille. Ici, le grand débutant et le compétiteur poussent la même fonte.",
   cta: {
     label: "Réserver ma séance d'essai",
     href: '#contact',
@@ -198,7 +198,7 @@ export const heritage = {
 export const temple = {
   label: 'Le temple',
   title: 'Fonte moderne, âme old school.',
-  intro: "Le plateau a été refait entièrement. Matériel haut de gamme, vieille pierre, lumière chaude — et de la place pour respirer entre deux séries.",
+  intro: "On a tout refait. Matériel haut de gamme, pierre apparente, lumière chaude, et de l'espace pour souffler entre deux séries.",
   spaces: [
     {
       tag: 'Plateau musculation',
@@ -289,7 +289,7 @@ export const temple = {
 export const programs = {
   label: 'Programmes',
   title: 'Du premier jour au plateau de compétition.',
-  intro: "Débutant ou confirmé, homme ou femme, remise en forme ou prépa scène : ici, on vous encadre vraiment — pas un badge et bon courage. Le coaching individuel est gratuit, et taillé pour vous.",
+  intro: "Débutant ou confirmé, remise en forme ou prépa scène : ici, on vous suit pour de vrai, pas un badge et bon courage. Le coaching individuel est gratuit, et taillé pour vous.",
   cards: [
     {
       n: '01',
@@ -334,7 +334,7 @@ export interface ClassSlot {
 export const schedule = {
   label: 'Le planning',
   title: 'Votre semaine, déjà tracée.',
-  intro: "Mêmes créneaux chaque semaine, matin, midi et soir. Pas de réservation pour la plupart : vous posez votre sac et vous vous entraînez.",
+  intro: "Les mêmes créneaux chaque semaine, matin, midi et soir. La plupart sans réservation : vous posez votre sac, et c'est parti.",
   note: 'Planning indicatif — créneaux types, confirmés à l’accueil et sur Instagram.',
   // index 0 = lundi … 5 = samedi (dimanche : libre accès, pas de cours).
   days: [
@@ -400,7 +400,7 @@ export interface Review {
 export const champions = {
   label: 'Les avis',
   title: 'La preuve se soulève.',
-  intro: "Plus de 30 ans d'existence, une salle qui ne désemplit pas, et des avis Google qui parlent d'eux-mêmes. Le plus revient sans cesse : l'ambiance et l'accueil.",
+  intro: "Plus de 30 ans au compteur, une salle qui ne désemplit pas, et des avis Google sans filtre. Ce qui revient à chaque fois : l'ambiance et l'accueil.",
   reviewsLabel: 'Ce qu\'on en dit',
   // Note globale Google — snapshot PUBLIC de la fiche daté du 20/06/2026.
   // À rafraîchir périodiquement (ou brancher la Places API). Voir README.
@@ -481,8 +481,8 @@ export const champions = {
 
 export const pricing = {
   label: 'Rejoindre',
-  title: 'Entre dans la famille.',
-  intro: "Libre accès 7j/7 de 6h à 23h sur badge, coaching individuel et sauna compris. Pas de frais cachés : des tarifs clairs et une séance d'essai pour te décider.",
+  title: 'Entrez dans la famille.',
+  intro: "Accès libre 7j/7 de 6h à 23h sur badge, coaching individuel et sauna compris. Aucun frais caché : des tarifs clairs, et une séance d'essai pour vous faire votre idée.",
   plans: [
     {
       name: 'Essai',
@@ -610,14 +610,13 @@ export const referral = {
 export const contact = {
   label: 'Accès & contact',
   title: 'Poussez la porte.',
-  intro: "Un message, un appel, ou vous passez directement. On répond vite.",
+  intro: "Un message, un appel, ou vous poussez la porte directement. On vous répond vite.",
   address: {
     street: '31 rue François Chénieux',
     city: '87000 Limoges',
-    // Coordonnées approximatives du centre de Limoges pour la carte statique.
-    // À affiner avec la position exacte de la salle avant le pitch.
-    lat: 45.8336,
-    lng: 1.2611,
+    // Coordonnées GPS réelles (géocodées) du 31 rue François Chénieux.
+    lat: 45.8368766,
+    lng: 1.2561097,
     // Requête utilisée pour l'embed Google Maps ET le lien d'itinéraire.
     mapsQuery: 'Iron Gym 31 rue François Chénieux 87000 Limoges',
   },

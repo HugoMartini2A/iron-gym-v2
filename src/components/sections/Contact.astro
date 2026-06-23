@@ -1,6 +1,8 @@
 ---
 import { contact, form } from '../../data/content';
 import SectionLabel from '../ui/SectionLabel.astro';
+import { Image } from 'astro:assets';
+import mapImg from '../../assets/images/map-iron-gym.webp';
 
 // Format d'affichage des horaires d'accueil (source unique : contact.receptionHours).
 const fmtHM = (hm: string) => hm.replace(':', 'h');
@@ -185,9 +187,18 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ouvrir Iron Gym Limoges dans Google Maps"
-          class="static-map group relative block min-h-[18rem] flex-1 overflow-hidden rounded-md border border-steel/25"
+          class="static-map group relative block aspect-[11/6] w-full overflow-hidden rounded-md border border-steel/25"
         >
-          <span class="static-map__grid absolute inset-0" aria-hidden="true"></span>
+          <Image
+            src={mapImg}
+            alt="Plan de localisation — Iron Gym, 31 rue François Chénieux, 87000 Limoges"
+            class="static-map__img absolute inset-0 h-full w-full object-cover"
+            widths={[550, 1100]}
+            sizes="(min-width:1024px) 40vw, 92vw"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="static-map__tint absolute inset-0" aria-hidden="true"></span>
           <span class="static-map__pin absolute left-1/2 top-1/2" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
           </span>
@@ -226,18 +237,22 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 </section>
 
 <style>
-  /* Faux-plan : trame de rues acier + halo, aucune ressource externe. */
-  .static-map {
-    background:
-      radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--color-blood) 12%, transparent), transparent 60%),
-      linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+  /* Carte réelle (tuiles OpenStreetMap auto-hébergées) — assombrie pour coller
+     à la DA brutale ; teinte rouge + vignette. Aucun cookie, aucune requête tierce. */
+  .static-map { background: var(--color-surface); }
+  .static-map__img {
+    filter: grayscale(0.55) brightness(0.5) contrast(1.08);
+    transition: filter 0.5s var(--ease-soft), transform 0.7s var(--ease-soft);
   }
-  .static-map__grid {
-    background-image:
-      linear-gradient(color-mix(in srgb, var(--color-steel) 12%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--color-steel) 12%, transparent) 1px, transparent 1px),
-      linear-gradient(60deg, transparent 49%, color-mix(in srgb, var(--color-steel) 18%, transparent) 49% 51%, transparent 51%);
-    background-size: 2.5rem 2.5rem, 2.5rem 2.5rem, 100% 100%;
+  .static-map:hover .static-map__img {
+    filter: grayscale(0.3) brightness(0.64) contrast(1.05);
+    transform: scale(1.04);
+  }
+  .static-map__tint {
+    pointer-events: none;
+    background:
+      radial-gradient(62% 62% at 50% 45%, transparent 28%, color-mix(in srgb, var(--color-ink) 60%, transparent) 100%),
+      linear-gradient(160deg, color-mix(in srgb, var(--color-blood) 22%, transparent), transparent 55%);
   }
   .static-map__pin {
     width: 2.75rem;

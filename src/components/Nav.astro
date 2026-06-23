@@ -4,25 +4,31 @@ import { nav, site, hero, contact } from '../data/content';
 // 7j/7), PAS l'accueil staff — le header reflète quand la salle est accessible.
 const hoursJson = JSON.stringify(contact.accessHours);
 ---
-<header
-  data-nav
-  class="fixed inset-x-0 top-0 z-50"
->
+<header data-nav class="fixed inset-x-0 top-0 z-50">
   <nav
-    class="u-container grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4 lg:grid-cols-[1fr_auto_1fr]"
+    class="u-container flex items-center justify-between gap-3 py-3.5"
     aria-label="Navigation principale"
   >
-    <!-- Marque + statut live (gauche) -->
-    <div class="flex items-center gap-3 justify-self-start">
-      <a href="#top" class="display text-xl tracking-wide text-haze transition-colors hover:text-blood-hi">
-        {site.shortName}<span class="text-blood-hi">.</span>
+    <!-- Marque (logo + wordmark) + statut live -->
+    <div class="flex min-w-0 items-center gap-2.5">
+      <a href="#top" class="flex items-center gap-2.5" aria-label={`${site.name} — accueil`}>
+        <img
+          src="/logo-iron-gym.webp"
+          alt={site.name}
+          width="40"
+          height="40"
+          class="h-9 w-9 rounded-md object-cover ring-1 ring-blood/40 sm:h-10 sm:w-10"
+        />
+        <span class="display hidden text-lg tracking-wide text-haze transition-colors hover:text-blood-hi sm:inline sm:text-xl">
+          Iron Gym<span class="text-blood-hi">.</span>
+        </span>
       </a>
       <span
         data-open-status
         data-hours={hoursJson}
         hidden
         aria-live="polite"
-        class="open-status"
+        class="open-status ml-1 hidden sm:inline-flex"
       >
         <span class="open-status__dot" aria-hidden="true"></span>
         <span class="open-status__word" data-open-word></span>
@@ -31,7 +37,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
     </div>
 
     <!-- Liens (centre, desktop) -->
-    <ul class="hidden items-center justify-center gap-7 lg:flex">
+    <ul class="hidden items-center gap-7 lg:flex">
       {
         nav.map((link) => (
           <li>
@@ -46,13 +52,13 @@ const hoursJson = JSON.stringify(contact.accessHours);
       }
     </ul>
 
-    <!-- CTA (droite) + burger mobile -->
-    <div class="flex items-center gap-2 justify-self-end">
+    <!-- CTA (desktop) + burger (mobile) -->
+    <div class="flex items-center gap-2">
       <a
         href={hero.cta.href}
         data-objet={hero.cta.objet}
         data-magnetic="0.25"
-        class="inline-flex min-h-[44px] items-center rounded-full bg-blood px-4 py-2.5 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-bone transition-colors hover:bg-blood-hi sm:px-5 sm:text-xs sm:tracking-[0.16em]"
+        class="hidden min-h-[44px] items-center rounded-full bg-blood px-5 py-2.5 font-mono text-xs uppercase tracking-[0.16em] text-bone transition-colors hover:bg-blood-hi lg:inline-flex"
       >
         Essai gratuit
       </a>
@@ -73,12 +79,10 @@ const hoursJson = JSON.stringify(contact.accessHours);
     </div>
   </nav>
 
-  <!-- Barre de progression de scroll + haltère dorée (remplie au scroll) -->
+  <!-- Barre de progression de scroll + haltère (remplie au scroll) — tous viewports -->
   <div data-scroll-progress class="scroll-progress" aria-hidden="true">
     <span data-scroll-progress-fill class="scroll-progress__fill"></span>
     <span data-scroll-progress-thumb class="scroll-progress__thumb">
-      <!-- Haltère VERTICALE, façon barre olympique bien chargée (manche vertical,
-           disques empilés en haut et en bas). Même encombrement (16px). -->
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <rect x="11" y="2.5" width="2" height="19" rx="0.4" />
         <rect x="9.2" y="3" width="5.6" height="1.7" rx="0.5" />
@@ -93,34 +97,39 @@ const hoursJson = JSON.stringify(contact.accessHours);
 
   <!-- Menu plein écran (mobile) -->
   <div id="mobile-menu" data-nav-menu hidden class="mobile-menu lg:hidden" aria-label="Menu">
-    <ul class="mobile-menu__list u-container">
-      {
-        nav.map((link) => (
-          <li>
-            <a href={link.href} data-nav-link class="mobile-menu__link display text-haze transition-colors hover:text-blood-hi">
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-      <li class="mt-4">
-        <a
-          href={hero.cta.href}
-          data-objet={hero.cta.objet}
-          data-nav-link
-          class="inline-flex min-h-[48px] items-center rounded-full bg-blood px-6 py-3 font-mono text-sm uppercase tracking-[0.14em] text-bone transition-colors hover:bg-blood-hi"
-        >
-          {hero.cta.label}
-        </a>
-      </li>
-    </ul>
+    <div class="u-container">
+      <div class="mb-8 flex items-center gap-3">
+        <img src="/logo-iron-gym.webp" alt="" width="44" height="44" class="h-11 w-11 rounded-md object-cover ring-1 ring-blood/40" />
+        <span class="display text-xl tracking-wide text-haze">Iron Gym<span class="text-blood-hi">.</span></span>
+      </div>
+      <ul class="mobile-menu__list">
+        {
+          nav.map((link) => (
+            <li>
+              <a href={link.href} data-nav-link class="mobile-menu__link display text-haze transition-colors hover:text-blood-hi">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="mt-4">
+          <a
+            href={hero.cta.href}
+            data-objet={hero.cta.objet}
+            data-nav-link
+            class="inline-flex min-h-[48px] items-center rounded-full bg-blood px-6 py-3 font-mono text-sm uppercase tracking-[0.14em] text-bone transition-colors hover:bg-blood-hi"
+          >
+            {hero.cta.label}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </header>
 
 <script>
-  // Statut « Ouvert / Fermé » en direct, calculé à l'HEURE DE PARIS (pas le
-  // fuseau du visiteur), à partir de l'ACCÈS SALLE 6h–23h 7j/7 (sérialisé dans
-  // data-hours). Logique générique : gère plages multiples et jours fermés.
+  // Statut « Ouvert / Fermé » en direct, calculé à l'HEURE DE PARIS, à partir de
+  // l'ACCÈS SALLE 6h–23h 7j/7 (sérialisé dans data-hours).
   (() => {
     const el = document.querySelector<HTMLElement>('[data-open-status]');
     if (!el) return;
@@ -135,7 +144,6 @@ const hoursJson = JSON.stringify(contact.accessHours);
 
     const wordEl = el.querySelector<HTMLElement>('[data-open-word]');
     const detailEl = el.querySelector<HTMLElement>('[data-open-detail]');
-    // index 0 = lundi … 6 = dimanche (ordre du tableau accessHours).
     const EN_TO_IDX: Record<string, number> = {
       Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6,
     };
@@ -174,7 +182,6 @@ const hoursJson = JSON.stringify(contact.accessHours);
       if (open) {
         detail = ` · ferme à ${fmt(closeAt)}`;
       } else {
-        // Prochaine ouverture : créneau plus tard aujourd'hui, sinon jours suivants.
         let nextOpen = '';
         let when = '';
         for (const [a] of today) {
@@ -206,7 +213,6 @@ const hoursJson = JSON.stringify(contact.accessHours);
     };
 
     update();
-    // Rafraîchi chaque minute (l'état change au passage des créneaux).
     window.setInterval(update, 60_000);
   })();
 </script>

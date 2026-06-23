@@ -119,8 +119,8 @@
   --ease-snap: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* — Rythme — */
-  --spacing-section: clamp(5rem, 12vh, 10rem);
+  /* — Rythme — (resserré : moins de vides noirs entre blocs) */
+  --spacing-section: clamp(3.25rem, 8vh, 7rem);
 }
 
 /* ════════════════════════════════════════════════════════════════════════
