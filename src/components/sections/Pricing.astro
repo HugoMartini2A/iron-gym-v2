@@ -14,14 +14,26 @@ import GoldButton from '../ui/GoldButton.astro';
       <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{pricing.intro}</p>
     </div>
 
-    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Indice de swipe (mobile + tablette uniquement), cohérent avec le planning -->
+    <p class="mt-10 flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-haze/60 lg:hidden">
+      <svg class="h-3.5 w-3.5 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 7l-4 5 4 5M16 7l4 5-4 5"/></svg>
+      Glissez pour voir les formules
+    </p>
+
+    <!-- Formules : carrousel horizontal (snap) sous 1024px, grille 4 col desktop -->
+    <div
+      data-pricing-track
+      tabindex="0"
+      aria-label="Formules d'abonnement — défilement horizontal sur mobile"
+      class="pricing-track mt-3 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:pb-0"
+    >
       {
         pricing.plans.map((plan) => (
           <article
             data-reveal
             data-plan
             class:list={[
-              'relative flex flex-col rounded-md border p-8 transition-transform duration-400 hover:-translate-y-1',
+              'relative flex w-[86vw] max-w-sm shrink-0 snap-center flex-col rounded-md border p-8 transition-transform duration-400 hover:-translate-y-1 lg:w-auto lg:max-w-none',
               plan.featured
                 ? 'border-blood bg-gradient-to-b from-surface-2 to-surface shadow-[0_0_60px_-15px_var(--color-blood)]'
                 : 'border-blood/15 bg-surface/50',
@@ -65,11 +77,44 @@ import GoldButton from '../ui/GoldButton.astro';
           </article>
         ))
       }
+
+      <!-- 5e carte du carrousel mobile : "Aussi disponible" (rendue ici sous 1024px
+           seulement ; sa version desktop vit dans la grille extras ci-dessous, qui
+           reste inchangée). Contenu identique, piloté par les mêmes données. -->
+      <div data-reveal class="flex w-[86vw] max-w-sm shrink-0 snap-center flex-col rounded-md border border-blood/15 bg-surface/40 p-8 lg:hidden">
+        <p class="label-mono !text-bronze">Aussi disponible</p>
+        <ul class="mt-5 space-y-4">
+          {
+            pricing.extras.map((x) => (
+              <li class="flex items-start justify-between gap-4 border-b border-blood/10 pb-3">
+                <span class="min-w-0 text-haze/85">
+                  {x.name}
+                  <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/60">{x.note}</span>
+                </span>
+                <span class="shrink-0 text-right leading-tight">
+                  <span class="num text-2xl text-gradient-blood">{x.value}</span>
+                  <span class="mt-0.5 block label-mono !text-haze/60">{x.cadence}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-5 flex items-baseline justify-between gap-4 rounded-md border border-blood/30 bg-blood/5 px-5 py-4">
+          <span class="text-haze/90">
+            {pricing.membership.name}
+            <span class="mt-0.5 block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-haze/55">{pricing.membership.note}</span>
+          </span>
+          <span class="shrink-0 whitespace-nowrap num text-2xl text-gradient-blood">{pricing.membership.value}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Formules complémentaires + frais d'adhésion (jamais en mensualité). -->
+    <!-- Desktop : "Aussi disponible" (gauche) + "Compris" (droite) — INCHANGÉ.
+         Mobile : "Aussi disponible" masquée (déjà dans le carrousel ci-dessus) →
+         seule "Compris" s'affiche, pleine largeur, hors carrousel. -->
     <div class="mt-8 grid gap-6 lg:grid-cols-2">
-      <div data-reveal class="rounded-md border border-blood/15 bg-surface/40 p-8">
+      <div data-reveal class="hidden rounded-md border border-blood/15 bg-surface/40 p-8 lg:block">
         <p class="label-mono !text-bronze">Aussi disponible</p>
         <ul data-extras class="mt-5 space-y-4">
           {

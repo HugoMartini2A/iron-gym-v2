@@ -499,6 +499,13 @@ html.js-motion [data-hero-chars] {
   }
 
   /* ── Burger (mobile) ── */
+  /* L'icône 3 traits reste identique et TOUJOURS au-dessus du menu plein écran
+     (z-index > overlay) : un re-clic sur les 3 traits referme. Pas de morph en
+     croix — l'icône ne disparaît jamais à l'ouverture. */
+  .nav-burger {
+    position: relative;
+    z-index: 60; /* > .mobile-menu (z-index: 40) → reste cliquable menu ouvert */
+  }
   .nav-burger__box {
     position: relative;
     display: block;
@@ -517,13 +524,6 @@ html.js-motion [data-hero-chars] {
   .nav-burger__line:nth-child(1) { top: 0; }
   .nav-burger__line:nth-child(2) { top: 5px; }
   .nav-burger__line:nth-child(3) { top: 10px; }
-  .nav-burger[aria-expanded='true'] .nav-burger__line:nth-child(1) {
-    transform: translateY(5px) rotate(45deg);
-  }
-  .nav-burger[aria-expanded='true'] .nav-burger__line:nth-child(2) { opacity: 0; }
-  .nav-burger[aria-expanded='true'] .nav-burger__line:nth-child(3) {
-    transform: translateY(-5px) rotate(-45deg);
-  }
 
   /* ── Menu plein écran (mobile) ── */
   /* Caché par défaut : la classe `.mobile-menu` pose `display:grid`, qui
@@ -776,13 +776,15 @@ html.js-motion [data-hero-chars] {
     border-color: var(--color-rust);
   }
 
-  /* ── Planning : swipe horizontal mobile ── */
+  /* ── Planning + Tarifs : swipe horizontal mobile (scrollbar masquée) ── */
   @media (max-width: 1023px) {
-    .schedule-track {
+    .schedule-track,
+    .pricing-track {
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
-    .schedule-track::-webkit-scrollbar {
+    .schedule-track::-webkit-scrollbar,
+    .pricing-track::-webkit-scrollbar {
       display: none;
     }
   }
