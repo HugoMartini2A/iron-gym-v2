@@ -56,7 +56,9 @@ const years = currentYear - FOUNDED;
         heritage.figures.map((fig, i) => (
           <article class:list={['flex flex-col gap-6', i === 1 ? 'md:mt-20' : '']}>
             <div data-reveal class="overflow-hidden rounded-sm">
-              <Placeholder media={fig.portrait} />
+              <!-- Desktop : portrait capé à 70vh (ratio 4/5 conservé → largeur
+                   56vh), centré, object-cover. Mobile inchangé. -->
+              <Placeholder media={fig.portrait} class="lg:mx-auto lg:h-[70vh] lg:w-[56vh] lg:rounded-sm" />
             </div>
             <div>
               <h3 data-reveal class="display text-3xl text-gradient-blood sm:text-4xl">{fig.name}</h3>

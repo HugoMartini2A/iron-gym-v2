@@ -6,7 +6,7 @@
 - **Ville** : Limoges (87000) — 31 Rue François Chénieux, centre-ville
 
 ## Brief visuel
-Iron Gym est LA salle de référence du centre-ville de Limoges : plateau musculation entièrement réaménagé avec 20+ machines STAR TRAC haut de gamme uniques à Limoges, grande salle fitness (100+ cours/mois), sauna, aquabike individuel et coaching 100% personnalisé gratuit. On vise une émotion de **force brute maîtrisée** : l'intensité et l'acier d'une vraie salle hardcore, tempérés par la chaleur d'une communauté qui accueille du débutant au confirmé.
+Iron Gym est LA salle de référence du centre-ville de Limoges : plateau musculation entièrement réaménagé avec 20+ machines haut de gamme uniques à Limoges, grande salle fitness (100+ cours/mois), sauna, aquabike individuel et coaching 100% personnalisé gratuit. On vise une émotion de **force brute maîtrisée** : l'intensité et l'acier d'une vraie salle hardcore, tempérés par la chaleur d'une communauté qui accueille du débutant au confirmé.
 
 ## Référence visuelle
 Locomotive (https://locomotive.ca) — typographie condensée surdimensionnée, fond sombre éditorial, smooth scroll et marquee : exactement le registre type-driven brutal qui traduit la puissance d'Iron Gym sans tomber dans le template fitness générique.

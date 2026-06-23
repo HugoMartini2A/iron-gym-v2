@@ -46,7 +46,7 @@ export const site = {
   title: 'Iron Gym Limoges — Musculation & coaching depuis 1992',
   // <meta description> : 150–160 caractères.
   description:
-    "Salle de musculation spécialisée au cœur de Limoges depuis plus de 30 ans. Matériel Star Trac, cours collectifs, sauna et coaching personnalisé inclus. Essai offert.",
+    "Salle de musculation spécialisée au cœur de Limoges depuis plus de 30 ans. Plateau entièrement rénové, cours collectifs, sauna et coaching personnalisé inclus. Essai offert.",
   url: 'https://iron-gym-v2.vercel.app',
   locale: 'fr_FR',
   lang: 'fr',
@@ -136,7 +136,7 @@ export const heritage = {
   figures: [
     {
       name: 'Bernard Hartman',
-      role: 'Le fondateur · « Le ponte de la fonte »',
+      role: 'Le fondateur',
       blurb:
         "Haltérophile, puis culturiste. Vingt ans de compétition au plus haut niveau national, trois podiums aux France IFBB. En 1996, il rafle le Grand Prix de Paris, toutes catégories. Aujourd'hui, il a repris sa salle et l'a refaite de fond en comble.",
       stats: [
@@ -156,9 +156,9 @@ export const heritage = {
     },
     {
       name: 'Samuel Hartman',
-      role: 'Le fils · « The French Golden Child »',
+      role: 'Le fils',
       blurb:
-        "WNBF Pro Heavyweight World Champion 2024, IFBB Pro. Il a grandi sur ce plateau, au milieu des barres de son père, avant de reprendre le flambeau de la Golden Era et de cofonder RetroMuscle. Même discipline, même scène, une génération plus tard.",
+        "WNBF Pro Heavyweight World Champion 2024, IFBB Pro. Il a grandi sur ce plateau, au milieu des barres de son père, avant de reprendre le flambeau de la Golden Era. Même discipline, même scène, une génération plus tard.",
       stats: [
         { value: '2024', label: 'WNBF World Champion' },
         { value: 'Pro', label: 'IFBB / WNBF' },
@@ -202,12 +202,12 @@ export const temple = {
   spaces: [
     {
       tag: 'Plateau musculation',
-      title: '20+ machines Star Trac',
-      desc: "La seule gamme Star Trac de Limoges, entièrement renouvelée. Charges guidées et poids libres pour construire sérieusement, du premier mois à la prépa.",
+      title: '20+ machines',
+      desc: "Un plateau entièrement renouvelé, unique à Limoges. Charges guidées et poids libres pour construire sérieusement, du premier mois à la prépa.",
       media: {
         src: '/images/temple-plateau.webp',
         alt: 'Le plateau de musculation Iron Gym, machines sous la charpente',
-        placeholder: 'PHOTO — Plateau muscu, machines Star Trac',
+        placeholder: 'PHOTO — Plateau muscu, machines',
         ratio: '4/5',
       } as Media,
     },
