@@ -551,13 +551,11 @@ function setupObjetPrefill(): void {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Formulaire de contact : validation + envoi (Web3Forms) ou fallback mailto.
+// Formulaire de contact : validation + envoi Web3Forms (clé inline, POST réel).
 // ─────────────────────────────────────────────────────────────────────────────
 function setupContactForm(): void {
   const formEl = document.querySelector<HTMLFormElement>('[data-contact-form]');
   if (!formEl) return;
-  const key = formEl.dataset.web3formsKey ?? '';
-  const fallbackEmail = formEl.dataset.fallbackEmail ?? '';
   const successEl = document.querySelector<HTMLElement>('[data-form-success]');
   const submitBtn = formEl.querySelector<HTMLButtonElement>('button[type="submit"]');
   const submitLabel = formEl.querySelector<HTMLElement>('[data-submit-label]');
@@ -614,29 +612,11 @@ function setupContactForm(): void {
 
     const data = new FormData(formEl);
 
-    // Envoie l'intitulé LISIBLE de l'objet (« Réserver une séance d'essai ») au
-    // lieu de sa valeur machine (« essai ») — dans le POST Web3Forms ET le mailto.
+    // Envoie l'intitulé LISIBLE de l'objet (« Réserver une séance d'essai »)
+    // plutôt que sa valeur machine (« essai ») dans le POST Web3Forms.
     const objetSel = formEl.querySelector<HTMLSelectElement>('[name="objet"]');
     const objetLabel = objetSel?.options[objetSel.selectedIndex]?.text;
     if (objetLabel) data.set('objet', objetLabel);
-
-    // Sans clé Web3Forms : fallback mailto propre.
-    if (!key) {
-      const body = [
-        `Nom : ${data.get('nom')}`,
-        `Téléphone : ${data.get('telephone')}`,
-        `Email : ${data.get('email')}`,
-        `Objet : ${data.get('objet')}`,
-        '',
-        `${data.get('message')}`,
-      ].join('\n');
-      const subject = `Demande Iron Gym — ${data.get('objet')}`;
-      window.location.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(
-        subject,
-      )}&body=${encodeURIComponent(body)}`;
-      showSuccess();
-      return;
-    }
 
     if (submitBtn) submitBtn.disabled = true;
     if (submitLabel) submitLabel.textContent = 'Envoi…';

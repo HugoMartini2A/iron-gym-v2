@@ -666,15 +666,13 @@ export const contact = {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 8bis. FORMULAIRE DE CONTACT
-// Envoi via Web3Forms (clé en var d'env WEB3FORMS_ACCESS_KEY, jamais en dur).
-// Sans clé : fallback `mailto:` propre. Voir README §formulaire.
+// Envoi via Web3Forms (clé publique inline dans Contact.astro) — POST réel,
+// pas de fallback mailto.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const form = {
   title: 'Écrivez-nous',
   intro: "Dites-nous ce que vous cherchez, on vous recontacte sous 24-48 h.",
-  // E-mail de repli pour le fallback mailto (boîte officielle de la salle).
-  fallbackEmail: 'irongymlimogessports@hotmail.com',
   objets: [
     { value: 'essai', label: "Réserver une séance d'essai" },
     { value: 'membre', label: 'Devenir membre' },
