@@ -15,8 +15,10 @@ import { legalEntity, contact, site } from '../data/content';
     <li>Forme juridique : <strong>{legalEntity.form}</strong></li>
     <li>Siège social : <strong>{legalEntity.address}</strong></li>
     <li>SIREN : <strong>{legalEntity.siren}</strong></li>
-    <li>SIRET : <strong>{legalEntity.siret}</strong></li>
+    <li>SIRET (siège) : <strong>{legalEntity.siret}</strong></li>
+    <li>N° TVA intracommunautaire : <strong>{legalEntity.tva}</strong></li>
     <li>Code APE / NAF : <strong>{legalEntity.ape}</strong></li>
+    <li>Date de création de l'entité : <strong>{legalEntity.created}</strong></li>
     <li>Téléphone : <strong>{legalEntity.phone}</strong></li>
     <li>Email : <a href={`mailto:${legalEntity.email}`}>{legalEntity.email}</a></li>
   </ul>

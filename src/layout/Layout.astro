@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-import { site, contact } from '../data/content';
+import { site, contact, legalEntity } from '../data/content';
 import Grain from '../components/Grain.astro';
 
 interface Props {
@@ -18,6 +18,10 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'HealthClub',
   name: site.name,
+  // Entité juridique réelle (association loi 1901, vérifiée societe.com).
+  // Aucun founder/director nommé tant que le président n'est pas confirmé.
+  legalName: legalEntity.name,
+  vatID: legalEntity.tva,
   description: site.description,
   url: site.url,
   telephone: contact.phone.tel,
@@ -49,10 +53,20 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content={site.themeColor} />
     <meta name="generator" content={Astro.generator} />
+    <!-- Maquette de prospection : NE DOIT PAS être indexée (doublé par
+         l'en-tête X-Robots-Tag dans vercel.json). À retirer à la mise en
+         prod réelle, une fois le domaine client et l'entité légale signés. -->
+    <meta name="robots" content="noindex, nofollow" />
 
-    <!-- Polices critiques préchargées (self-hosted woff2, RGPD). -->
+    <!-- Polices critiques above-the-fold préchargées (self-hosted woff2, RGPD) :
+         Teko 700 (titre hero), DM Sans 400 (corps) + 700 (tagline),
+         Oswald 600 (eyebrow/labels nav) + 700 (compteurs stats hero).
+         Réduit le swap-flash mobile (cf. AUDIT P1). -->
     <link rel="preload" href="/fonts/teko-700.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/dmsans-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dmsans-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/oswald-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/oswald-700.woff2" as="font" type="font/woff2" crossorigin />
 
     <title>{title}</title>
     <meta name="description" content={description} />

@@ -1,5 +1,4 @@
-# Iron Gym Limoges
+# Iron Gym Limoges — maquette de prospection (NON indexable)
+# Doublé par <meta robots noindex> et l'en-tête X-Robots-Tag (vercel.json).
 User-agent: *
-Allow: /
-
-Sitemap: https://iron-gym-v2.vercel.app/sitemap.xml
+Disallow: /
