@@ -526,14 +526,24 @@ html.js-motion [data-hero-chars] {
   }
 
   /* ── Menu plein écran (mobile) ── */
+  /* Caché par défaut : la classe `.mobile-menu` pose `display:grid`, qui
+     l'emporte sur l'attribut [hidden] (origine auteur > UA). Sans cette règle,
+     le menu reste affiché en permanence par-dessus le hero et le burger ne le
+     ferme jamais. On neutralise donc [hidden] explicitement. */
+  .mobile-menu[hidden] {
+    display: none;
+  }
   .mobile-menu {
     position: fixed;
     inset: 0;
     z-index: 40;
     display: grid;
     align-content: center;
-    background: color-mix(in srgb, var(--color-ink) 97%, transparent);
-    backdrop-filter: blur(8px);
+    /* Fond 100% opaque (base noire pleine) : le contenu de la page ne
+       transparaît jamais à travers le menu. */
+    background:
+      radial-gradient(120% 80% at 82% 0%, color-mix(in srgb, var(--color-blood) 16%, transparent), transparent 58%),
+      var(--color-ink);
     animation: menu-in 0.28s var(--ease-soft);
   }
   .mobile-menu__list {

@@ -102,9 +102,9 @@ Tokens (`@theme` dans global.css — noms conservés depuis V1, valeurs = nouvel
 - **Avis Google :** note 4,5 / 105 avis (snapshot public 20/06/2026), 8 avis affichés.
 - **Entité légale :** IRON GYM LIMOGES SPORTS, asso loi 1901, SIREN 932 034 580, SIRET 932 034 580 00013, APE 9313Z, hébergeur = Vercel.
 
-### Horaires RÉELS (décision : ce sont les vrais)
-- **Accès salle (badge, adhérents) :** 7j/7 · 6h–23h → c'est la source du statut live "Ouvert/Fermé" du header (`contact.accessHours`).
-- **Accueil (staff/coaching) :** Lun 14h–20h · Mar 10h–13h & 17h–20h · Mer 14h–20h · Jeu 10h–13h & 17h–20h · Ven 14h–20h · Sam 10h–13h · Dim fermé (`contact.receptionHours`).
+### Horaires RÉELS (décision : ce sont les vrais — corrigés 2026-06-23)
+- **Accès salle (badge, adhérents) :** 7j/7 · 7h30–23h → c'est la source du statut live "Ouvert/Fermé" du header (`contact.accessHours`).
+- **Accueil (staff/coaching) :** Lun–Ven 9h30–21h · Sam 9h30–13h · Dim libre accès uniquement (`contact.receptionHours`).
 - Planning cours (`schedule.days`) = **grille type indicative** (bandeau le précise), dates calculées au runtime.
 
 ---
@@ -115,9 +115,9 @@ Tokens (`@theme` dans global.css — noms conservés depuis V1, valeurs = nouvel
 |---|---|---|
 | **DA validée** : brutal red/steel, #0A0A0A, Teko/DM Sans/Oswald | cf §3 | ✅ appliqué partout |
 | **Horaires réels** : accès 6h–23h 7j/7 ; accueil = grille §4 | vrais horaires salle | ✅ dans content.ts ; statut live basé sur accessHours |
-| **Règle carte** : JAMAIS d'iframe Google (cookies RGPD). Carte = **image statique auto-hébergée** (tuiles OSM assemblées, assombrie DA, pin rouge) **cliquable vers Google Maps** | RGPD + perf + DA | ✅ `Contact.astro` + `src/assets/images/map-iron-gym.webp`. Régénération : §7 |
-| **Citation non signée** : la pull-quote éditoriale (`heritage.pullQuote` « Ici, on transmet plus qu'une salle… ») reste **sans attribution** | ne pas inventer une citation attribuée | ✅ pullQuote non signée. ⚠️ MAIS `manifesto.signature` = « — Bernard Hartman, fondateur » est encore signée → **si la règle s'étend au manifeste, la retirer (TODO)** |
-| **Avis anonymisés** : afficher les avis sans nom de famille complet (prénom + initiale, ex. « Lucas D. ») | RGPD : noms réels de tiers | ❌ **NON appliqué** — `champions.reviews` contient encore les noms complets (Lucas Ducharlet, Matthieu Gaisnon, Romain Pui, Lucas Gres, Lucas Moreau, Tab Marc…). **TODO prioritaire : anonymiser dans content.ts** (garder text/rating/age/localGuide ; le badge "Avis Google" + l'initiale d'avatar restent) |
+| **Règle carte (révisée 2026-06-23)** : carte = **façade cookieless** (aperçu image OSM) → **iframe Google Maps injectée au clic** (« Afficher la carte »), aucun cookie tiers avant interaction | RGPD + perf + DA | ✅ `Contact.astro` (`data-map-reveal` + script `output=embed`). CSP `vercel.json` : `frame-src https://www.google.com https://maps.google.com` ajouté. Règle CRUX globale mise à jour (iframe OK sur maquette noindex) |
+| **Citation manifeste** : `manifesto.body` était une prose IA signée « — Bernard Hartman, fondateur » → **dé-attribuée** (texte de marque) | ne pas faire dire une prose inventée à une personne nommée | ✅ `manifesto.signature` = « — IRON GYM · DEPUIS 1992 ». pullQuote toujours non signée. Héritage reste nommé (famille Hartman réelle/vérifiée — décision client) |
+| **Avis anonymisés** : prénom + initiale (ex. « Lucas D. ») | RGPD : noms réels de tiers | ✅ **appliqué** — `champions.reviews[].name` anonymisés (Lucas D., Matthieu G., Romain P., Lucas G., Tab M., Lucas M. ; Roann/Jules = prénom seul). text/rating/age/localGuide + badge « Avis Google » conservés |
 
 ---
 
@@ -144,8 +144,8 @@ Script ad-hoc (Node, sharp + fetch tuiles OSM, zoom 16, 5×4 tuiles, crop 1100×
 
 ## 8. Prochaine étape / TODO (par priorité)
 
-1. **Anonymiser les avis** (`content.ts` → `champions.reviews[].name`) : nom complet → prénom + initiale. Règle décidée, non appliquée. ⚠️
-2. **Trancher la signature du manifeste** : retirer « — Bernard Hartman, fondateur » si la règle "citation non signée" s'y applique.
+1. ~~Anonymiser les avis~~ — ✅ FAIT (2026-06-23), prénom + initiale.
+2. ~~Trancher la signature du manifeste~~ — ✅ FAIT (2026-06-23) : dé-attribuée → « — IRON GYM · DEPUIS 1992 ».
 3. **Web3Forms** : le client crée une clé (web3forms.com, liée à irongymlimogessports@hotmail.com, vérif email côté client) → la poser dans Vercel env `PUBLIC_WEB3FORMS_KEY` (redeploy auto). Tant que vide = mailto.
 4. **Pages légales = modèles** (bandeau "à faire valider par un juriste") : à faire relire avant usage réel ; `legalEntity.director` = « Bernard Hartman, président » à confirmer.
 5. **Domaine** : actuellement `iron-gym-v2.vercel.app`. Si domaine client → mettre à jour `site` dans `astro.config.mjs` + `site.url` dans content.ts + `sitemap.xml` + `robots.txt` (Sitemap:) puis rebuild/redeploy.

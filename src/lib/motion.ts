@@ -396,22 +396,59 @@ function setupNavMenu(lenis: Lenis | null): void {
   if (!toggle || !menu) return;
 
   let open = false;
+  const focusables = () =>
+    Array.from(menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'));
+
   const setOpen = (next: boolean) => {
+    if (next === open) return;
     open = next;
     menu.hidden = !next;
     toggle.setAttribute('aria-expanded', String(next));
     toggle.setAttribute('aria-label', next ? 'Fermer le menu' : 'Ouvrir le menu');
     document.documentElement.classList.toggle('menu-open', next);
-    if (next) lenis?.stop();
-    else lenis?.start();
+    if (next) {
+      lenis?.stop();
+      focusables()[0]?.focus(); // piège le focus à l'intérieur du menu
+    } else {
+      lenis?.start();
+      toggle.focus(); // rend le focus au burger à la fermeture
+    }
   };
 
   toggle.addEventListener('click', () => setOpen(!open));
+
+  // Fermeture au clic d'un lien : posé AVANT le handler d'ancres global → ferme
+  // (et relance Lenis) d'abord, puis l'ancre scrolle.
   menu
     .querySelectorAll<HTMLAnchorElement>('a[href]')
     .forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+  // Fermeture au clic sur le fond (overlay) — hors liens/boutons.
+  menu.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t === menu || !t.closest('a[href], button')) setOpen(false);
+  });
+
+  // Échap + piège à focus (Tab cyclique) tant que le menu est ouvert.
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && open) setOpen(false);
+    if (!open) return;
+    if (e.key === 'Escape') {
+      setOpen(false);
+      return;
+    }
+    if (e.key === 'Tab') {
+      const f = focusables();
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
 }
 
