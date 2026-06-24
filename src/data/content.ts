@@ -654,10 +654,6 @@ export const contact = {
   // Bénéfice adhérent, DISTINCT des horaires d'accueil (pas de « 7/7 » trompeur).
   accessNote: 'Accès libre sur badge pour les adhérents',
   coaching: 'Sur rendez-vous',
-  // RGPD : passer à `true` pour re-gater la carte Google derrière un consentement
-  // (clic « Charger la carte ») → aucun cookie tiers avant action. `false` =
-  // carte visible d'emblée (preview pitch). Surchargeable via PUBLIC_MAP_CONSENT_GATE.
-  mapConsentGate: false,
   socials: [
     { label: 'Instagram', handle: '@irongymlimogessports', href: 'https://instagram.com/irongymlimogessports' },
     { label: 'Facebook', handle: 'IRONGYMlimoges', href: 'https://facebook.com/IRONGYMlimoges' },

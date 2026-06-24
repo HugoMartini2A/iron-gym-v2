@@ -1,24 +1,23 @@
 ---
 import { contact, form } from '../../data/content';
 import SectionLabel from '../ui/SectionLabel.astro';
-import { Image } from 'astro:assets';
-import mapImg from '../../assets/images/map-iron-gym.webp';
 
 // Format d'affichage des horaires d'accueil (source unique : contact.receptionHours).
 const fmtHM = (hm: string) => hm.replace(':', 'h');
 const fmtRanges = (ranges: [string, string][]) =>
   ranges.length ? ranges.map(([a, b]) => `${fmtHM(a)} – ${fmtHM(b)}`).join(' · ') : 'Fermé';
 
-// Liens Google Maps (ouverture dans un nouvel onglet — aucun cookie posé tant
-// qu'on ne clique pas).
+// Liens Google Maps (boutons Itinéraire / Ouvrir dans Google Maps) : ouverts
+// dans un nouvel onglet — aucun cookie posé tant qu'on ne clique pas.
 const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   contact.address.mapsQuery,
 )}`;
 const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
   contact.address.mapsQuery,
 )}`;
-// Embed Google Maps keyless. Chargé UNIQUEMENT au clic sur la façade (data-map-reveal)
-// → aucun cookie tiers Google avant interaction de l'utilisateur (RGPD).
+// Embed Google Maps keyless, affiché directement dans la page. Maquette en noindex
+// (prospection) → iframe autorisée ; cookies tiers Google posés au chargement. Sur
+// un site client public, re-gater derrière une façade cookieless au clic.
 const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(
   contact.address.mapsQuery,
 )}&z=16&hl=fr&output=embed`;
@@ -122,7 +121,7 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
         </div>
       </div>
 
-      <!-- ─────────── Accès + carte statique ─────────── -->
+      <!-- ─────────── Accès + carte ─────────── -->
       <div class="flex flex-col gap-8">
         <div data-reveal class="grid gap-7 sm:grid-cols-2">
           <div>
@@ -184,46 +183,22 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
           </div>
         </div>
 
-        <!-- Carte Google Maps — façade cookieless : l'aperçu (image légère) est
-             rendu d'emblée ; l'iframe Google n'est injectée qu'au clic sur
-             « Afficher la carte » → aucun cookie tiers avant interaction (RGPD). -->
+        <!-- Carte Google Maps — iframe intégrée directement. Maquette en noindex
+             (prospection privée) → embed direct autorisé. L'iframe remplit le
+             conteneur à ratio fixe : aucune zone vide. Sur un site client public,
+             re-gater derrière une façade cookieless au clic (cf. ~/.claude/CLAUDE.md). -->
         <div
           data-reveal
           class="map-embed relative aspect-[11/6] w-full overflow-hidden rounded-md border border-steel/25"
         >
-          <button
-            type="button"
-            data-map-reveal
-            data-map-src={mapEmbedUrl}
-            aria-label="Afficher la carte Google Maps interactive d'Iron Gym Limoges"
-            class="map-embed__facade group absolute inset-0 block h-full w-full text-left"
-          >
-            <Image
-              src={mapImg}
-              alt="Plan de localisation — Iron Gym, 31 rue François Chénieux, 87000 Limoges"
-              class="map-embed__img absolute inset-0 h-full w-full object-cover"
-              widths={[550, 1100]}
-              sizes="(min-width:1024px) 40vw, 92vw"
-              loading="lazy"
-              decoding="async"
-            />
-            <span class="map-embed__tint absolute inset-0" aria-hidden="true"></span>
-            <span class="map-embed__pin absolute left-1/2 top-1/2" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-            </span>
-            <span class="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-ink via-ink/70 to-transparent p-5">
-              <span class="label-mono block">Iron Gym Limoges</span>
-              <span class="mt-1 block font-sans text-lg text-haze">{contact.address.street}</span>
-              <span class="block font-mono text-xs uppercase tracking-widest text-haze/60">{contact.address.city}</span>
-            </span>
-            <span class="absolute inset-x-0 bottom-0 flex flex-col gap-1 bg-gradient-to-t from-ink via-ink/70 to-transparent p-5">
-              <span class="inline-flex items-center gap-2 self-start rounded-full border border-steel/40 bg-ink/70 px-4 py-2 font-mono text-xs uppercase tracking-widest text-haze transition-colors group-hover:border-blood group-hover:text-blood-hi">
-                Afficher la carte
-                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-              </span>
-              <span class="font-mono text-[0.6rem] uppercase tracking-widest text-haze/55">Google Maps · cookies tiers chargés au clic</span>
-            </span>
-          </button>
+          <iframe
+            src={mapEmbedUrl}
+            title="Carte — Iron Gym Limoges, 31 rue François Chénieux, 87000 Limoges"
+            class="map-embed__frame"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
         </div>
 
         <div class="flex flex-wrap items-center gap-3">
@@ -259,46 +234,9 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
 </section>
 
 <style>
-  /* Façade de carte (aperçu) : image légère auto-hébergée, gardée COLORÉE
-     (léger toning DA seulement) pour signaler une vraie carte avant le
-     chargement de l'iframe Google. Aucun cookie tant que la façade est affichée. */
+  /* Carte Google Maps : conteneur à ratio fixe (aspect-[11/6]) ; l'iframe le
+     remplit entièrement → aucune zone vide. Fond surface pendant le chargement. */
   .map-embed { background: var(--color-surface); }
-  .map-embed__img {
-    filter: saturate(1.05) brightness(0.92) contrast(1.03);
-    transition: filter 0.5s var(--ease-soft), transform 0.7s var(--ease-soft);
-  }
-  .map-embed__facade:hover .map-embed__img,
-  .map-embed__facade:focus-visible .map-embed__img {
-    filter: saturate(1.12) brightness(1) contrast(1.02);
-    transform: scale(1.04);
-  }
-  .map-embed__tint {
-    pointer-events: none;
-    background:
-      radial-gradient(70% 70% at 50% 45%, transparent 42%, color-mix(in srgb, var(--color-ink) 38%, transparent) 100%),
-      linear-gradient(160deg, color-mix(in srgb, var(--color-blood) 12%, transparent), transparent 55%);
-  }
-  .map-embed__pin {
-    width: 2.75rem;
-    height: 2.75rem;
-    margin: -2.4rem 0 0 -1.375rem;
-    color: var(--color-blood);
-    filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--color-blood) 50%, transparent));
-    animation: pin-bob 2.8s var(--ease-soft) infinite;
-  }
-  .map-embed__pin::after {
-    content: '';
-    position: absolute;
-    bottom: -0.35rem;
-    left: 50%;
-    width: 0.85rem;
-    height: 0.3rem;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: color-mix(in srgb, #000 60%, transparent);
-    filter: blur(1px);
-  }
-  /* Iframe Google Maps injectée au clic — remplit le conteneur. */
   .map-embed__frame {
     position: absolute;
     inset: 0;
@@ -307,36 +245,4 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
     border: 0;
     display: block;
   }
-  @keyframes pin-bob {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .map-embed__pin { animation: none; }
-  }
 </style>
-
-<script>
-  // Façade carte → iframe Google Maps au clic. Aucun cookie Google n'est posé
-  // tant que l'utilisateur n'a pas cliqué « Afficher la carte » (RGPD).
-  (() => {
-    const btn = document.querySelector<HTMLButtonElement>('[data-map-reveal]');
-    if (!btn) return;
-    btn.addEventListener(
-      'click',
-      () => {
-        const src = btn.getAttribute('data-map-src');
-        if (!src) return;
-        const iframe = document.createElement('iframe');
-        iframe.src = src;
-        iframe.title = 'Carte interactive — Iron Gym Limoges, 31 rue François Chénieux, 87000 Limoges';
-        iframe.loading = 'lazy';
-        iframe.className = 'map-embed__frame';
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.referrerPolicy = 'no-referrer-when-downgrade';
-        btn.replaceWith(iframe);
-      },
-      { once: true },
-    );
-  })();
-</script>
