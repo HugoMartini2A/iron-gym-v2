@@ -1,6 +1,6 @@
 ---
 import { nav, site, hero, contact } from '../data/content';
-// Sérialisé pour le statut live. Source = ACCÈS SALLE (contact.accessHours, 7h30–23h
+// Sérialisé pour le statut live. Source = ACCÈS SALLE (contact.accessHours, 6h–23h
 // 7j/7), PAS l'accueil staff — le header reflète quand la salle est accessible.
 const hoursJson = JSON.stringify(contact.accessHours);
 ---
@@ -129,7 +129,7 @@ const hoursJson = JSON.stringify(contact.accessHours);
 
 <script>
   // Statut « Ouvert / Fermé » en direct, calculé à l'HEURE DE PARIS, à partir de
-  // l'ACCÈS SALLE 7h30–23h 7j/7 (sérialisé dans data-hours).
+  // l'ACCÈS SALLE 6h–23h 7j/7 (sérialisé dans data-hours).
   (() => {
     const el = document.querySelector<HTMLElement>('[data-open-status]');
     if (!el) return;

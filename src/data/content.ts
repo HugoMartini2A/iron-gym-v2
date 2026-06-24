@@ -82,7 +82,7 @@ export const hero = {
   titleTop: 'IRON',
   titleBottom: 'GYM',
   baseline: 'La fonte, depuis 1992.',
-  sub: "La salle de culture physique la plus spécialisée de Limoges. Matériel moderne, esprit old school, et le même accueil quel que soit votre niveau.",
+  sub: "La salle de musculation de référence à Limoges. Profitez d'un équipement moderne, d'une ambiance authentique et d'un accompagnement adapté à tous les niveaux.",
   cta: {
     label: "Réserver ma séance d'essai",
     href: '#contact',
@@ -111,7 +111,7 @@ export const manifesto = {
     'Depuis 1992,',
     'de père en fils.',
   ],
-  body: "Depuis plus de trente ans, la même exigence : du matériel sérieux, un plateau pensé pour le travail, des coachs qui connaissent chaque adhérent par son prénom. Ici, on progresse sans forcing ni esbroufe, à son rythme et jamais seul. Une salle exigeante, et pourtant ouverte à tous les niveaux.",
+  body: "Depuis plus de 30 ans, Iron Gym accompagne les passionnés de musculation à Limoges. Un espace complet, du matériel fiable et une équipe présente pour vous aider à atteindre vos objectifs. Ici, chaque séance compte.",
   signature: '— IRON GYM · DEPUIS 1992',
 } as const;
 
@@ -188,7 +188,7 @@ export const heritage = {
       text: 'Bernard est dans le public. Le même nom, la même scène, trente ans après.',
     },
   ],
-  pullQuote: "Ici, on transmet plus qu'une salle : une façon de s'entraîner.",
+  pullQuote: "Ici, nous partageons plus qu'un lieu : une culture de l'effort, de la régularité et du dépassement de soi.",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -198,12 +198,12 @@ export const heritage = {
 export const temple = {
   label: 'Le temple',
   title: 'Matériel moderne, esprit old school.',
-  intro: "Le plateau a été entièrement réaménagé. Du matériel haut de gamme, de l'espace entre les machines, et un cadre pensé pour les vraies séances.",
+  intro: "Un plateau moderne, des machines sélectionnées pour leur qualité et un espace où chaque pratiquant peut s'entraîner dans les meilleures conditions.",
   spaces: [
     {
       tag: 'Plateau musculation',
       title: '20+ machines',
-      desc: "Un plateau entièrement renouvelé, unique à Limoges. Charges guidées et poids libres pour construire sérieusement, du premier mois à la prépa.",
+      desc: "Des charges libres aux machines guidées, chaque espace est pensé pour accompagner votre progression et vous aider à atteindre vos objectifs.",
       media: {
         src: '/images/temple-plateau.webp',
         alt: 'Le plateau de musculation Iron Gym, machines sous la charpente',
@@ -214,7 +214,7 @@ export const temple = {
     {
       tag: 'Charges libres',
       title: 'Le mur de fonte',
-      desc: "Haltères complets, bancs, pierre apparente. L'espace des gros mouvements et du travail à l'ancienne.",
+      desc: "Un espace dédié aux charges libres. Haltères, bancs et équipements pour construire de solides bases.",
       media: {
         src: '/images/temple-charges.webp',
         alt: 'Mur d\'haltères et bancs devant la pierre apparente, Iron Gym',
@@ -225,7 +225,7 @@ export const temple = {
     {
       tag: 'Cardio',
       title: '28 postes cardio',
-      desc: "Tapis, vélos, elliptiques, rameur : 28 postes au total. De quoi s'échauffer ou tout donner sans jamais attendre une machine.",
+      desc: "Pour l'échauffement, la récupération ou le dépassement de soi. Un plateau complet pour travailler votre endurance dans les meilleures conditions.",
       media: {
         src: '/images/temple-cardio.webp',
         alt: 'Le pôle cardio Iron Gym, vélos alignés sous la charpente',
@@ -236,7 +236,7 @@ export const temple = {
     {
       tag: 'Force libre',
       title: 'Cage & racks',
-      desc: "Cage à squat, barres, anneaux. De quoi charger lourd sans faire la queue.",
+      desc: "Cages à squat, barres et anneaux pour travailler les mouvements fondamentaux et progresser en force.",
       media: {
         src: '/images/temple-force.webp',
         alt: 'Cage à squat et racks de force libre, Iron Gym',
@@ -258,7 +258,7 @@ export const temple = {
     {
       tag: 'Récupération',
       title: 'Cabine sauna privée',
-      desc: "Cabine privée incluse dans l'abonnement, sur réservation. La récupération fait partie de l'entraînement.",
+      desc: "Un espace de récupération accessible sur réservation, inclus dans votre abonnement. Parce que progresser passe aussi par une bonne récupération.",
       media: {
         // Photo d'ambiance Unsplash (cabine bois) — JosephAli Music, Unsplash
         // License. Lieu, pas une personne → Unsplash légitime. Duotone en CSS.
@@ -271,7 +271,7 @@ export const temple = {
     {
       tag: 'Détente',
       title: 'Bar & terrasse',
-      desc: "Café, shakers et gamme Eric Favre, avec une terrasse pour prolonger un peu après la séance.",
+      desc: "Café, shakers et compléments à disposition. Un espace convivial pour échanger et prolonger le moment après l'entraînement.",
       media: {
         src: '/images/temple-terrasse.webp',
         alt: 'La terrasse extérieure et l\'espace détente Iron Gym',
@@ -288,23 +288,23 @@ export const temple = {
 
 export const programs = {
   label: 'Programmes',
-  title: 'Du premier jour au plateau de compétition.',
+  title: 'De la première séance à la scène compétitive',
   intro: "Débutant ou confirmé, vous êtes suivi pour de vrai : bilan, programme, et un coach qui reste disponible. Le coaching individuel est gratuit, là où la plupart des salles le facturent.",
   cards: [
     {
       n: '01',
       title: 'Musculation & prise de masse',
-      desc: "Programmation, technique, gestion des charges. La méthode old school transmise directement sur le plateau, à votre rythme.",
+      desc: "Programmation, technique et gestion des charges. Une méthode old school, incarnée et adaptée à votre progression.",
     },
     {
       n: '02',
       title: 'Coaching individuel gratuit',
-      desc: "Inclus, jamais en option. Bilan de départ, objectifs clairs, programme personnalisé et carnet de bord pour suivre chaque séance.",
+      desc: "Bilan de départ, objectifs clairs, programme personnalisé et carnet de bord pour suivre chaque séance.",
     },
     {
       n: '03',
       title: 'Préparation physique',
-      desc: "Force, explosivité, condition. Pour performer en compétition comme pour être plus solide au quotidien.",
+      desc: "Développer force, explosivité et condition physique. Structurer un corps performant, durable et efficace dans l'effort.",
     },
     {
       n: '04',
@@ -334,7 +334,7 @@ export interface ClassSlot {
 export const schedule = {
   label: 'Le planning',
   title: 'Votre semaine, déjà tracée.',
-  intro: "Les mêmes créneaux chaque semaine, matin, midi et soir. La plupart sans réservation : vous posez votre sac et vous entrez en cours.",
+  intro: "Des cours collectifs tout au long de la semaine, matin, midi et soir. En groupe, au rythme du coach.",
   note: 'Planning indicatif — créneaux types, confirmés à l’accueil et sur Instagram.',
   // index 0 = lundi … 5 = samedi (dimanche : libre accès, pas de cours).
   days: [
@@ -482,7 +482,7 @@ export const champions = {
 export const pricing = {
   label: 'Rejoindre',
   title: 'Entrez dans la famille.',
-  intro: "Accès libre 7j/7 de 7h30 à 23h sur badge, coaching individuel et sauna compris. Des tarifs clairs, sans frais caché, et une séance d'essai pour vous faire votre idée.",
+  intro: "Accès 7j/7 de 6h à 23h sur badge. Séance d'essai disponible.",
   plans: [
     {
       name: 'Essai',
@@ -507,7 +507,7 @@ export const pricing = {
       featured: false,
       note: 'Liberté totale · résiliable à tout moment',
       features: [
-        'Libre accès 7j/7 · 7h30 – 23h',
+        'Libre accès 7j/7 · 6h – 23h',
         'Coaching individuel gratuit + carnet de bord',
         'Cabine sauna incluse',
         '100+ cours collectifs / mois',
@@ -524,7 +524,7 @@ export const pricing = {
       note: 'Engagement 12 mois · le meilleur tarif',
       features: [
         'Le tarif au mois le plus bas',
-        'Libre accès 7j/7 · 7h30 – 23h',
+        'Libre accès 7j/7 · 6h – 23h',
         'Coaching + sauna inclus',
         'Soirées & événements adhérents',
       ],
@@ -540,7 +540,7 @@ export const pricing = {
       note: 'Engagement annuel · sur justificatif',
       features: [
         'Tarif réduit étudiant',
-        'Libre accès 7j/7 · 7h30 – 23h',
+        'Libre accès 7j/7 · 6h – 23h',
         'Coaching + sauna inclus',
         '100+ cours collectifs / mois',
       ],
@@ -577,7 +577,7 @@ export const pricing = {
   },
   includedTitle: 'Compris dans chaque abonnement',
   included: [
-    'Accès libre 7j/7, de 7h30 à 23h',
+    'Accès libre 7j/7, de 6h à 23h',
     "Séance d'essai pour découvrir",
     'Coaching individuel gratuit + carnet de bord',
     'Cabine sauna incluse',
@@ -626,7 +626,7 @@ export const contact = {
   },
   // Horaires d'ACCUEIL (staff présent / coaching) — source unique du bloc
   // « Horaires d'accueil ». DISTINCT de l'accès salle ci-dessous. Depuis le jet 10,
-  // le statut live du header se base sur `accessHours` (7h30–23h), PAS sur l'accueil.
+  // le statut live du header se base sur `accessHours` (6h–23h), PAS sur l'accueil.
   // index 0 = lundi … 6 = dimanche. Heures en 'HH:MM' (24h, heure de Paris).
   receptionHours: [
     { day: 'Lundi', ranges: [['09:30', '21:00']] },
@@ -637,20 +637,20 @@ export const contact = {
     { day: 'Samedi', ranges: [['09:30', '13:00']] },
     { day: 'Dimanche', ranges: [] },
   ] as { day: string; ranges: [string, string][] }[],
-  // Accès SALLE (badge adhérent) — horaire d'OUVERTURE réel : 7j/7, 7h30–23h.
+  // Accès SALLE (badge adhérent) — horaire d'OUVERTURE réel : 7j/7, 6h–23h.
   // C'EST la source du statut live « Ouvert / Fermé » du header (jet 10).
   // index 0 = lundi … 6 = dimanche.
   accessHours: [
-    { day: 'Lundi', ranges: [['07:30', '23:00']] },
-    { day: 'Mardi', ranges: [['07:30', '23:00']] },
-    { day: 'Mercredi', ranges: [['07:30', '23:00']] },
-    { day: 'Jeudi', ranges: [['07:30', '23:00']] },
-    { day: 'Vendredi', ranges: [['07:30', '23:00']] },
-    { day: 'Samedi', ranges: [['07:30', '23:00']] },
-    { day: 'Dimanche', ranges: [['07:30', '23:00']] },
+    { day: 'Lundi', ranges: [['06:00', '23:00']] },
+    { day: 'Mardi', ranges: [['06:00', '23:00']] },
+    { day: 'Mercredi', ranges: [['06:00', '23:00']] },
+    { day: 'Jeudi', ranges: [['06:00', '23:00']] },
+    { day: 'Vendredi', ranges: [['06:00', '23:00']] },
+    { day: 'Samedi', ranges: [['06:00', '23:00']] },
+    { day: 'Dimanche', ranges: [['06:00', '23:00']] },
   ] as { day: string; ranges: [string, string][] }[],
   // Libellé court pour le badge « Accès salle » (affiché distinct de l'accueil).
-  accessHoursLabel: '7j/7 · 7h30 – 23h',
+  accessHoursLabel: '7j/7 · 6h – 23h',
   // Bénéfice adhérent, DISTINCT des horaires d'accueil (pas de « 7/7 » trompeur).
   accessNote: 'Accès libre sur badge pour les adhérents',
   coaching: 'Sur rendez-vous',
