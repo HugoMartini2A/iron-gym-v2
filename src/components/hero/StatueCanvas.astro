@@ -175,8 +175,8 @@
           };
           const tryLoad = (i: number) => {
             if (i >= candidates.length) {
-              // Aucun modèle chargeable → on montre la figure primitive en secours.
-              scene.add(figure);
+              // Aucun modèle chargeable : on NE montre PAS la figure primitive
+              // (rejetée par le client). Le hero garde son fond dégradé, sans statue.
               return;
             }
             loader.load(candidates[i], onLoaded, undefined, () => tryLoad(i + 1));
@@ -184,7 +184,7 @@
           tryLoad(0);
         })
         .catch(() => {
-          scene.add(figure); // three/GLTFLoader indisponible → secours
+          /* three/GLTFLoader indisponible : pas de figure primitive de secours. */
         });
 
       // Lumières : appoint froid + jante rouge sang (rappel de marque).
