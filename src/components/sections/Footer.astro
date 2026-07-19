@@ -1,5 +1,5 @@
 ---
-import { footer, site, nav } from '../../data/content';
+import { footer, site } from '../../data/content';
 ---
 <footer class="relative overflow-hidden border-t border-blood/15 pt-12">
   <div class="u-container">
@@ -9,16 +9,6 @@ import { footer, site, nav } from '../../data/content';
         <p class="tagline mt-3 text-2xl text-haze/75">{footer.tagline}</p>
         <p class="label-mono mt-4 !text-bronze">{footer.est}</p>
       </div>
-
-      <nav class="flex flex-wrap gap-x-8 gap-y-2 lg:justify-end" aria-label="Pied de page">
-        {
-          nav.map((link) => (
-            <a href={link.href} class="font-mono text-sm uppercase tracking-widest text-haze/60 transition-colors hover:text-blood-hi">
-              {link.label}
-            </a>
-          ))
-        }
-      </nav>
     </div>
 
     <div class="flex flex-col gap-3 border-t border-blood/10 py-5 text-haze/60 md:flex-row md:items-center md:justify-between">
@@ -30,8 +20,13 @@ import { footer, site, nav } from '../../data/content';
             </a>
           ))
         }
+        <button type="button" data-consent-open class="font-mono text-xs uppercase tracking-widest text-haze/60 transition-colors hover:text-blood-hi">
+          Gérer les cookies
+        </button>
       </div>
-      <p class="font-mono text-xs">{footer.credit}</p>
+      <p class="font-mono text-xs">
+        Site réalisé par <a href="https://cruxstudio.fr" target="_blank" rel="noopener noreferrer" class="text-haze/80 underline underline-offset-2 transition-colors hover:text-blood-hi">cruxstudio.fr</a> · {footer.credit}
+      </p>
     </div>
   </div>
 </footer>

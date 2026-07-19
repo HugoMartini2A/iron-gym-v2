@@ -1,8 +1,7 @@
 ---
 import { referral } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
 ---
-<section id="parrainage" class="relative">
+<section id="parrainage" class="relative py-[var(--spacing-section)]">
   <div class="u-container relative">
     <div
       data-referral
@@ -12,7 +11,6 @@ import SectionLabel from '../ui/SectionLabel.astro';
       <div class="godrays pointer-events-none absolute inset-0 opacity-15" aria-hidden="true"></div>
       <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12">
         <div>
-          <SectionLabel text={referral.label} />
           <h2 class="display mt-5 text-[clamp(1.9rem,4.5vw,3rem)] text-haze">{referral.title}</h2>
           <p class="mt-4 max-w-xl text-lg text-haze/70">{referral.intro}</p>
           <ul class="mt-6 space-y-3">
@@ -29,8 +27,8 @@ import SectionLabel from '../ui/SectionLabel.astro';
           </ul>
           <p class="mt-5 text-sm text-haze/55">{referral.footnote}</p>
         </div>
-        <div class="shrink-0 rounded-md border border-blood/30 bg-ink/30 p-6 text-center lg:w-64">
-          <p class="display text-gradient-blood text-4xl leading-tight">1 ami<span class="text-haze/50"> = </span>1 mois</p>
+        <div class="group shrink-0 rounded-md border border-blood/30 bg-ink/30 p-6 text-center transition-all duration-500 hover:-translate-y-1 hover:border-blood/60 hover:shadow-[0_0_50px_-20px_var(--color-blood)] lg:w-64">
+          <p class="display text-gradient-blood text-4xl leading-tight transition-transform duration-500 group-hover:scale-105">1 ami<span class="text-haze/50"> = </span>1 mois</p>
           <p class="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-bronze/90">offert</p>
           <p class="mt-4 border-t border-blood/15 pt-4 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-haze/60">{referral.highlight}</p>
         </div>

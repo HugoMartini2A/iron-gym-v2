@@ -3,6 +3,7 @@ import '../styles/global.css';
 
 import { site, footer } from '../data/content';
 import Grain from '../components/Grain.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 
 interface Props {
   title: string;
@@ -73,10 +74,16 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
               {l.label}
             </a>
           ))}
+          <button type="button" data-consent-open class="font-mono text-xs uppercase tracking-widest text-haze/60 transition-colors hover:text-blood-hi">
+            Gérer les cookies
+          </button>
         </div>
-        <p class="font-mono text-xs">{footer.credit}</p>
+        <p class="font-mono text-xs">
+          Site réalisé par <a href="https://cruxstudio.fr" target="_blank" rel="noopener noreferrer" class="text-haze/80 underline underline-offset-2 transition-colors hover:text-blood-hi">cruxstudio.fr</a> · {footer.credit}
+        </p>
       </div>
     </footer>
+    <ConsentBanner />
 
     <style>
       .legal-prose :global(h2) {

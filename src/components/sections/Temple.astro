@@ -1,46 +1,48 @@
 ---
 import { temple } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
 import Placeholder from '../ui/Placeholder.astro';
+
+// Composition éditoriale (revue DA #12) : desktop = grille asymétrique façon
+// magazine (grandes/petites, décalées), mobile = swipe conservé. Les spans et
+// décalages verticaux par index créent le rythme.
+const LAYOUT = [
+  'lg:col-span-7',
+  'lg:col-span-5 lg:mt-24',
+  'lg:col-span-5',
+  'lg:col-span-7 lg:mt-16',
+  'lg:col-span-7',
+  'lg:col-span-5 lg:mt-24',
+  'lg:col-span-8 lg:col-start-3',
+];
+// Sens d'apparition par photo (glissé depuis le haut/bas — sûr dans le swipe
+// mobile, contrairement à un glissé latéral). Composition « qui s'assemble ».
+const REVEAL = ['up', 'down', 'down', 'up', 'up', 'down', 'up'];
 ---
-<section
-  id="temple"
-  data-temple
-  class="relative overflow-hidden py-[var(--spacing-section)] lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0"
->
+<section id="temple" data-temple class="relative py-[var(--spacing-section)]">
   <header class="u-container">
-    <SectionLabel text={temple.label} />
-    <div class="mt-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <h2 data-reveal class="display max-w-2xl text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h2 data-reveal class="display max-w-2xl text-[clamp(2rem,4.6vw,3.6rem)] text-haze">
         {temple.title}
       </h2>
-      <div class="md:max-w-md">
-        <p data-reveal class="text-haze/70">{temple.intro}</p>
-        <!-- Barre de progression discrète (remplie au scroll horizontal). -->
-        <div class="temple-progress mt-6 hidden lg:block" aria-hidden="true">
-          <span data-temple-progress class="temple-progress__fill"></span>
-        </div>
-      </div>
+      <p data-reveal class="text-haze/70 md:max-w-md">{temple.intro}</p>
     </div>
   </header>
 
-  <div data-temple-track class="temple-track mt-8 lg:mt-10">
+  <!-- Mobile : swipe horizontal (snap). Desktop : grille éditoriale asymétrique. -->
+  <div data-temple-track class="temple-track mt-10 lg:mt-16">
     {
       temple.spaces.map((space, i) => (
-        <article class="temple-panel w-[82vw] shrink-0 sm:w-[58vw] lg:w-[32vw]">
-          <div class="group relative overflow-hidden rounded-sm">
-            {/* lg : hauteur d'image plafonnée → label + titre + description tiennent
-                tous dans le viewport pendant le scroll horizontal (plus de légende
-                coupée sous le pli). object-cover recadre, le ratio est conservé. */}
+        <article
+          data-reveal={REVEAL[i]}
+          class:list={['temple-panel w-[82vw] shrink-0 sm:w-[58vw] lg:w-auto', LAYOUT[i]]}
+        >
+          <div class="temple-media group relative overflow-hidden rounded-sm">
             <Placeholder
               media={space.media}
-              class="transition-transform duration-700 group-hover:scale-[1.03] lg:max-h-[40vh]"
+              class="w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
             />
             <span class="absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-widest text-blood-hi backdrop-blur">
               {space.tag}
-            </span>
-            <span class="absolute bottom-4 right-4 font-mono text-xs text-haze/60">
-              {String(i + 1).padStart(2, '0')} / {String(temple.spaces.length).padStart(2, '0')}
             </span>
           </div>
           <h3 class="display mt-4 text-2xl text-haze sm:text-3xl">{space.title}</h3>

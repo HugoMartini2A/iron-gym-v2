@@ -1,6 +1,8 @@
 ---
 import { hero } from '../../data/content';
-import GoldButton from '../ui/GoldButton.astro';
+import { cta } from '../../data/brand';
+import Button from '../ui/Button.astro';
+import StatueCanvas from '../hero/StatueCanvas.astro';
 ---
 <section
   id="top"
@@ -9,6 +11,11 @@ import GoldButton from '../ui/GoldButton.astro';
 >
   <!-- Fond brutal : halo rouge sang + reflet acier sur noir profond. -->
   <div class="hero-fallback absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  {/* Pièce maîtresse WebGL (desktop). Placeholder statue, réactif au curseur. */}
+  <StatueCanvas />
+  {/* Voile pour garantir la lisibilité du texte par-dessus la 3D. */}
+  <div class="hero-veil absolute inset-0 -z-0 hidden lg:block" aria-hidden="true"></div>
 
   <div class="u-container relative z-10 w-full pt-24 sm:pt-28">
     <p data-hero-fade class="label-mono mb-5 flex items-center gap-3">
@@ -19,12 +26,12 @@ import GoldButton from '../ui/GoldButton.astro';
       <span
         data-hero-chars
         aria-hidden="true"
-        class="block text-blood-hi text-[clamp(4rem,20vw,17rem)]"
+        class="block text-blood-hi text-[clamp(3rem,12vw,9.5rem)]"
       >{hero.titleTop}</span>
       <span
         data-hero-chars
         aria-hidden="true"
-        class="block text-steel-hi text-[clamp(4rem,20vw,17rem)]"
+        class="block text-steel-hi text-[clamp(3rem,12vw,9.5rem)]"
       >{hero.titleBottom}</span>
     </h1>
 
@@ -34,8 +41,9 @@ import GoldButton from '../ui/GoldButton.astro';
     </div>
 
     <div data-hero-fade class="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-      <GoldButton href={hero.cta.href} label={hero.cta.label} variant="primary" objet={hero.cta.objet} />
-      <GoldButton href={hero.ctaSecondary.href} label={hero.ctaSecondary.label} variant="ghost" />
+      {/* Revue DA : contact immédiat en avant. Appeler (primaire) + Itinéraire. */}
+      <Button href={cta.call.href} label={cta.call.label} variant="primary" event="telephone_clic" />
+      <Button href={cta.directions.href} label={cta.directions.label} variant="ghost" event="itineraire_clic" />
     </div>
   </div>
 </section>
@@ -60,5 +68,15 @@ import GoldButton from '../ui/GoldButton.astro';
         transparent 55%
       ),
       linear-gradient(155deg, var(--color-ink) 45%, var(--color-surface) 100%);
+  }
+  /* Dégradé gauche→droite : le texte reste lisible même quand la statue passe
+     derrière lui ; la 3D respire dans le tiers droit. */
+  .hero-veil {
+    background: linear-gradient(
+      90deg,
+      var(--color-ink) 22%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 46%,
+      transparent 72%
+    );
   }
 </style>

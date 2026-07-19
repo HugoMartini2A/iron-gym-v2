@@ -4,7 +4,7 @@
  * Contenu dupliqué 2× → boucle -50% sans couture. Décoratif (aria-hidden) :
  * les mêmes services sont listés sémantiquement dans Programmes / Le Temple.
  */
-const items = ['Musculation', 'Cross Training', 'Sauna', 'Coaching'];
+const items = ['Musculation', 'Cross Training', 'Coaching', 'Sauna', 'Cardio', 'Street Workout'];
 // Rendu deux fois pour la boucle continue.
 const loop = [...items, ...items];
 ---
@@ -17,9 +17,9 @@ const loop = [...items, ...items];
   <div class="marquee__inner" data-marquee-inner>
     {
       loop.map((word, i) => (
-        <span class:list={['marquee__item', i % 2 === 1 && 'marquee__item--ghost']}>
+        <span class:list={['marquee__item', i % 2 === 1 && 'marquee__item--muted']}>
           {word}
-          <span class="marquee__sep">✦</span>
+          <span class="marquee__sep" aria-hidden="true" />
         </span>
       ))
     }

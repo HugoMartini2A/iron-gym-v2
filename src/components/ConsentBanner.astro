@@ -1,0 +1,90 @@
+---
+/**
+ * Bandeau de consentement (RGPD / ePrivacy — CNIL).
+ * ----------------------------------------------------------------------------
+ * Le site ne pose AUCUN cookie de suivi. Seule la carte Google Maps (section
+ * Accès) dépose des cookies tiers Google au chargement. Ce bandeau recueille un
+ * consentement PRÉALABLE, refus aussi simple que l'acceptation (exigence CNIL),
+ * mémorisé côté client (localStorage, 1ʳᵉ partie). Le choix est modifiable via
+ * un lien « Gérer les cookies » (attribut data-consent-open).
+ *
+ * Après « Autoriser », la carte se charge automatiquement (ici et aux visites
+ * suivantes). Après « Refuser », elle reste en façade cliquable (un clic
+ * explicite sur la carte vaut consentement ponctuel pour ce seul contenu).
+ */
+---
+<div
+  data-consent-banner
+  hidden
+  class="consent-banner"
+  role="dialog"
+  aria-label="Consentement aux cookies"
+  aria-live="polite"
+>
+  <div class="consent-banner__inner">
+    <p class="consent-banner__text">
+      Ce site n'utilise aucun cookie de suivi ni pistage publicitaire. Seule la
+      <strong>carte Google&nbsp;Maps</strong> (section Accès) dépose des cookies tiers
+      Google lorsqu'elle s'affiche. Vous pouvez l'autoriser ou la refuser — détails
+      dans la <a href="/confidentialite">politique de confidentialité</a>.
+    </p>
+    <div class="consent-banner__actions">
+      <button type="button" data-consent="deny" class="consent-btn consent-btn--ghost">
+        Refuser
+      </button>
+      <button type="button" data-consent="grant" class="consent-btn consent-btn--solid">
+        Autoriser
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const KEY = 'ig-consent-maps-v1';
+    const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+    const read = (): string | null => {
+      try {
+        return localStorage.getItem(KEY);
+      } catch {
+        return null;
+      }
+    };
+    const write = (v: string) => {
+      try {
+        localStorage.setItem(KEY, v);
+      } catch {
+        /* stockage indisponible : le choix vaudra pour la session courante */
+      }
+    };
+    const apply = (v: string) => {
+      document.documentElement.dataset.consentMaps = v;
+      window.dispatchEvent(new CustomEvent('consent:maps', { detail: v }));
+    };
+
+    const current = read();
+    if (current === 'granted' || current === 'denied') {
+      apply(current);
+    } else if (banner) {
+      banner.hidden = false;
+    }
+
+    banner?.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const v = btn.dataset.consent === 'grant' ? 'granted' : 'denied';
+        write(v);
+        apply(v);
+        if (banner) banner.hidden = true;
+      });
+    });
+
+    // « Gérer les cookies » : rouvre le bandeau pour changer d'avis (retrait du
+    // consentement aussi simple que son recueil).
+    document.querySelectorAll<HTMLElement>('[data-consent-open]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (banner) banner.hidden = false;
+      });
+    });
+  })();
+</script>

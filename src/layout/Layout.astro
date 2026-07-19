@@ -1,45 +1,32 @@
 ---
 import '../styles/global.css';
 
-import { site, contact, legalEntity } from '../data/content';
+import { site } from '../data/site';
+import { healthClubSchema } from '../lib/schema';
 import Grain from '../components/Grain.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * JSON-LD de la page (lot A1). En multi-pages, chaque URL vise une intention
+   * et porte son propre balisage — cf. `src/lib/schema.ts`. Par défaut : le
+   * `HealthClub` de la home.
+   */
+  schema?: object | (object | null)[];
 }
-const { title = site.title, description = site.description } = Astro.props;
+const { title = site.title, description = site.description, schema } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = site.ogImage.src ? new URL(site.ogImage.src, site.url).href : undefined;
 
-// JSON-LD — LocalBusiness (HealthClub) sur la home (SEO local).
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'HealthClub',
-  name: site.name,
-  // Entité juridique réelle (association loi 1901, vérifiée societe.com).
-  // Aucun founder/director nommé tant que le président n'est pas confirmé.
-  legalName: legalEntity.name,
-  vatID: legalEntity.tva,
-  description: site.description,
-  url: site.url,
-  telephone: contact.phone.tel,
-  foundingDate: '1992',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: contact.address.street,
-    addressLocality: 'Limoges',
-    postalCode: '87000',
-    addressCountry: 'FR',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: contact.address.lat,
-    longitude: contact.address.lng,
-  },
-  sameAs: contact.socials.map((s) => s.href),
-};
+// Une page peut porter plusieurs blocs (ex. Service + FAQPage + Breadcrumb).
+// Les entrées nulles sont écartées : `faqSchema` retourne null si toutes les
+// entrées sont encore en attente de validation client.
+const schemas = (Array.isArray(schema) ? schema : [schema ?? healthClubSchema()]).filter(
+  Boolean,
+) as object[];
 ---
 
 <!doctype html>
@@ -81,6 +68,7 @@ const jsonLd = {
     {ogImage && <meta property="og:image" content={ogImage} />}
     {ogImage && <meta property="og:image:width" content="1200" />}
     {ogImage && <meta property="og:image:height" content="630" />}
+    {ogImage && <meta property="og:image:alt" content={site.ogImage.alt} />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
@@ -88,7 +76,11 @@ const jsonLd = {
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {
+      schemas.map((s) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />
+      ))
+    }
 
     <!-- Anti-flash : cache les éléments à révéler UNIQUEMENT si le mouvement
          est autorisé (sinon le contenu reste visible). Exécuté avant le rendu. -->
@@ -100,8 +92,11 @@ const jsonLd = {
   </head>
 
   <body class="vignette">
+    <!-- A7 — Lien d'évitement : premier élément focusable de la page. -->
+    <a href="#top" class="skip-link">Aller au contenu</a>
     <Grain />
     <slot />
+    <ConsentBanner />
 
     <script>
       import { initSite } from '../lib/motion';

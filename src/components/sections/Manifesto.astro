@@ -1,8 +1,7 @@
 ---
 import { manifesto } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
 
-// Lignes mises en or pour le rythme éditorial (la « chute » du manifeste).
+// Lignes accentuées pour le rythme éditorial (la « chute » du manifeste).
 const bloodLines = new Set([3, 4]);
 ---
 <section
@@ -11,7 +10,6 @@ const bloodLines = new Set([3, 4]);
   data-parallax-scope
 >
   <div class="u-container">
-    <SectionLabel text={manifesto.label} />
 
     <div data-lines class="mt-10 max-w-5xl">
       {
@@ -19,7 +17,7 @@ const bloodLines = new Set([3, 4]);
           <span class="line-mask">
             <span
               class:list={[
-                'line-inner block font-sans font-normal leading-[1.1] text-[clamp(2rem,7vw,5.5rem)]',
+                'line-inner block font-sans font-normal leading-[1.12] text-[clamp(1.5rem,4.25vw,3.25rem)]',
                 bloodLines.has(i) ? 'text-gradient-blood wonky' : 'text-haze',
               ]}
             >

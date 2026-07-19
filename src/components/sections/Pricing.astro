@@ -1,14 +1,12 @@
 ---
 import { pricing } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
-import GoldButton from '../ui/GoldButton.astro';
+import Button from '../ui/Button.astro';
 ---
 <section id="tarifs" class="relative py-[var(--spacing-section)]">
   <div class="godrays pointer-events-none absolute inset-0 opacity-20" aria-hidden="true"></div>
   <div class="u-container relative">
     <div class="max-w-3xl">
-      <SectionLabel text={pricing.label} />
-      <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+      <h2 data-reveal class="display mt-6 text-[clamp(2rem,4.6vw,3.6rem)] text-haze">
         {pricing.title}
       </h2>
       <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{pricing.intro}</p>
@@ -33,10 +31,10 @@ import GoldButton from '../ui/GoldButton.astro';
             data-reveal
             data-plan
             class:list={[
-              'relative flex w-[86vw] max-w-sm shrink-0 snap-center flex-col rounded-md border p-8 transition-transform duration-400 hover:-translate-y-1 lg:w-auto lg:max-w-none',
+              'relative flex w-[86vw] max-w-sm shrink-0 snap-center flex-col rounded-md border p-8 transition-all duration-400 hover:-translate-y-1.5 lg:w-auto lg:max-w-none',
               plan.featured
-                ? 'border-blood bg-gradient-to-b from-surface-2 to-surface shadow-[0_0_60px_-15px_var(--color-blood)]'
-                : 'border-blood/15 bg-surface/50',
+                ? 'border-blood bg-gradient-to-b from-surface-2 to-surface shadow-[0_0_60px_-15px_var(--color-blood)] lg:-translate-y-2 lg:scale-[1.02]'
+                : 'border-blood/15 bg-surface/50 hover:border-blood/40 hover:bg-surface/70 hover:shadow-[0_24px_55px_-32px_rgba(0,0,0,0.95)]',
             ]}
           >
             {plan.featured && (
@@ -66,7 +64,7 @@ import GoldButton from '../ui/GoldButton.astro';
               ))}
             </ul>
             <div class="mt-8">
-              <GoldButton
+              <Button
                 href="#contact"
                 label={plan.cta}
                 variant={plan.featured ? 'primary' : 'ghost'}

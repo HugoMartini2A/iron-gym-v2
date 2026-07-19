@@ -1,0 +1,160 @@
+---
+/**
+ * L'AMBIANCE — « la salle est vivante » (revue DA #9).
+ * ----------------------------------------------------------------------------
+ * Mur de reels verticaux (vidéos réelles + tour par Samuel + soirée Halloween).
+ * Lecture AUTOMATIQUE muette dès que la vidéo entre dans le viewport (aucun clic),
+ * boucle, pause quand elle sort de l'écran. Un bouton discret active le son
+ * (une seule vidéo sonore à la fois). Composition DÉCALÉE (non alignée) et
+ * légende sobre sous chaque vidéo → registre épuré premium.
+ */
+const reels = [
+  {
+    src: '/videos/tour-samuel.mp4',
+    poster: '/videos/posters/tour-samuel.jpg',
+    tag: 'La visite',
+    caption: 'Le tour, par Samuel',
+    feature: true,
+  },
+  {
+    src: '/videos/tour-salle.mp4',
+    poster: '/videos/posters/tour-salle.jpg',
+    tag: 'Le plateau',
+    caption: 'Le tour du propriétaire',
+  },
+  {
+    src: '/videos/tour-salle-2.mp4',
+    poster: '/videos/posters/tour-salle-2.jpg',
+    tag: 'La référence',
+    caption: 'Une salle rétro de légende',
+  },
+  {
+    src: '/videos/halloween.mp4',
+    poster: '/videos/posters/halloween.jpg',
+    tag: 'La communauté',
+    caption: 'La soirée Halloween',
+  },
+];
+---
+<section id="ambiance" class="relative py-[var(--spacing-section)]">
+  <div class="u-container">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h2 data-reveal class="display max-w-2xl text-[clamp(2rem,4.6vw,3.6rem)] text-haze">
+        La salle, en vrai.
+      </h2>
+      <p data-reveal class="text-haze/70 md:max-w-md">
+        Pas des photos léchées : la vraie salle, la vraie ambiance. Le son se coupe et
+        s'active d'un geste.
+      </p>
+    </div>
+
+    <!-- Reels : lecture auto muette, composition décalée (desktop) / swipe (mobile) -->
+    <div data-ambiance class="reel-wall mt-12 lg:mt-16">
+      {
+        reels.map((r, i) => (
+          <article
+            data-reveal="up"
+            data-reveal-delay={(i * 0.09).toString()}
+            data-reel
+            class:list={[
+              'reel-card',
+              `reel-card--${i}`,
+              r.feature && 'reel-card--feature',
+            ]}
+          >
+            <div class="reel-frame">
+              <video
+                data-reel-video
+                poster={r.poster}
+                preload="metadata"
+                autoplay
+                muted
+                loop
+                playsinline
+                controlslist="nodownload nofullscreen noremoteplayback"
+                disablepictureinpicture
+                width="608"
+                height="1080"
+              >
+                <source src={r.src} type="video/mp4" />
+              </video>
+
+              <!-- Contrôle son discret (une seule vidéo sonore à la fois) -->
+              <button type="button" data-reel-sound class="reel-sound" aria-label="Activer le son">
+                <svg class="reel-sound__muted h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M11 5 6 9H2v6h4l5 4z" />
+                  <line x1="22" y1="9" x2="16" y2="15" />
+                  <line x1="16" y1="9" x2="22" y2="15" />
+                </svg>
+                <svg class="reel-sound__on h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M11 5 6 9H2v6h4l5 4z" />
+                  <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                  <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+                </svg>
+              </button>
+            </div>
+
+            <figcaption class="reel-caption">
+              <span class="label-mono !text-blood-hi">{r.tag}</span>
+              <span class="font-sans text-base text-haze/85">{r.caption}</span>
+            </figcaption>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const wall = document.querySelector('[data-ambiance]');
+  if (wall) {
+    const cards = Array.from(wall.querySelectorAll<HTMLElement>('[data-reel]'));
+    const videos = cards
+      .map((c) => c.querySelector<HTMLVideoElement>('[data-reel-video]'))
+      .filter((v): v is HTMLVideoElement => !!v);
+
+    // Lecture AUTO muette à l'entrée dans le viewport, pause à la sortie.
+    // (Muet = seul moyen d'autoriser la lecture programmée sans geste.)
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) void v.play().catch(() => {});
+          else v.pause();
+        });
+      },
+      { threshold: 0.4 },
+    );
+    videos.forEach((v) => io.observe(v));
+
+    const syncIcons = () => {
+      cards.forEach((c) => {
+        const v = c.querySelector<HTMLVideoElement>('[data-reel-video]');
+        const s = c.querySelector<HTMLButtonElement>('[data-reel-sound]');
+        if (!v || !s) return;
+        c.classList.toggle('is-unmuted', !v.muted);
+        s.setAttribute('aria-label', v.muted ? 'Activer le son' : 'Couper le son');
+      });
+    };
+
+    cards.forEach((card) => {
+      const video = card.querySelector<HTMLVideoElement>('[data-reel-video]');
+      const sound = card.querySelector<HTMLButtonElement>('[data-reel-sound]');
+      if (!video || !sound) return;
+      sound.addEventListener('click', () => {
+        if (video.muted) {
+          // Une seule vidéo sonore : on coupe les autres.
+          videos.forEach((v) => {
+            if (v !== video) v.muted = true;
+          });
+          video.muted = false;
+          void video.play().catch(() => {});
+        } else {
+          video.muted = true;
+        }
+        syncIcons();
+      });
+    });
+    syncIcons();
+  }
+</script>

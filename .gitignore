@@ -17,3 +17,7 @@ dist/
 .DS_Store
 *.log
 .vercel
+
+# Médias sources & utilitaires locaux (non déployés)
+/Vid*os/
+VOIR-LE-SITE.command

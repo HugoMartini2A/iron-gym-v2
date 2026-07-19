@@ -17,7 +17,7 @@ import { legalEntity, contact } from '../data/content';
   <p>
     Le responsable du traitement est <strong>{legalEntity.name}</strong>,
     {legalEntity.form}, {legalEntity.address}.
-    Contact : {legalEntity.phone} — <span class="todo">{legalEntity.email}</span>.
+    Contact : {legalEntity.phone} — {legalEntity.email}.
   </p>
 
   <h2>Données collectées</h2>
@@ -59,13 +59,52 @@ import { legalEntity, contact } from '../data/content';
     à des fins commerciales.
   </p>
 
-  <h2>Cookies</h2>
+  <h2>Transferts hors Union européenne</h2>
   <p>
-    Le site ne dépose <strong>aucun cookie de suivi</strong> par défaut et ne
-    charge aucun tracker publicitaire. La <strong>carte Google Maps</strong> de la
-    page Accès n'est chargée que si vous cliquez explicitement sur « Charger la
-    carte Google » ; ce chargement dépose alors des cookies tiers déposés par
-    Google. Tant que vous ne cliquez pas, aucune requête n'est envoyée à Google.
+    Certains prestataires techniques sont susceptibles de traiter des données en
+    dehors de l'Union européenne :
+  </p>
+  <ul>
+    <li>
+      <strong>Web3Forms</strong> — service d'acheminement du formulaire de contact ;
+    </li>
+    <li>
+      <strong>Vercel Inc.</strong> — hébergeur du site.
+    </li>
+  </ul>
+  <p>
+    Ces deux prestataires étant établis aux <strong>États-Unis</strong>, les données
+    transmises via le formulaire peuvent transiter par les États-Unis. Ces transferts
+    sont encadrés par les garanties prévues au chapitre V du RGPD (clauses
+    contractuelles types de la Commission européenne et/ou adhésion au
+    <em>Data Privacy Framework</em>). Aucune donnée n'est transférée à des fins
+    commerciales.
+  </p>
+
+  <h2>Cookies & consentement</h2>
+  <p>
+    Le site ne dépose <strong>aucun cookie de mesure d'audience, de suivi ou de
+    pistage publicitaire</strong>. Les polices de caractères sont hébergées sur
+    notre propre serveur (aucun appel à Google Fonts) et aucun réseau social n'est
+    chargé au démarrage.
+  </p>
+  <p>
+    Le seul contenu tiers susceptible de déposer des cookies est la
+    <strong>carte Google&nbsp;Maps</strong> (section « Accès & Contact »), fournie
+    par Google Ireland Ltd. Conformément à la directive ePrivacy et aux
+    recommandations de la CNIL, cette carte n'est <strong>chargée qu'après recueil
+    de votre consentement</strong> :
+  </p>
+  <ul>
+    <li>un <strong>bandeau</strong> vous permet, dès la première visite, d'« Autoriser » ou de « Refuser » — le refus est aussi simple que l'acceptation ;</li>
+    <li>tant que vous n'avez pas autorisé, aucune requête n'est envoyée à Google et la carte reste masquée derrière un aperçu cliquable ;</li>
+    <li>vous pouvez <strong>modifier votre choix à tout moment</strong> via le lien « Gérer les cookies » en pied de page.</li>
+  </ul>
+  <p>
+    Votre choix est mémorisé localement dans votre navigateur (stockage de première
+    partie) et n'est partagé avec aucun tiers. Les cookies éventuellement déposés par
+    Google relèvent de la
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">politique de confidentialité de Google</a>.
   </p>
 
   <h2>Vos droits</h2>
@@ -74,17 +113,33 @@ import { legalEntity, contact } from '../data/content';
     <strong> rectification</strong>, d'<strong>effacement</strong>, de
     <strong> limitation</strong>, d'<strong>opposition</strong> et de
     <strong> portabilité</strong> de vos données. Pour les exercer, contactez-nous
-    par téléphone au {contact.phone.display} ou par email à
-    <span class="todo"> {legalEntity.email}</span>.
+    par téléphone au {contact.phone.display} ou par email à {legalEntity.email}.
+    Nous nous engageons à répondre à toute demande dans un délai maximal d'un mois.
   </p>
   <p>
-    Vous pouvez également introduire une réclamation auprès de la
+    Vous pouvez également définir des <strong>directives relatives au sort de vos
+    données après votre décès</strong> (art. 85 de la loi « Informatique et
+    Libertés »), générales ou particulières.
+  </p>
+  <p>
+    Enfin, vous pouvez introduire une réclamation auprès de la
     <strong> CNIL</strong> (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).
+  </p>
+
+  <h2>Sécurité</h2>
+  <p>
+    Le site est servi intégralement en <strong>HTTPS</strong> (chiffrement des
+    échanges entre votre navigateur et nos serveurs). L'accès aux messages reçus est
+    restreint aux personnes habilitées d'Iron Gym Limoges. <strong>Aucune donnée
+    bancaire</strong> n'est collectée ni stockée via ce site.
   </p>
 
   <h2>Délégué à la protection des données</h2>
   <p>
-    <span class="todo">[À COMPLÉTER]</span> — désigner un référent RGPD / DPO si
-    applicable, et indiquer son contact.
+    Compte tenu de la nature et du volume des traitements (formulaire de contact
+    d'une salle de sport associative), la désignation d'un délégué à la protection
+    des données (DPO) n'est pas obligatoire. Pour toute question relative à vos
+    données, adressez-vous directement au responsable du traitement aux
+    coordonnées ci-dessus.
   </p>
 </Legal>

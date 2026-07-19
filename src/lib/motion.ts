@@ -36,6 +36,7 @@ export function initSite(): void {
 
   if (REDUCED) {
     setupNavMenu(null);
+    setupAnchors(null); // one-page : ancres actives même sans Lenis
     reducedInit();
     return;
   }
@@ -48,32 +49,24 @@ export function initSite(): void {
   });
 
   lenis.on('scroll', ScrollTrigger.update);
-
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
   gsap.ticker.lagSmoothing(0);
+
+  // Boucle RAF autonome de Lenis (config canonique). L'intégration via
+  // gsap.ticker laissait Lenis dormant (isSmooth false, pas de lissé). Ici
+  // lenis.raf tourne à chaque frame → le smooth-wheel s'active réellement ;
+  // ScrollTrigger reste synchronisé via lenis.on('scroll').
+  const lenisRaf = (time: number) => {
+    lenis.raf(time);
+    requestAnimationFrame(lenisRaf);
+  };
+  requestAnimationFrame(lenisRaf);
 
   // Menu mobile AVANT le handler d'ancres : au clic d'un lien, le menu se ferme
   // (et relance Lenis) d'abord, puis l'ancre scrolle.
   setupNavMenu(lenis);
 
-  // Anchor links → scroll lissé Lenis, avec offset pour le header fixe.
-  const navEl = document.querySelector<HTMLElement>('[data-nav]');
-  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      const headerH = navEl?.offsetHeight ?? 0;
-      lenis.scrollTo(target as HTMLElement, {
-        offset: id === '#top' ? 0 : -(headerH + 12),
-        duration: 1.2,
-      });
-    });
-  });
+  // Anchor links → scroll lissé Lenis (one-page).
+  setupAnchors(lenis);
 
   // Choreography
   setupLineMasks();
@@ -81,6 +74,7 @@ export function initSite(): void {
   setupCounts();
   setupYearCount();
   setupParallax();
+  setupHeroScroll();
   setupTemple();
   setupHeritage();
   setupMarquee(lenis);
@@ -97,6 +91,54 @@ export function initSite(): void {
 // ─────────────────────────────────────────────────────────────────────────────
 // Reduced motion : tout visible, pas de Lenis.
 // ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Ancres de navigation one-page. Fonctionne AVEC Lenis (scroll lissé) et SANS
+ * (reduced-motion → scroll natif). Attaché dans les deux modes pour que la nav
+ * du one-page défile toujours, avec offset pour le header fixe.
+ */
+function setupAnchors(lenis: Lenis | null): void {
+  const navEl = document.querySelector<HTMLElement>('[data-nav]');
+
+  // Scroll natif animé (easeOutCubic) vers une valeur Y absolue. Fiable dans
+  // tous les cas : on NE dépend PAS de lenis.scrollTo (dont l'animation par
+  // durée ne tourne pas ici) ni de lenis.stop() (qui clippe l'overflow). Le
+  // scroll natif fonctionne et persiste ; s'il existe, on resynchronise Lenis
+  // à l'arrivée pour qu'il reprenne au bon endroit.
+  const animateTo = (top: number) => {
+    const start = window.scrollY;
+    const dist = top - start;
+    if (Math.abs(dist) < 2) return;
+    const t0 = performance.now();
+    const dur = Math.min(1000, 380 + Math.abs(dist) * 0.32);
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+    const step = (now: number) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const y = start + dist * ease(p);
+      // Piloter Lenis en `immediate` chaque frame : il pose scroll ET
+      // targetScroll, donc sa boucle raf ne réécrase pas (le mode « durée »
+      // ne tourne pas ici). Sans Lenis : scroll natif.
+      if (lenis) lenis.scrollTo(y, { immediate: true });
+      else window.scrollTo(0, y);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      const target = document.querySelector<HTMLElement>(id);
+      if (!target) return;
+      e.preventDefault();
+      const headerH = navEl?.offsetHeight ?? 0;
+      const offset = id === '#top' ? 0 : -(headerH + 12);
+      const top = target.getBoundingClientRect().top + window.scrollY + offset;
+      animateTo(Math.max(0, top));
+    });
+  });
+}
+
 function reducedInit(): void {
   document.documentElement.classList.remove('js-motion');
   gsap.set('[data-reveal], .line-inner, [data-hero-fade]', {
@@ -124,16 +166,27 @@ function reducedInit(): void {
 function setupReveals(): void {
   gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
     const delay = parseFloat(el.dataset.revealDelay ?? '0');
+    // Direction du glissé : '' (défaut, léger depuis le bas) | 'up' (depuis le
+    // bas, ample) | 'down' (depuis le haut) | 'left' | 'right'. Les photos
+    // reçoivent une direction → elles « glissent » depuis un bord de l'écran.
+    const dir = el.dataset.reveal || '';
+    const dist = parseFloat(el.dataset.revealDist ?? (dir ? '110' : '28'));
+    const from: gsap.TweenVars = { opacity: 0 };
+    if (dir === 'left') from.x = -dist;
+    else if (dir === 'right') from.x = dist;
+    else if (dir === 'down') from.y = -dist; // entre depuis le HAUT
+    else from.y = dist; // 'up' / défaut : entre depuis le BAS
+    gsap.set(el, from);
     gsap.to(el, {
       opacity: 1,
+      x: 0,
       y: 0,
-      duration: 1,
+      duration: dir ? 1.2 : 1,
       delay,
       ease: 'enter',
-      scrollTrigger: { trigger: el, start: 'top 85%' },
+      scrollTrigger: { trigger: el, start: 'top 88%' },
     });
   });
-  gsap.set('[data-reveal]', { y: 28 });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -238,49 +291,37 @@ function setupParallax(): void {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Hero : parallaxe au scroll. En quittant le hero, le contenu monte et s'estompe
+// tandis que la statue dérive légèrement → sensation de profondeur cinétique
+// (le « hook » se prolonge dans le mouvement). Démarre AU REPOS (scroll 0).
+// ─────────────────────────────────────────────────────────────────────────────
+function setupHeroScroll(): void {
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (!hero) return;
+  const content = hero.querySelector<HTMLElement>('.u-container');
+  const statue = hero.querySelector<HTMLElement>('[data-statue]');
+  const st = {
+    trigger: hero,
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true,
+  } as const;
+  if (content) {
+    gsap.to(content, { yPercent: -14, opacity: 0.25, ease: 'none', scrollTrigger: st });
+  }
+  if (statue) {
+    gsap.to(statue, { yPercent: 10, ease: 'none', scrollTrigger: st });
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Le Temple : galerie horizontale épinglée (desktop), swipe natif (mobile)
 // + barre de progression discrète.
 // ─────────────────────────────────────────────────────────────────────────────
 function setupTemple(): void {
-  const section = document.querySelector<HTMLElement>('[data-temple]');
-  const track = document.querySelector<HTMLElement>('[data-temple-track]');
-  const progress = document.querySelector<HTMLElement>('[data-temple-progress]');
-  if (!section || !track) return;
-
-  const setProgress = (p: number) => {
-    if (progress) progress.style.transform = `scaleX(${Math.max(0, Math.min(1, p))})`;
-  };
-
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 1024px)', () => {
-    track.style.overflow = 'visible';
-    const distance = () => track.scrollWidth - window.innerWidth;
-    const tween = gsap.to(track, {
-      x: () => -distance(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: () => '+=' + distance(),
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-        onUpdate: (self) => setProgress(self.progress),
-      },
-    });
-    return () => tween.kill();
-  });
-
-  mm.add('(max-width: 1023px)', () => {
-    const onScroll = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      setProgress(max > 0 ? track.scrollLeft / max : 0);
-    };
-    track.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => track.removeEventListener('scroll', onScroll);
-  });
+  // Revue DA #12 : plus de scroll horizontal pinné sur desktop (« slider »).
+  // Desktop = grille éditoriale statique révélée au scroll (data-reveal), mobile
+  // = swipe natif. Plus aucune mécanique JS nécessaire ici.
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -560,10 +601,33 @@ function setupContactForm(): void {
   const submitBtn = formEl.querySelector<HTMLButtonElement>('button[type="submit"]');
   const submitLabel = formEl.querySelector<HTMLElement>('[data-submit-label]');
 
+  /**
+   * A7 — Les erreurs de validation étaient purement visuelles : le texte
+   * apparaissait à l'écran mais n'était jamais annoncé. Un utilisateur de
+   * lecteur d'écran voyait sa soumission échouer sans savoir pourquoi ni quel
+   * champ corriger.
+   *
+   * Trois liaisons rétablissent l'information :
+   *   • `role="alert"` sur le message  → il est annoncé dès son apparition
+   *   • `aria-describedby` sur le champ → le message est lu avec le champ
+   *   • `aria-invalid` sur le champ     → l'état d'erreur est exposé
+   */
   const setError = (name: string, msg: string) => {
     const el = formEl.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
-    const field = formEl.querySelector<HTMLElement>(`[name="${name}"]`)?.closest('.field');
-    if (el) el.textContent = msg;
+    const input = formEl.querySelector<HTMLElement>(`[name="${name}"]`);
+    const field = input?.closest('.field');
+
+    if (el) {
+      el.textContent = msg;
+      // L'id est posé à la volée : les messages sont vides au rendu initial.
+      if (!el.id) el.id = `err-${name}`;
+      el.setAttribute('role', 'alert');
+    }
+    if (input) {
+      input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      if (msg && el) input.setAttribute('aria-describedby', el.id);
+      else input.removeAttribute('aria-describedby');
+    }
     field?.classList.toggle('field--error', !!msg);
   };
 

@@ -1,16 +1,15 @@
 ---
 import { champions } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
 
 const { googleRating } = champions;
 // Note affichée à la française : 4.5 → « 4,5 ».
 const scoreFr = googleRating.score.toLocaleString('fr-FR', {
   minimumFractionDigits: 1,
 });
-// Largeur du remplissage doré des étoiles (4,5/5 → 90%).
+// Largeur du remplissage des étoiles (note /5 → pourcentage).
 const starFill = `${(googleRating.score / 5) * 100}%`;
 
-// Avatar = initiale dans un cercle doré. Accent déterministe par initiale,
+// Avatar = initiale dans un cercle accentué. Accent déterministe par initiale,
 // puisé dans la charte blooden era (pas de photo — on ne les a pas).
 // Fonds sombres uniquement → l'initiale blanche garde un contraste AA.
 const ACCENTS = [
@@ -26,8 +25,7 @@ const accentFor = (name: string) =>
 <section id="avis" class="relative py-[var(--spacing-section)]" data-parallax-scope>
   <div class="u-container">
     <div class="max-w-3xl">
-      <SectionLabel text={champions.label} />
-      <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+      <h2 data-reveal class="display mt-6 text-[clamp(2rem,4.6vw,3.6rem)] text-haze">
         {champions.title}
       </h2>
       <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{champions.intro}</p>
@@ -106,7 +104,7 @@ const accentFor = (name: string) =>
           {
             champions.reviews.map((r) => (
               <li class="reviews-slide shrink-0 px-2">
-                <figure class="flex h-full flex-col rounded-md border border-blood/15 bg-surface/50 p-7">
+                <figure class="flex h-full flex-col rounded-md border border-blood/15 bg-surface/50 p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-blood/40 hover:bg-surface/70 hover:shadow-[0_24px_50px_-30px_rgba(0,0,0,0.95)]">
                   <div class="flex items-center gap-3">
                     <span
                       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-lg leading-none text-bone"

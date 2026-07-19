@@ -1,11 +1,13 @@
 ---
 import Layout from '../layout/Layout.astro';
+import { healthClubSchema, videoSchema } from '../lib/schema';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/sections/Hero.astro';
 import Manifesto from '../components/sections/Manifesto.astro';
 import Heritage from '../components/sections/Heritage.astro';
 import Marquee from '../components/sections/Marquee.astro';
 import Temple from '../components/sections/Temple.astro';
+import Ambiance from '../components/sections/Ambiance.astro';
 import Programs from '../components/sections/Programs.astro';
 import Schedule from '../components/sections/Schedule.astro';
 import Champions from '../components/sections/Champions.astro';
@@ -15,7 +17,7 @@ import Contact from '../components/sections/Contact.astro';
 import Footer from '../components/sections/Footer.astro';
 ---
 
-<Layout>
+<Layout schema={[healthClubSchema(), videoSchema()]}>
   <Nav />
   <main>
     <Hero />
@@ -23,6 +25,7 @@ import Footer from '../components/sections/Footer.astro';
     <Heritage />
     <Marquee />
     <Temple />
+    <Ambiance />
     <Programs />
     <Schedule />
     <Champions />

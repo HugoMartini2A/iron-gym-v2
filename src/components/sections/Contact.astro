@@ -1,6 +1,5 @@
 ---
-import { contact, form } from '../../data/content';
-import SectionLabel from '../ui/SectionLabel.astro';
+import { contact, form, legalEntity } from '../../data/content';
 
 // Format d'affichage des horaires d'accueil (source unique : contact.receptionHours).
 const fmtHM = (hm: string) => hm.replace(':', 'h');
@@ -30,8 +29,7 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
 <section id="contact" class="relative py-[var(--spacing-section)]">
   <div class="godrays pointer-events-none absolute inset-0 opacity-15" aria-hidden="true"></div>
   <div class="u-container relative">
-    <SectionLabel text={contact.label} />
-    <h2 data-reveal class="display mt-6 text-[clamp(2.25rem,6vw,4.5rem)] text-haze">
+    <h2 data-reveal class="display mt-6 text-[clamp(2rem,4.6vw,3.6rem)] text-haze">
       {contact.title}
     </h2>
     <p data-reveal class="mt-5 max-w-xl text-lg text-haze/70">{contact.intro}</p>
@@ -111,7 +109,17 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
         </form>
 
         <!-- État de succès (révélé après envoi) -->
-        <div data-form-success hidden class="mt-6 rounded-md border border-blood/30 bg-surface/60 p-8 text-center">
+        {/* A7 — La confirmation d'envoi n'était pas annoncée : l'utilisateur de
+            lecteur d'écran ne savait pas si son message était parti.
+            `role="status"` + `aria-live="polite"` la font annoncer sans
+            interrompre la lecture en cours. */}
+        <div
+          data-form-success
+          hidden
+          role="status"
+          aria-live="polite"
+          class="mt-6 rounded-md border border-blood/30 bg-surface/60 p-8 text-center"
+        >
           <svg class="mx-auto h-12 w-12 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <circle cx="12" cy="12" r="10" />
             <path d="M8 12l3 3 5-6" />
@@ -133,6 +141,13 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
             <p class="label-mono !text-bronze">Téléphone</p>
             <a href={`tel:${contact.phone.tel}`} class="mt-3 inline-block display text-3xl text-gradient-blood hover:opacity-80">
               {contact.phone.display}
+            </a>
+            <p class="label-mono mt-5 !text-bronze">Email</p>
+            <a
+              href={`mailto:${legalEntity.email}`}
+              class="mt-2 inline-block break-all font-sans text-haze/80 underline-offset-2 transition-colors hover:text-blood-hi hover:underline"
+            >
+              {legalEntity.email}
             </a>
           </div>
           <div class="sm:col-span-2">
@@ -183,24 +198,85 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
           </div>
         </div>
 
-        <!-- Carte Google Maps — iframe intégrée directement. Maquette en noindex
-             (prospection privée) → embed direct autorisé. L'iframe remplit le
-             conteneur à ratio fixe : aucune zone vide. Sur un site client public,
-             re-gater derrière une façade cookieless au clic (cf. ~/.claude/CLAUDE.md). -->
+        <!-- Carte Google Maps — chargement CONDITIONNÉ AU CONSENTEMENT (RGPD).
+             Façade par défaut (zéro cookie tiers). Se charge AUTOMATIQUEMENT si le
+             consentement « cookies carte » a été accordé via le bandeau ; sinon un
+             clic explicite sur la façade vaut consentement ponctuel pour la carte. -->
         <div
           data-reveal
           class="map-embed relative aspect-[11/6] w-full overflow-hidden rounded-md border border-steel/25"
+          data-map-facade
+          data-map-src={mapEmbedUrl}
         >
-          <iframe
-            src={mapEmbedUrl}
-            title="Carte — Iron Gym Limoges, 31 rue François Chénieux, 87000 Limoges"
-            class="map-embed__frame"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen
-          ></iframe>
+          <button
+            type="button"
+            data-map-load
+            class="map-facade group absolute inset-0 flex flex-col items-center justify-center gap-3 text-center"
+            aria-label="Afficher la carte Google Maps (charge un contenu tiers déposant des cookies)"
+          >
+            <svg class="h-9 w-9 text-blood-hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            <span class="display text-xl text-bone">31 rue François Chénieux</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-blood/40 px-4 py-2 font-mono text-xs uppercase tracking-widest text-blood-hi transition-colors group-hover:border-blood group-hover:bg-blood/10">
+              Afficher la carte
+            </span>
+            <span class="max-w-xs font-mono text-[0.6rem] leading-relaxed text-haze/45">
+              La carte est fournie par Google Maps et dépose des cookies tiers.
+            </span>
+          </button>
         </div>
-
+        <script>
+          (() => {
+            const wraps = Array.from(document.querySelectorAll<HTMLElement>('[data-map-facade]'));
+            if (!wraps.length) return;
+            const load = (wrap: HTMLElement) => {
+              const src = wrap.dataset.mapSrc;
+              if (!src || wrap.dataset.loaded) return;
+              wrap.dataset.loaded = '1';
+              const iframe = document.createElement('iframe');
+              iframe.src = src;
+              iframe.title = 'Carte — Iron Gym Limoges, 31 rue François Chénieux, 87000 Limoges';
+              iframe.className = 'map-embed__frame';
+              // Style forcé en inline : une iframe créée en JS ne porte pas
+              // l'attribut de scope Astro, donc la règle .map-embed__frame scopée
+              // ne s'y applique pas → sans ça, elle garde sa taille par défaut
+              // (~300×150) au lieu de remplir le cadre.
+              iframe.style.cssText =
+                'position:absolute;inset:0;width:100%;height:100%;border:0;display:block;';
+              iframe.loading = 'lazy';
+              iframe.allowFullscreen = true;
+              iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+              wrap.replaceChildren(iframe);
+            };
+            // Auto-chargement si consentement déjà accordé (robuste à l'ordre des scripts).
+            let granted = document.documentElement.dataset.consentMaps === 'granted';
+            try {
+              granted = granted || localStorage.getItem('ig-consent-maps-v1') === 'granted';
+            } catch {
+              /* stockage indisponible */
+            }
+            if (granted) wraps.forEach(load);
+            // Réagit au choix fait dans le bandeau pendant la session.
+            window.addEventListener('consent:maps', (e) => {
+              if ((e as CustomEvent).detail === 'granted') wraps.forEach(load);
+            });
+            // Clic explicite sur la façade = consentement ponctuel pour la carte.
+            wraps.forEach((wrap) => {
+              const btn = wrap.querySelector<HTMLButtonElement>('[data-map-load]');
+              btn?.addEventListener('click', () => {
+                try {
+                  localStorage.setItem('ig-consent-maps-v1', 'granted');
+                } catch {
+                  /* ignore */
+                }
+                document.documentElement.dataset.consentMaps = 'granted';
+                load(wrap);
+              });
+            });
+          })();
+        </script>
         <div class="flex flex-wrap items-center gap-3">
           <a
             href={directionsUrl}
@@ -234,8 +310,7 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
 </section>
 
 <style>
-  /* Carte Google Maps : conteneur à ratio fixe (aspect-[11/6]) ; l'iframe le
-     remplit entièrement → aucune zone vide. Fond surface pendant le chargement. */
+  /* Carte Google Maps : conteneur à ratio fixe (aspect-[11/6]). */
   .map-embed { background: var(--color-surface); }
   .map-embed__frame {
     position: absolute;
@@ -244,5 +319,18 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'be188250-d12b-4e90
     height: 100%;
     border: 0;
     display: block;
+  }
+  /* Façade cookieless : fond acier discret + grain, cliquable. */
+  .map-facade {
+    cursor: pointer;
+    background:
+      radial-gradient(90% 80% at 30% 20%, color-mix(in srgb, var(--color-blood) 12%, transparent), transparent 60%),
+      linear-gradient(150deg, var(--color-surface) 0%, var(--color-ink) 100%);
+    transition: background 0.4s var(--ease-soft);
+  }
+  .map-facade:hover {
+    background:
+      radial-gradient(90% 80% at 30% 20%, color-mix(in srgb, var(--color-blood) 18%, transparent), transparent 60%),
+      linear-gradient(150deg, var(--color-surface-2) 0%, var(--color-ink) 100%);
   }
 </style>

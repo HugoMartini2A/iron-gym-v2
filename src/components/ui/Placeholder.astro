@@ -1,8 +1,14 @@
 ---
 /**
- * Affiche une image réelle (optimisée par Astro <Image> → WebP responsive,
- * duotone acier + rouge sang) OU, tant que `src` est null, un bloc placeholder
- * étiqueté. Réserve toujours la place via aspect-ratio → zéro CLS.
+ * Affiche une image réelle (optimisée par Astro <Image> → WebP responsive)
+ * OU, tant que `src` est null, un bloc placeholder étiqueté.
+ * Réserve toujours la place via aspect-ratio → zéro CLS.
+ *
+ * RÉGIMES (lot A5) — le traitement tonal est gravé dans les fichiers, pas
+ * appliqué au runtime. `regime` ne fait que choisir le cadre et le voile :
+ *   • 'present' (défaut) → N&B contrasté, voile de pied pour asseoir sur #0A0A0A
+ *   • 'archive'          → sépia délavé, liseré papier, tout l'avant-2018
+ * Les deux ne se mélangent jamais dans un même cadre (cf. BLUEPRINT-V2 §5.2).
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -12,8 +18,9 @@ interface Props {
   media: Media;
   class?: string;
   eager?: boolean;
+  regime?: 'present' | 'archive';
 }
-const { media, class: className = '', eager = false } = Astro.props;
+const { media, class: className = '', eager = false, regime = 'present' } = Astro.props;
 const ratio = media.ratio ?? '4/5';
 
 // Mappe les chemins de content.ts (/images/x.webp) vers les assets importés
@@ -32,7 +39,7 @@ const resolved: ImageMetadata | null = media.src
 ---
 
 <figure
-  class={`duotone-wrap relative isolate overflow-hidden ${className}`}
+  class={`media-wrap relative isolate overflow-hidden ${className}`}
   style={`aspect-ratio:${ratio}`}
 >
   {
@@ -40,9 +47,10 @@ const resolved: ImageMetadata | null = media.src
       <Image
         src={resolved}
         alt={media.alt}
-        class="duotone h-full w-full object-cover"
+        class={`img-${regime} h-full w-full object-cover`}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
+        quality={68}
       />
     ) : (
       <div class="placeholder-media h-full w-full" role="img" aria-label={media.alt}>

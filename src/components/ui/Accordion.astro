@@ -1,0 +1,88 @@
+---
+/**
+ * FAQ en accordéon (lot A1).
+ * ----------------------------------------------------------------------------
+ * Bâti sur <details>/<summary> natifs : accessible au clavier et aux lecteurs
+ * d'écran sans une ligne de JavaScript, et le contenu reste dans le DOM même
+ * replié — donc indexable et citable par les assistants IA. C'est tout l'intérêt
+ * SEO de la FAQ ; une implémentation JS qui masque le texte le perdrait.
+ *
+ * Les entrées encore marquées `todo` (données non confirmées par le client)
+ * sont rendues UNIQUEMENT en développement, avec un bandeau d'alerte. Elles
+ * n'atteignent jamais la production.
+ */
+import type { FaqItem } from '../../data/faq';
+
+interface Props {
+  items: FaqItem[];
+  class?: string;
+}
+const { items, class: className = '' } = Astro.props;
+
+const isDev = import.meta.env.DEV;
+const publishable = items.filter((i) => !i.todo);
+const pending = items.filter((i) => i.todo);
+const rendered = isDev ? items : publishable;
+---
+
+{
+  rendered.length > 0 && (
+    <div class={`divide-y divide-blood/15 border-y border-blood/15 ${className}`}>
+      {rendered.map((item) => (
+        <details class="faq-item group" name="faq">
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left transition-colors hover:text-bone"
+            data-event="faq_ouverture"
+            data-faq={item.q}
+          >
+            <span class="display text-xl leading-snug text-haze sm:text-2xl">
+              {item.q}
+              {item.todo && (
+                <span class="label-mono ml-3 align-middle !text-rust">à confirmer</span>
+              )}
+            </span>
+            <span
+              class="faq-icon relative h-4 w-4 shrink-0 text-blood-hi transition-transform duration-300"
+              aria-hidden="true"
+            >
+              <span class="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-current" />
+              <span class="faq-bar absolute top-0 left-1/2 h-full w-px -translate-x-1/2 bg-current transition-opacity duration-300" />
+            </span>
+          </summary>
+          <p class="max-w-2xl pb-6 leading-relaxed text-haze/70">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  )
+}
+
+{
+  isDev && pending.length > 0 && (
+    <p class="label-mono mt-4 !text-rust">
+      {pending.length} entrée{pending.length > 1 ? 's' : ''} en attente de validation client — masquée
+      {pending.length > 1 ? 's' : ''} en production.
+    </p>
+  )
+}
+
+<style>
+  /* Retire le chevron natif (Safari + Chrome). */
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::marker {
+    content: '';
+  }
+  /* + devient − à l'ouverture. */
+  .faq-item[open] .faq-bar {
+    opacity: 0;
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+  /* Le ring de focus reste visible : c'est le seul repère au clavier. */
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--color-blood-hi);
+    outline-offset: 4px;
+  }
+</style>
