@@ -18,7 +18,7 @@ interface Props {
   media: Media;
   class?: string;
   eager?: boolean;
-  regime?: 'present' | 'archive';
+  regime?: 'present' | 'archive' | 'golden';
 }
 const { media, class: className = '', eager = false, regime = 'present' } = Astro.props;
 const ratio = media.ratio ?? '4/5';

@@ -356,6 +356,22 @@
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-archive) 34%, transparent);
   }
 
+  /* Régime GOLDEN — photos de la SALLE en couleur + filtre chaud « golden era »
+     (rappel des vidéos). La couleur est conservée ; on ajoute des tons dorés. */
+  .img-golden {
+    filter: saturate(1.15) contrast(1.06) brightness(1.03) sepia(0.24) hue-rotate(-6deg);
+  }
+  .media-wrap:has(.img-golden)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(130% 100% at 50% 25%, color-mix(in srgb, #d08a24 12%, transparent), transparent 68%),
+      linear-gradient(180deg, transparent 58%, color-mix(in srgb, var(--color-ink) 42%, transparent) 100%);
+  }
+
   /* Bloc placeholder photo (acier hachuré + liseré rouge). */
   .placeholder-media {
     position: relative;
@@ -683,8 +699,8 @@ html.js-motion [data-hero-chars] {
      figure dans l'ombre, registre « émerge du noir » premium). Fondu latéral
      gauche léger pour fusionner avec le voile du hero. ── */
   .statue-mount {
-    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 80%);
-    mask-image: linear-gradient(to bottom, #000 60%, transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 87%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 87%, transparent 100%);
   }
 
   /* ── Souligné animé au survol (liens) : trait qui s'étire depuis la gauche. ── */

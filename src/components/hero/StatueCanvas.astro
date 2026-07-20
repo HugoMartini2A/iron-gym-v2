@@ -151,7 +151,7 @@
         if (!subjectSize || subject === figure) return;
         const vExt = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
         const hExt = vExt * camera.aspect;
-        subject.scale.setScalar(0.9 * Math.min(vExt / subjectSize.y, hExt / subjectSize.x));
+        subject.scale.setScalar(0.85 * Math.min(vExt / subjectSize.y, hExt / subjectSize.x));
       };
 
       // Si un vrai modèle est déposé, il remplace la figure placeholder.
