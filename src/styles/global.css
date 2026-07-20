@@ -698,9 +698,22 @@ html.js-motion [data-hero-chars] {
   /* ── Statue hero : fondu bas (masque le socle/pied du modèle 3D + ancre la
      figure dans l'ombre, registre « émerge du noir » premium). Fondu latéral
      gauche léger pour fusionner avec le voile du hero. ── */
-  .statue-mount {
-    -webkit-mask-image: linear-gradient(to bottom, #000 87%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 87%, transparent 100%);
+  /* Ombre au sol : un dégradé sombre plonge les PIEDS de la statue dans l'ombre
+     → masque les artefacts (triangles) du modèle au niveau du pied, et ancre la
+     figure au lieu de la laisser flotter. Superposé au canvas (z au-dessus). */
+  .statue-mount::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 66%,
+      color-mix(in srgb, var(--color-ink) 75%, transparent) 78%,
+      var(--color-ink) 84%,
+      var(--color-ink) 100%
+    );
   }
 
   /* ── Souligné animé au survol (liens) : trait qui s'étire depuis la gauche. ── */
