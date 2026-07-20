@@ -8,8 +8,8 @@
 
 export const contact = {
   label: 'Accès & contact',
-  title: 'Poussez la porte.',
-  intro: "Un message, un appel, ou une visite directement sur place. On vous répond vite.",
+  title: 'Venez nous rencontrer.',
+  intro: "Prenez contact avec Iron Gym, échangez avec notre équipe ou venez découvrir la salle directement sur place.",
   address: {
     street: '31 rue François Chénieux',
     city: '87000 Limoges',

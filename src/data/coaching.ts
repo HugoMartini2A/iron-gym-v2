@@ -55,32 +55,27 @@ export const coaching = {
 export const programs = {
   label: 'Programmes',
   title: 'De la première séance à la scène compétitive',
-  intro: "Débutant ou confirmé, vous êtes suivi pour de vrai : bilan, programme, et un coach qui reste disponible sur le plateau.",
+  intro: "Chaque parcours est différent. Que vous découvriez la musculation ou que vous poursuiviez un objectif ambitieux, vous trouverez ici un environnement adapté pour progresser à votre rythme.",
   cards: [
     {
       n: '01',
       title: 'Musculation & prise de masse',
-      desc: "Programmation, technique et gestion des charges. Une méthode old school, incarnée et adaptée à votre progression.",
+      desc: "Une approche basée sur les fondamentaux : technique, progression et maîtrise des charges pour construire du muscle durablement.",
     },
     {
       n: '02',
-      title: 'Accompagnement individuel',
-      desc: "Bilan de départ, objectifs clairs, programme personnalisé et carnet de bord pour suivre chaque séance.",
+      title: 'Un cadre pour progresser',
+      desc: "Des conseils, des repères et un environnement pensé pour vous aider à structurer vos entraînements et avancer vers vos objectifs.",
     },
     {
       n: '03',
       title: 'Préparation physique',
-      desc: "Développer force, explosivité et condition physique. Structurer un corps performant, durable et efficace dans l'effort.",
-    },
-    {
-      n: '04',
-      title: '100+ cours collectifs / mois',
-      desc: "Tabata, Body Sculpt, Cross Training, Body Shake, Pilates, Bokwa, Crossfit… Un planning large, ouvert à tous les niveaux.",
+      desc: "Développez votre force, votre explosivité et votre condition physique grâce à un entraînement structuré, pensé pour améliorer vos performances durablement.",
     },
   ],
   highlight: {
     value: '100+',
-    unit: 'cours collectifs par mois',
-    note: 'Tabata · Body Sculpt · Cross Training · Body Shake · Pilates · Bokwa · Crossfit',
+    unit: 'cours collectifs / mois',
+    note: "Tabata, Body Sculpt, Cross Training, Body Shake, Pilates, Bokwa, Crossfit… Une grande variété de cours pour bouger, progresser et trouver l'entraînement qui vous correspond.",
   },
 } as const;

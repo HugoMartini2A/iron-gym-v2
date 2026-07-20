@@ -21,7 +21,7 @@ export const manifesto = {
     'Depuis 1992,',
     'de père en fils.',
   ],
-  body: "Depuis plus de 30 ans, Iron Gym accompagne les passionnés de musculation à Limoges. Un espace complet, du matériel fiable et une équipe présente pour vous aider à atteindre vos objectifs. Ici, chaque séance compte.",
+  body: "Depuis plus de 30 ans, Iron Gym accompagne les passionnés de musculation à Limoges. Un espace complet, des équipements de qualité et une équipe engagée pour vous accompagner dans votre progression. Ici, chaque séance vous rapproche de vos objectifs.",
   signature: '— IRON GYM · DEPUIS 1992',
 } as const;
 
@@ -50,12 +50,8 @@ export const heritage = {
       // ⚠️ OPTION B (verrouillée) : aucune fédération, aucun titre. Récit porté
       // par les faits vérifiables (dates, reprise 2018) et la transmission.
       blurb:
-        "Haltérophile, puis culturiste. Vingt ans de compétition au plus haut niveau. Il ouvre Iron Gym en 1992, la vend en 2000 — puis revient la chercher dix-huit ans plus tard et la refait de fond en comble, machine par machine.",
-      stats: [
-        { value: '1992', label: "l'ouverture" },
-        { value: '2018', label: 'le retour' },
-        { value: '20+', label: 'ans de compétition' },
-      ],
+        "Iron Gym est avant tout une histoire de passion. Après plus de vingt ans de compétition en haltérophilie et en culturisme, son fondateur ouvre la salle en 1992. Dix-huit ans après l'avoir vendue, il décide de la reprendre avec une ambition claire : redonner à Iron Gym son identité, en créant un lieu où l'exigence, la convivialité et le goût de l'effort se retrouvent à chaque séance.",
+      stats: [],
       portrait: {
         // Photo réelle de Bernard sur scène (fournie par la famille, jet 6).
         // Légende neutre, AUCUNE date affichée (l'image n'est pas datée de façon
@@ -72,10 +68,9 @@ export const heritage = {
       // ⚠️ OPTION B : « compétiteur international », jamais de fédération ni de
       // titre. Le récit tient à la répétition (même salle, même entraîneur).
       blurb:
-        "Il a grandi sur ce plateau, au milieu des barres de son père. Il est aujourd'hui compétiteur international — et il s'entraîne toujours ici, avec le même entraîneur. Même discipline, même scène, une génération plus tard.",
+        "C'est entre les murs d'Iron Gym que tout a commencé. Formé par son père dès son plus jeune âge, il est aujourd'hui compétiteur international et poursuit son entraînement dans la salle qui l'a vu grandir. La preuve que la passion se transmet autant qu'elle se construit.",
       stats: [
-        { value: 'Pro', label: 'compétiteur international' },
-        { value: '+240K', label: 'sur les réseaux' },
+        { value: 'Compétiteur', label: 'international' },
         { value: '30 ans', label: "d'écart, même plateau" },
       ],
       portrait: {
@@ -102,5 +97,5 @@ export const heritage = {
       text: 'Samuel s\'entraîne sur le même plateau. Son entraîneur, c\'est toujours son père. Trente ans après, sous le même nom.',
     },
   ],
-  pullQuote: "Ici, nous partageons plus qu'un lieu : une culture de l'effort, de la régularité et du dépassement de soi.",
+  pullQuote: "Ici, nous partageons bien plus qu'une salle : une passion du sport, le goût de l'effort et l'envie de progresser, ensemble.",
 } as const;

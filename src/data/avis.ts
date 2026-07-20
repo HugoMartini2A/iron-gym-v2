@@ -22,8 +22,8 @@ export const champions = {
   label: 'Les avis',
   // Revue DA : « La preuve se soulève » sonnait artificiel/survendu. Les avis
   // Google sont une preuve sociale, ils n'ont pas besoin d'être survendus.
-  title: 'Ce qu\'on en dit.',
-  intro: "Plus de trente ans d'activité, et des avis Google sans filtre, où l'ambiance et l'accueil reviennent presque à chaque ligne.",
+  title: 'Les avis de nos adhérents.',
+  intro: "Depuis plus de trente ans, Iron Gym rassemble une communauté de passionnés. Découvrez les retours de celles et ceux qui font vivre la salle au quotidien.",
   reviewsLabel: 'Ce qu\'on en dit',
   // Note globale Google — snapshot PUBLIC de la fiche daté du 20/06/2026.
   // À rafraîchir périodiquement (ou brancher la Places API). Voir README.

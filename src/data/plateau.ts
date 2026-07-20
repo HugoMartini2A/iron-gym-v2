@@ -10,12 +10,12 @@ import type { Media } from './types';
 export const temple = {
   label: 'Le temple',
   title: 'Matériel moderne, esprit old school.',
-  intro: "Un plateau moderne, des machines sélectionnées pour leur qualité et un espace où chaque pratiquant peut s'entraîner dans les meilleures conditions.",
+  intro: "Le confort d'équipements modernes, l'authenticité d'une salle de passionnés. Un lieu où l'on vient avant tout pour s'entraîner, progresser et prendre plaisir à revenir.",
   spaces: [
     {
       tag: 'Plateau musculation',
       title: '20+ machines',
-      desc: "Des charges libres aux machines guidées, chaque espace est pensé pour accompagner votre progression et vous aider à atteindre vos objectifs.",
+      desc: "Un parc d'équipements complet, pensé pour vous permettre de cibler chaque groupe musculaire.",
       media: {
         src: '/images/temple-plateau.webp',
         alt: 'Le plateau de musculation Iron Gym, machines sous la charpente',
@@ -26,7 +26,7 @@ export const temple = {
     {
       tag: 'Charges libres',
       title: 'Le mur de fonte',
-      desc: "Un espace dédié aux charges libres. Haltères, bancs et équipements pour construire de solides bases.",
+      desc: "Ici, pas de superflu. Des charges libres, des bancs et tout ce qu'il faut pour s'entraîner sérieusement et progresser séance après séance.",
       media: {
         src: '/images/temple-charges.webp',
         alt: 'Mur d\'haltères et bancs devant la pierre apparente, Iron Gym',
@@ -36,8 +36,8 @@ export const temple = {
     },
     {
       tag: 'Cardio',
-      title: '28 postes cardio',
-      desc: "Pour l'échauffement, la récupération ou le dépassement de soi. Un plateau complet pour travailler votre endurance dans les meilleures conditions.",
+      title: "L'espace cardio",
+      desc: "Que ce soit pour vous échauffer, récupérer ou progresser, notre espace cardio vous accompagne à chaque étape de votre entraînement.",
       media: {
         src: '/images/temple-cardio.webp',
         alt: 'Le pôle cardio Iron Gym, vélos alignés sous la charpente',
@@ -48,7 +48,7 @@ export const temple = {
     {
       tag: 'Force libre',
       title: 'Cage & racks',
-      desc: "Cages à squat, barres et anneaux pour travailler les mouvements fondamentaux et progresser en force.",
+      desc: "Cages à squat, barres et anneaux réunis dans un espace dédié aux mouvements fondamentaux et au développement de votre force.",
       media: {
         src: '/images/temple-force.webp',
         alt: 'Cage à squat et racks de force libre, Iron Gym',
@@ -59,7 +59,7 @@ export const temple = {
     {
       tag: 'Extérieur',
       title: 'Cage street workout',
-      desc: "La seule salle de Limoges avec une cage extérieure. Tractions, dips et calisthénie au grand air, toute l'année.",
+      desc: "Un espace extérieur dédié au poids du corps, avec tractions, dips et exercices de calisthénie pour varier vos entraînements autrement.",
       media: {
         src: '/images/temple-cage.webp',
         alt: 'La cage de street workout extérieure Iron Gym',
@@ -69,8 +69,8 @@ export const temple = {
     },
     {
       tag: 'Récupération',
-      title: 'Cabine sauna privée',
-      desc: "Un espace de récupération accessible sur réservation, inclus dans votre abonnement. Parce que progresser passe aussi par une bonne récupération.",
+      title: 'Le sauna',
+      desc: "Parce que la progression ne se construit pas uniquement pendant l'entraînement. Un espace dédié à la récupération et au bien-être après l'effort.",
       media: {
         // Photo d'ambiance Unsplash (cabine bois) — JosephAli Music, Unsplash
         // License. Lieu, pas une personne → Unsplash légitime. Duotone en CSS.
@@ -83,7 +83,7 @@ export const temple = {
     {
       tag: 'Détente',
       title: 'Bar & terrasse',
-      desc: "Café, shakers et compléments à disposition. Un espace convivial pour échanger et prolonger le moment après l'entraînement.",
+      desc: "Un espace pour se retrouver après l'entraînement, échanger autour d'un café ou d'un shaker et partager un moment avec la communauté Iron Gym.",
       media: {
         src: '/images/temple-terrasse.webp',
         alt: 'La terrasse extérieure et l\'espace détente Iron Gym',

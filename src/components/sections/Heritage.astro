@@ -39,7 +39,7 @@ const years = currentYear - FOUNDED;
         data-count-year
         data-count-from={FOUNDED}
         data-count-trigger="[data-heritage]"
-        class="num text-gradient-blood text-[clamp(3rem,10vw,7.5rem)] leading-[0.8]"
+        class="num text-gradient-blood text-[clamp(3rem,10vw,7.5rem)] leading-[1.1] pb-[0.06em]"
       >{currentYear}</span>
       <span
         data-year-caption
@@ -70,33 +70,20 @@ const years = currentYear - FOUNDED;
               <h3 data-reveal class="display text-3xl text-gradient-blood sm:text-4xl">{fig.name}</h3>
               <p data-reveal class="label-mono mt-2 !text-bronze">{fig.role}</p>
               <p data-reveal class="mt-4 leading-relaxed text-haze/75">{fig.blurb}</p>
-              <dl class="mt-6 flex flex-wrap gap-x-8 gap-y-4">
-                {fig.stats.map((s) => (
-                  <div data-reveal>
-                    <dt class="num text-2xl text-haze">{s.value}</dt>
-                    <dd class="label-mono mt-1 !text-haze/50">{s.label}</dd>
-                  </div>
-                ))}
-              </dl>
+              {fig.stats.length > 0 && (
+                <dl class="mt-6 flex flex-wrap gap-x-8 gap-y-4">
+                  {fig.stats.map((s) => (
+                    <div data-reveal>
+                      <dt class="num text-2xl text-haze">{s.value}</dt>
+                      <dd class="label-mono mt-1 !text-haze/50">{s.label}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
           </article>
         ))
       }
-    </div>
-
-    <!-- Le récit héros -->
-    <div class="mt-24 max-w-4xl">
-      <p data-reveal class="label-mono">{heritage.storyLabel}</p>
-      <div class="mt-8 space-y-12">
-        {
-          heritage.story.map((step) => (
-            <div data-story-step class="grid gap-4 sm:grid-cols-[9.5rem_1fr] sm:gap-10">
-              <span class="display text-3xl text-gradient-blood sm:text-right">{step.year}</span>
-              <p class="font-sans text-xl leading-relaxed text-haze/85 sm:text-2xl">{step.text}</p>
-            </div>
-          ))
-        }
-      </div>
     </div>
 
     <!-- Pull quote -->

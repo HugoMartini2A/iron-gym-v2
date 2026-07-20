@@ -127,7 +127,7 @@
   --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* — Rythme — (resserré : moins de vides noirs entre blocs) */
-  --spacing-section: clamp(3.25rem, 8vh, 7rem);
+  --spacing-section: clamp(2.25rem, 5vh, 4.5rem);
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -572,7 +572,11 @@ html.js-motion [data-hero-chars] {
     background:
       radial-gradient(120% 80% at 82% 0%, color-mix(in srgb, var(--color-blood) 16%, transparent), transparent 58%),
       var(--color-ink);
-    animation: menu-in 0.28s var(--ease-soft);
+    /* opacity explicite + fill-mode `both` : le menu reste visible à l'ouverture
+       (sans fill-mode, l'anim opacity 0→1 pouvait le laisser à 0 sur mobile /
+       aux ouvertures répétées → menu "ouvert" mais invisible). */
+    opacity: 1;
+    animation: menu-in 0.28s var(--ease-soft) both;
   }
   .mobile-menu__list {
     display: flex;

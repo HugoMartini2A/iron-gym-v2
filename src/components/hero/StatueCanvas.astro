@@ -16,7 +16,7 @@
 
 <div
   data-statue
-  class="statue-mount pointer-events-none absolute inset-y-0 right-0 -z-0 hidden w-[52%] lg:block"
+  class="statue-mount pointer-events-none absolute inset-y-0 right-0 -z-0 w-[82%] opacity-40 sm:w-[62%] sm:opacity-55 lg:w-[52%] lg:opacity-100"
   aria-hidden="true"
 >
   <canvas data-statue-canvas class="h-full w-full"></canvas>
@@ -26,8 +26,10 @@
   const mount = document.querySelector<HTMLElement>('[data-statue]');
   const canvas = document.querySelector<HTMLCanvasElement>('[data-statue-canvas]');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const enabled =
-    !!mount && !!canvas && window.matchMedia('(min-width: 1024px)').matches;
+  // Statue active aussi sur mobile (demande client). Perf préservée par : DPR
+  // plafonné plus bas sur mobile, pause hors-écran (IntersectionObserver),
+  // reduced-motion (1 frame), boot sur idle. Seul garde-fou restant : un GPU.
+  const enabled = !!mount && !!canvas && !!(window as unknown as { WebGLRenderingContext?: unknown }).WebGLRenderingContext;
 
   const boot = () => {
     if (!enabled || !mount || !canvas) return;
@@ -40,7 +42,10 @@
       const renderer = new THREE.WebGLRenderer({
         canvas, antialias: true, alpha: true, powerPreference: 'high-performance',
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+      // DPR plafonné plus bas sur mobile (moins de pixels à calculer) → la statue
+      // tourne sans plomber les perfs sur téléphone.
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isDesktop ? 2 : 1.5));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.1;
 

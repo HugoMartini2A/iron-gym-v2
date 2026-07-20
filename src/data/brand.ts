@@ -57,7 +57,7 @@ export const cta = {
   // Hero — contact immédiat.
   call: { label: 'Appeler Iron Gym', href: 'tel:+33555797423' },
   directions: {
-    label: 'Itinéraire',
+    label: "S'y rendre",
     href: 'https://www.google.com/maps/dir/?api=1&destination=Iron%20Gym%2031%20rue%20Fran%C3%A7ois%20Ch%C3%A9nieux%2087000%20Limoges',
   },
   // One-page : conversions vers les sections de la home.
@@ -97,7 +97,7 @@ export const hero = {
   titleTop: 'IRON',
   titleBottom: 'GYM',
   baseline: 'La fonte, depuis 1992.',
-  sub: "Au 31 rue François Chénieux, en plein centre de Limoges. Musculation, cours collectifs, sauna — et quelqu'un pour vous montrer, dès le premier jour.",
+  sub: "Au cœur de Limoges, au 31 rue François Chénieux. Musculation, cours collectifs et une équipe présente pour vous accompagner dès votre premier entraînement.",
   cta: {
     label: "Réserver ma séance d'essai",
     href: '#contact',
