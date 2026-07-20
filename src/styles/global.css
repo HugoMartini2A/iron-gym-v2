@@ -715,6 +715,19 @@ html.js-motion [data-hero-chars] {
       var(--color-ink) 100%
     );
   }
+  /* Mobile/tablette : la statue est plus petite et plus haute (canvas étroit,
+     mise à l'échelle sur la largeur) → l'ombre remonte pour couvrir ses pieds. */
+  @media (max-width: 1023px) {
+    .statue-mount::after {
+      background: linear-gradient(
+        to bottom,
+        transparent 60%,
+        color-mix(in srgb, var(--color-ink) 55%, transparent) 71%,
+        var(--color-ink) 80%,
+        var(--color-ink) 100%
+      );
+    }
+  }
 
   /* ── Souligné animé au survol (liens) : trait qui s'étire depuis la gauche. ── */
   .hover-underline {
