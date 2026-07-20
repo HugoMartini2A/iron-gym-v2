@@ -248,7 +248,8 @@
         cur.y += (target.y - cur.y) * 0.045;
         subject.rotation.y = t * 0.09 + cur.x * 0.5;
         subject.rotation.x = cur.y * 0.18;
-        subject.position.y = (subject === figure ? -0.2 : 0) + Math.sin(t * 0.6) * 0.06;
+        // Abaissée légèrement (−0.4) pour dégager la tête de l'en-tête fixe.
+        subject.position.y = (subject === figure ? -0.2 : -0.4) + Math.sin(t * 0.6) * 0.06;
         renderer.render(scene, camera);
       };
       const loop = () => {
