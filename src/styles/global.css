@@ -709,9 +709,9 @@ html.js-motion [data-hero-chars] {
     pointer-events: none;
     background: linear-gradient(
       to bottom,
-      transparent 66%,
-      color-mix(in srgb, var(--color-ink) 75%, transparent) 78%,
-      var(--color-ink) 84%,
+      transparent 81%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 88%,
+      var(--color-ink) 93%,
       var(--color-ink) 100%
     );
   }
