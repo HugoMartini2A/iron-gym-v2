@@ -16,7 +16,7 @@
 
 <div
   data-statue
-  class="statue-mount pointer-events-none absolute inset-y-0 right-0 -z-0 w-[46%] sm:w-[54%] lg:w-[52%]"
+  class="statue-mount pointer-events-none absolute inset-y-0 right-0 -z-0 w-[54%] lg:w-[52%]"
   aria-hidden="true"
 >
   <canvas data-statue-canvas class="h-full w-full"></canvas>
@@ -143,6 +143,16 @@
       // SECOURS si le vrai modèle échoue. Sinon elle « flashait » ~500 ms avant
       // que le .glb arrive. Le hero reste sobre pendant le court chargement.
       let subject: import('three').Object3D = figure;
+      let subjectSize: import('three').Vector3 | null = null;
+
+      // Cadre le sujet pour qu'il tienne ENTIÈREMENT dans le canvas (jamais rogné
+      // sur les côtés), en tenant compte du ratio du canvas — étroit sur mobile.
+      const frameSubject = () => {
+        if (!subjectSize || subject === figure) return;
+        const vExt = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+        const hExt = vExt * camera.aspect;
+        subject.scale.setScalar(0.9 * Math.min(vExt / subjectSize.y, hExt / subjectSize.x));
+      };
 
       // Si un vrai modèle est déposé, il remplace la figure placeholder.
       // On essaie plusieurs emplacements — selon ce que Sketchfab produit :
@@ -167,16 +177,17 @@
               const mesh = o as import('three').Mesh;
               if (mesh.isMesh) mesh.material = metal; // acier chromé imposé
             });
-            // Recentre + met à l'échelle pour tenir dans le cadre.
+            // Recentre le modèle dans un groupe ; l'échelle est gérée par
+            // frameSubject (contain, selon le ratio du canvas) → jamais rogné.
             const box = new THREE.Box3().setFromObject(gltf.scene);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
-            const fit = 3.7 / Math.max(size.x, size.y, size.z);
-            gltf.scene.position.sub(center.multiplyScalar(fit));
-            gltf.scene.scale.setScalar(fit);
+            subjectSize = box.getSize(new THREE.Vector3());
+            gltf.scene.position.sub(box.getCenter(new THREE.Vector3()));
+            const holder = new THREE.Group();
+            holder.add(gltf.scene);
             scene.remove(figure);
-            scene.add(gltf.scene);
-            subject = gltf.scene;
+            scene.add(holder);
+            subject = holder;
+            frameSubject();
           };
           const tryLoad = (i: number) => {
             if (i >= candidates.length) {
@@ -215,6 +226,7 @@
         renderer.setSize(r.width, r.height, false);
         camera.aspect = r.width / r.height;
         camera.updateProjectionMatrix();
+        frameSubject();
       };
       resize();
       new ResizeObserver(resize).observe(mount);

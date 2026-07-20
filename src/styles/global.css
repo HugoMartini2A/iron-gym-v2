@@ -572,11 +572,11 @@ html.js-motion [data-hero-chars] {
     background:
       radial-gradient(120% 80% at 82% 0%, color-mix(in srgb, var(--color-blood) 16%, transparent), transparent 58%),
       var(--color-ink);
-    /* opacity explicite + fill-mode `both` : le menu reste visible à l'ouverture
-       (sans fill-mode, l'anim opacity 0→1 pouvait le laisser à 0 sur mobile /
-       aux ouvertures répétées → menu "ouvert" mais invisible). */
+    /* Le menu est TOUJOURS opaque quand affiché : on n'anime PLUS l'opacité (une
+       anim opacity 0→1 le laissait bloqué à 0 quand l'animation ne rejouait pas
+       → menu "ouvert" mais invisible, le bug). Seul un léger glissé anime l'entrée. */
     opacity: 1;
-    animation: menu-in 0.28s var(--ease-soft) both;
+    animation: menu-in 0.24s var(--ease-soft);
   }
   .mobile-menu__list {
     display: flex;
@@ -589,8 +589,8 @@ html.js-motion [data-hero-chars] {
     padding-block: 0.06em;
   }
   @keyframes menu-in {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { transform: translateY(-10px); }
+    to { transform: translateY(0); }
   }
   html.menu-open {
     overflow: clip;
